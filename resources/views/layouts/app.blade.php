@@ -11,6 +11,8 @@
 
     @include('layouts.css.style')
 
+    @stack('styles')
+
 </head>
 
 <body>
@@ -30,6 +32,8 @@
     </div>
 
     @include('layouts.js.script')
+
+    @stack('scripts')
 
 </body>
 
