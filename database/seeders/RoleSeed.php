@@ -1,9 +1,10 @@
 <?php
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
-class RoleSeeder extends Seeder
+class RoleSeed extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +16,8 @@ class RoleSeeder extends Seeder
         $roles = [
             'developer',
             'admin',
-            'officer'
+            'officer',
+            'student'
         ];
 
         foreach ($roles as $key) {

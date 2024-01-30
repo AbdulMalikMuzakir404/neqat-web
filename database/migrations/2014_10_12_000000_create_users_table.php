@@ -16,19 +16,17 @@ return new class extends Migration
             $table->string('name');
             $table->string('username')->unique();
             $table->string('email')->unique();
+            $table->boolean('email_verified')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->boolean('active')->default(false);
 
             $table->timestamp('active_at')->nullable();
-            $table->bigInteger('userable_id')->nullable();
-            $table->string('userable_type')->nullable();
             $table->ipAddress('ip_address')->nullable();
             $table->timestamp('first_access')->nullable();
             $table->timestamp('last_login')->nullable();
             $table->timestamp('last_access')->nullable();
-            $table->timestamp('created_at')->nullable();
             $table->timestamps();
         });
     }

@@ -56,12 +56,12 @@
                                     novalidate="">
                                     @csrf
                                     <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input id="email" type="text"
-                                            class="form-control @error('email') is-invalid @enderror"
-                                            value="{{ old('email') }}" name="email" tabindex="1" required
+                                        <label for="username">Username</label>
+                                        <input id="username" type="text"
+                                            class="form-control @error('username') is-invalid @enderror"
+                                            value="{{ old('username') }}" name="username" tabindex="1" required
                                             autofocus>
-                                        @error('email')
+                                        @error('username')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
@@ -70,7 +70,7 @@
 
                                     <div class="form-group">
                                         <label for="password">Password</label>
-                                        <input id="password" type="text"
+                                        <input id="password" type="password"
                                             class="form-control @error('password') is-invalid @enderror"
                                             value="{{ old('password') }}" name="password" tabindex="2" required>
                                         @error('password')
