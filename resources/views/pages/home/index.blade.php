@@ -13,8 +13,8 @@
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
-                        <div class="card-icon bg-primary">
-                            <i class="far fa-user"></i>
+                        <div class="card-icon" style="background-color: rgb(156, 156, 228)">
+                            <i class="bi bi-box-arrow-in-right" style="color: #fff; font-size: 25px;"></i>
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
@@ -28,8 +28,8 @@
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
-                        <div class="card-icon bg-danger">
-                            <i class="far fa-newspaper"></i>
+                        <div class="card-icon" style="background-color: rgb(225, 137, 152)">
+                            <i class="bi bi-heart-pulse" style="color: #fff; font-size: 25px;"></i>
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
@@ -43,8 +43,8 @@
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
-                        <div class="card-icon bg-warning">
-                            <i class="far fa-file"></i>
+                        <div class="card-icon" style="background-color: rgb(170, 184, 170)">
+                            <i class="bi bi-file-earmark-font" style="color: #fff; font-size: 25px;"></i>
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
@@ -58,8 +58,8 @@
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="card card-statistic-1">
-                        <div class="card-icon bg-success">
-                            <i class="fas fa-circle"></i>
+                        <div class="card-icon" style="background-color: rgb(246, 91, 91)">
+                            <i class="bi bi-x-circle" style="color: #fff; font-size: 25px;"></i>
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
