@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="{{ asset('template/assets/modules/weather-icon/css/weather-icons.min.css') }}">
 <link rel="stylesheet" href="{{ asset('template/assets/modules/weather-icon/css/weather-icons-wind.min.css') }}">
 <link rel="stylesheet" href="{{ asset('template/assets/modules/summernote/summernote-bs4.css') }}">
+<link rel="stylesheet" href="{{ asset('template/assets/modules/ionicons/css/ionicons.min.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <!-- Template CSS -->
 <link rel="stylesheet" href="{{ asset('template/assets/css/style.css') }}">

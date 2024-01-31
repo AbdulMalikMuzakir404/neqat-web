@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('styles')
+
+@endpush
+
 @section('content')
     <div class="main-content">
         <section class="section">
@@ -250,6 +254,7 @@
             title: {
                 text: "Chart Perbandingan Antara Hadir Alpa",
                 align: "left",
+                margin: 40,
             },
             legend: {
                 position: "bottom",
@@ -277,6 +282,7 @@
             title: {
                 text: "Chart Perbandingan Antara Sakit Izin",
                 align: "left",
+                margin: 40,
             },
             legend: {
                 position: "bottom",

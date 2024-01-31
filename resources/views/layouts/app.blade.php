@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <div id="app">
+    <div id="app" style="display: none;">
         <div class="main-wrapper main-wrapper-1">
             <div class="navbar-bg"></div>
 
@@ -30,6 +30,8 @@
             @include('layouts.footer')
         </div>
     </div>
+
+    @include('components.loading.loading')
 
     @include('layouts.js.script')
 

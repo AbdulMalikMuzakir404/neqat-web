@@ -1,19 +1,75 @@
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="{{ route('home') }}">
+            <a href="{{ route('home.index') }}">
                 <img src="{{ asset('assets/images/logo-neqat-banner.jpg') }}" alt="logo-neqat-banner" style="width: 50%">
             </a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="{{ route('home') }}">
+            <a href="{{ route('home.index') }}">
                 <img src="{{ asset('assets/images/logo-neqat-icon.png') }}" alt="logo-neqat-banner" style="width: 50%">
             </a>
         </div>
         <ul class="sidebar-menu">
             <li class="{{ (Request::segment(1) == 'home') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('home') }}">
+                <a class="nav-link" href="{{ route('home.index') }}">
                     <i class="fas fa-fire"></i><span>Home</span>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="sidebar-menu">
+            <li class="{{ (Request::segment(1) == 'user') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('user.index') }}">
+                    <i class="fas fa-users"></i><span>User</span>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="sidebar-menu">
+            <li class="{{ (Request::segment(1) == 'announcement') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('announcement.index') }}">
+                    <i class="fas fa-bullhorn"></i><span>Announcement</span>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="sidebar-menu">
+            <li class="{{ (Request::segment(1) == 'classroom') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('classroom.index') }}">
+                    <i class="fas fa-person-booth"></i><span>Class Room</span>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="sidebar-menu">
+            <li class="{{ (Request::segment(1) == 'student') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('student.index') }}">
+                    <i class="fas fa-graduation-cap"></i><span>Student</span>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="sidebar-menu">
+            <li class="{{ (Request::segment(1) == 'attendance') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('attendance.index') }}">
+                    <i class="fas fa-list"></i><span>Attendance</span>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="sidebar-menu">
+            <li class="{{ (Request::segment(1) == 'calendar') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('calendar.index') }}">
+                    <i class="fas fa-calendar"></i><span>Calendar</span>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="sidebar-menu">
+            <li class="{{ (Request::segment(1) == 'setting') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('setting.index') }}">
+                    <i class="fas fa-toolbox"></i><span>Setting</span>
                 </a>
             </li>
         </ul>

@@ -22,7 +22,7 @@
                         </div>
                         <div class="page-search">
                             <div class="mt-3">
-                                <a href="{{ route('home') }}"><i class="ion-arrow-left-c" data-pack="default"
+                                <a href="{{ route('home.index') }}"><i class="ion-arrow-left-c" data-pack="default"
                                         data-tags=""></i> Back to Home</a>
                             </div>
                         </div>
