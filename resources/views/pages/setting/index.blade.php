@@ -35,8 +35,8 @@
                                     <div class="col-12">
                                         <div class="card">
                                             <div class="card-body">
-                                                <div class="row mb-4">
-                                                    <div class="col-4 col-12 col-md-6 col-lg-4">
+                                                <div class="row-12 mb-4">
+                                                    <div class="col-4 col-12 col-md-6 col-lg-4 mb-3">
                                                         <form id="search-form">
                                                             <div class="input-group">
                                                                 <input type="text" id="address" class="form-control"
@@ -49,25 +49,37 @@
                                                         </form>
                                                     </div>
 
-                                                    <form id="location-form">
-                                                        <div class="row mb-3">
-                                                            <div class="col-md-4">
-                                                                <label for="location-name">Location Name</label>
+                                                    <div class="col-4 col-12 col-md-6 col-lg-4">
+                                                        <form action="#" method="post" id="location-form">
+                                                            @csrf
+                                                            <div class="form-group">
+                                                                <label for="location-name">*Name Location</label>
                                                                 <input type="text" value="" class="form-control"
-                                                                    id="location-name" readonly>
+                                                                    id="location-name" placeholder="Name Location" readonly>
                                                             </div>
-                                                            <div class="col-md-4">
-                                                                <label for="latitude">Latitude</label>
+
+                                                            <div class="form-group">
+                                                                <label for="latitude">*Latitude</label>
                                                                 <input type="text" value="" class="form-control"
-                                                                    id="latitude" readonly>
+                                                                    id="latitude" placeholder="Latitude" readonly>
                                                             </div>
-                                                            <div class="col-md-4">
-                                                                <label for="longitude">Longitude</label>
+
+                                                            <div class="form-group">
+                                                                <label for="longitude">*Longitude</label>
                                                                 <input type="text" value="" class="form-control"
-                                                                    id="longitude" readonly>
+                                                                    id="longitude" placeholder="Longitude" readonly>
                                                             </div>
-                                                        </div>
-                                                    </form>
+
+                                                            <div class="form-group">
+                                                                <label for="radius">*Radius</label>
+                                                                <input type="text" value="" class="form-control"
+                                                                    id="radius" placeholder="Radius" autofocus>
+                                                            </div>
+
+
+                                                        </form>
+                                                    </div>
+
                                                 </div>
                                                 <div id="map" data-height="400"></div>
                                             </div>
