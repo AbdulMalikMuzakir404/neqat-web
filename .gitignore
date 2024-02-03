@@ -3,8 +3,8 @@
 /public/build
 /public/hot
 /public/storage
-/public/asset
-/public/template
+# /public/asset
+# /public/template
 /storage/*.key
 /vendor
 .env

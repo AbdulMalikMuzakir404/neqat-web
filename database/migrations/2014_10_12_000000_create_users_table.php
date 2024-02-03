@@ -22,6 +22,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->boolean('active')->default(false);
 
+            $table->string('fcm_token')->nullable();
             $table->timestamp('active_at')->nullable();
             $table->ipAddress('ip_address')->nullable();
             $table->timestamp('first_access')->nullable();
