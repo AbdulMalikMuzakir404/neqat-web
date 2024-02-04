@@ -1,9 +1,7 @@
 @extends('layouts.app')
 
 @push('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
-        integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 @endpush
 
 @section('content')
@@ -33,42 +31,70 @@
                             <form class="form-general">
                                 <div class="form-group">
                                     <label for="school-name">*School Name</label>
-                                    <input type="text"
+                                    <input type="text" name="school_name"
                                         value="{{ $data['setting'] ? $data['setting']->school_name : '' }}"
-                                        class="form-control" id="school-name" placeholder="School Name" maxlength="50"
-                                        required>
+                                        class="form-control @error('username') is-invalid @enderror"
+                                        placeholder="School Name" maxlength="50" required>
+                                    @error('username')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group">
                                     <label for="school-time-from">*School Time From</label>
-                                    <input type="time"
+                                    <input type="time" name="school_time_from"
                                         value="{{ $data['setting'] ? $data['setting']->school_time_from : '' }}"
-                                        class="form-control" id="school-time-from" placeholder="School Time From" required>
+                                        class="form-control @error('school_time_from') is-invalid @enderror"
+                                        id="school-time-from" placeholder="School Time From" required>
+                                    @error('school_time_from')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group">
                                     <label for="school-time-to">*School Time To</label>
-                                    <input type="time"
+                                    <input type="time" name="school_time_to"
                                         value="{{ $data['setting'] ? $data['setting']->school_time_to : '' }}"
-                                        class="form-control" id="school-time-to" placeholder="School Time To" required>
+                                        class="form-control @error('school_time_to') is-invalid @enderror"
+                                        id="school-time-to" placeholder="School Time To" required>
+                                    @error('school_time_to')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group">
                                     <label for="school-hour-tolerance">*School Hour Tolerance</label>
-                                    <input type="time"
+                                    <input type="time" name="school_hour_tolerance"
                                         value="{{ $data['setting'] ? $data['setting']->school_hour_tolerance : '' }}"
-                                        class="form-control" id="school-hour-tolerance" placeholder="School Hour Tolerance"
-                                        required>
+                                        class="form-control @error('school_hour_tolerance') is-invalid @enderror"
+                                        id="school-hour-tolerance" placeholder="School Hour Tolerance" required>
+                                    @error('school_hour_tolerance')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group">
                                     <div class="control-label">Absen Status</div>
                                     <div class="custom-control custom-checkbox" id="checkboxContainer">
-                                        <input type="checkbox" value="" class="custom-control-input" id="absen"
+                                        <input type="checkbox" name="absen" value=""
+                                            class="custom-control-input @error('absen') is-invalid @enderror" id="absen"
                                             {{ $data['setting']->absen == 1 ? 'checked' : '' }} required>
                                         <label class="custom-control-label"
                                             for="absen">{{ $data['setting']->absen == 1 ? 'on' : 'off' }}</label>
                                     </div>
+                                    @error('absen')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
 
                                 <button type="button" id="save-general" class="btn btn-primary">Simpan</button>
@@ -97,38 +123,58 @@
                                                         <form id="location-form" class="form-map">
                                                             <div class="form-group">
                                                                 <label for="location-name">*Name Location</label>
-                                                                <input type="text"
+                                                                <input type="text" name="location_name"
                                                                     value="{{ $data['setting'] ? $data['setting']->location_name : '' }}"
-                                                                    class="form-control" id="location-name"
-                                                                    placeholder="Name Location" maxlength="100" readonly
-                                                                    required>
+                                                                    class="form-control @error('location_name') is-invalid @enderror"
+                                                                    id="location-name" placeholder="Name Location"
+                                                                    maxlength="100" readonly required>
+                                                                @error('location_name')
+                                                                    <div class="invalid-feedback">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
                                                             </div>
 
                                                             <div class="form-group">
                                                                 <label for="latitude">*Latitude</label>
-                                                                <input type="text"
+                                                                <input type="text" name="latitude"
                                                                     value="{{ $data['setting'] ? $data['setting']->latitude : '' }}"
-                                                                    class="form-control" id="latitude"
-                                                                    placeholder="Latitude" maxlength="50" readonly
-                                                                    required>
+                                                                    class="form-control @error('latitude') is-invalid @enderror"
+                                                                    id="latitude" placeholder="Latitude" maxlength="50"
+                                                                    readonly required>
+                                                                @error('latitude')
+                                                                    <div class="invalid-feedback">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
                                                             </div>
 
                                                             <div class="form-group">
                                                                 <label for="longitude">*Longitude</label>
-                                                                <input type="text"
+                                                                <input type="text" name="longitude"
                                                                     value="{{ $data['setting'] ? $data['setting']->longitude : '' }}"
-                                                                    class="form-control" id="longitude"
-                                                                    placeholder="Longitude" maxlength="50" readonly
-                                                                    required>
+                                                                    class="form-control @error('longitude') is-invalid @enderror"
+                                                                    id="longitude" placeholder="Longitude" maxlength="50"
+                                                                    readonly required>
+                                                                @error('longitude')
+                                                                    <div class="invalid-feedback">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
                                                             </div>
 
                                                             <div class="form-group">
                                                                 <label for="radius">*Radius</label>
-                                                                <input type="text"
+                                                                <input type="text" name="radius"
                                                                     value="{{ $data['setting'] ? $data['setting']->radius : '' }}"
-                                                                    class="form-control" id="radius"
-                                                                    placeholder="Radius" maxlength="11" autofocus
-                                                                    required>
+                                                                    class="form-control @error('radius') is-invalid @enderror"
+                                                                    id="radius" placeholder="Radius" maxlength="11"
+                                                                    autofocus required>
+                                                                @error('radius')
+                                                                    <div class="invalid-feedback">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
                                                             </div>
 
                                                             <button type="button" id="save-map"
@@ -155,9 +201,9 @@
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key={{ env('GMAPS_KEY') }}&libraries=places&callback=initMap">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
-        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    @include('components.toastr.toastr')
 
     <script>
         // on off checkbox
@@ -190,18 +236,6 @@
                 formData.append('_method', 'PUT');
                 formData.append('_token', '{{ csrf_token() }}');
 
-                let schoolName = $('#school-name').val();
-                let schoolTimeFrom = $('#school-time-from').val();
-                let schoolTimeTo = $('#school-time-to').val();
-                let schoolHourTolerance = $('#school-hour-tolerance').val();
-                let absen = $('#absen').val();
-
-                formData.append('school_name', schoolName);
-                formData.append('school_time_from', schoolTimeFrom);
-                formData.append('school_time_to', schoolTimeTo);
-                formData.append('school_hour_tolerance', schoolHourTolerance);
-                formData.append('absen', absen);
-
                 $.ajax({
                     url: "{{ route('setting.update.general') }}",
                     type: 'POST',
@@ -210,10 +244,21 @@
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        toastr.success(response.message);
+                        toastr.success(response.message, 'Success');
                     },
-                    error: function(error) {
-                        toastr.error(response.message);
+                    error: function(xhr, status, error) {
+                        if (xhr.responseJSON) {
+                            let errors = xhr.responseJSON.errors;
+                            if (errors) {
+                                // Display each error message
+                                $.each(errors, function(key, value) {
+                                    toastr.error(value[0], 'Error');
+                                });
+                            }
+                        } else {
+                            // Handle other types of errors
+                            toastr.error("An error occurred: " + error, 'Error');
+                        }
                     }
                 });
             }
@@ -231,16 +276,6 @@
                 formData.append('_method', 'PUT');
                 formData.append('_token', '{{ csrf_token() }}');
 
-                let locationName = $('#location-name').val();
-                let latitude = $('#latitude').val();
-                let longitude = $('#longitude').val();
-                let radius = $('#radius').val();
-
-                formData.append('location_name', locationName);
-                formData.append('latitude', latitude);
-                formData.append('longitude', longitude);
-                formData.append('radius', radius);
-
                 $.ajax({
                     url: "{{ route('setting.update.map') }}",
                     type: 'POST',
@@ -249,10 +284,21 @@
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        toastr.success(response.message);
+                        toastr.success(response.message, 'Success');
                     },
-                    error: function(error) {
-                        toastr.error(response.message);
+                    error: function(xhr, status, error) {
+                        if (xhr.responseJSON) {
+                            let errors = xhr.responseJSON.errors;
+                            if (errors) {
+                                // Display each error message
+                                $.each(errors, function(key, value) {
+                                    toastr.error(value[0], 'Error');
+                                });
+                            }
+                        } else {
+                            // Handle other types of errors
+                            toastr.error("An error occurred: " + error, 'Error');
+                        }
                     }
                 });
             }
