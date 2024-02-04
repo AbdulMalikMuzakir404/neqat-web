@@ -81,7 +81,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="row-12 mb-4">
-                                                    <div class="col-4 col-12 col-md-6 col-lg-4 mb-3">
+                                                    <div class="col-12 col-12 col-md-12 col-lg-12 mb-3">
                                                         <form id="search-form">
                                                             <div class="input-group">
                                                                 <input type="text" id="address" class="form-control"
@@ -93,7 +93,7 @@
                                                             </div>
                                                         </form>
                                                     </div>
-                                                    <div class="col-4 col-12 col-md-6 col-lg-4">
+                                                    <div class="col-12 col-12 col-md-12 col-lg-12">
                                                         <form id="location-form" class="form-map">
                                                             <div class="form-group">
                                                                 <label for="location-name">*Name Location</label>
@@ -218,7 +218,6 @@
                 });
             }
         });
-
 
         // save data setting map
         $(document).ready(function() {
