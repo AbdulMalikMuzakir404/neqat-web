@@ -59,14 +59,6 @@
         </ul>
 
         <ul class="sidebar-menu">
-            <li class="{{ (Request::segment(1) == 'calendar') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('calendar.index') }}">
-                    <i class="fas fa-calendar"></i><span>Calendar</span>
-                </a>
-            </li>
-        </ul>
-
-        <ul class="sidebar-menu">
             <li class="{{ (Request::segment(1) == 'setting') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('setting.index') }}">
                     <i class="fas fa-toolbox"></i><span>Setting</span>

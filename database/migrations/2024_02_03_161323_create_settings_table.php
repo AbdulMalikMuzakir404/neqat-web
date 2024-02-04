@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('school_name', 50);
             $table->string('location_name', 100);
-            $table->decimal('latitude');
-            $table->decimal('longitude');
+            $table->string('latitude', 50);
+            $table->string('longitude', 50);
             $table->integer('radius');
+            $table->boolean('absen')->default(false);
             $table->time('school_time_from');
             $table->time('school_time_to');
             $table->time('school_hour_tolerance');

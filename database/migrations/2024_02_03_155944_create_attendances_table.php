@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->decimal('from_lat', 30);
-            $table->decimal('from_long', 30);
-            $table->decimal('to_lat', 30);
-            $table->decimal('to_long', 30);
+            $table->string('from_lat', 50);
+            $table->string('from_long', 50);
+            $table->string('to_lat', 50);
+            $table->string('to_long', 50);
             $table->string('location_name', 100);
             $table->tinyInteger('attendance_status')->default(0);
             $table->dateTime('time_in');

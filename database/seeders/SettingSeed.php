@@ -15,6 +15,7 @@ class SettingSeed extends Seeder
             'latitude' => '-7.009488414554536',
             'longitude' => '107.5472574134918',
             'radius' => '100',
+            'absen' => false,
             'school_time_from' => '07:00',
             'school_time_to' => '15:00',
             'school_hour_tolerance' => '09:00'
