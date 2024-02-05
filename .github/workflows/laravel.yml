@@ -33,7 +33,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Deploy to cPanel
-      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /home/rplnekat/neqat.absensi && git pull origin main"
+      run: ssh -o StrictHostKeyChecking=no -p 64000 rplnekat@103.56.204.29 "cd /home/rplnekat/neqat.absensi && git pull origin main"
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
