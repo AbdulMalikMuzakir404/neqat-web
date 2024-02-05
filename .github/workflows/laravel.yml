@@ -39,7 +39,10 @@ jobs:
     - name: Add SSH key to agent
       run: |
         eval $(ssh-agent -s)
-        ssh-add <(echo "${{ secrets.SSH_PRIVATE_KEY }}")
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_private_key
+        chmod 600 ssh_private_key
+        ssh-add ssh_private_key
+      shell: bash
 
     - name: Deploy to cPanel
       run: ssh -o StrictHostKeyChecking=no -p 64000 rplnekat@103.56.204.29 "cd /home/rplnekat/neqat.absensi && git pull origin main"
