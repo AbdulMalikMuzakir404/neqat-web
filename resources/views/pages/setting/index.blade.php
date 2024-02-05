@@ -104,88 +104,84 @@
                             <div class="section-body">
                                 <div class="row">
                                     <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="row-12 mb-4">
-                                                    <div class="col-12 col-12 col-md-12 col-lg-12 mb-3">
-                                                        <form id="search-form">
-                                                            <div class="input-group">
-                                                                <input type="text" id="address" class="form-control"
-                                                                    placeholder="Enter your address">
-                                                                <div class="input-group-append">
-                                                                    <button class="btn btn-primary"
-                                                                        id="search-button">Search</button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
+                                        <div class="row-12 mb-4">
+                                            <div class="col-12 col-12 col-md-12 col-lg-12 mb-3">
+                                                <form id="search-form">
+                                                    <div class="input-group">
+                                                        <input type="text" id="address" class="form-control"
+                                                            placeholder="Enter your address">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary"
+                                                                id="search-button">Search</button>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-12 col-12 col-md-12 col-lg-12">
-                                                        <form id="location-form" class="form-map">
-                                                            <div class="form-group">
-                                                                <label for="location-name">*Name Location</label>
-                                                                <input type="text" name="location_name"
-                                                                    value="{{ $data['setting'] ? $data['setting']->location_name : '' }}"
-                                                                    class="form-control @error('location_name') is-invalid @enderror"
-                                                                    id="location-name" placeholder="Name Location"
-                                                                    maxlength="100" readonly required>
-                                                                @error('location_name')
-                                                                    <div class="invalid-feedback">
-                                                                        {{ $message }}
-                                                                    </div>
-                                                                @enderror
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="latitude">*Latitude</label>
-                                                                <input type="text" name="latitude"
-                                                                    value="{{ $data['setting'] ? $data['setting']->latitude : '' }}"
-                                                                    class="form-control @error('latitude') is-invalid @enderror"
-                                                                    id="latitude" placeholder="Latitude" maxlength="50"
-                                                                    readonly required>
-                                                                @error('latitude')
-                                                                    <div class="invalid-feedback">
-                                                                        {{ $message }}
-                                                                    </div>
-                                                                @enderror
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="longitude">*Longitude</label>
-                                                                <input type="text" name="longitude"
-                                                                    value="{{ $data['setting'] ? $data['setting']->longitude : '' }}"
-                                                                    class="form-control @error('longitude') is-invalid @enderror"
-                                                                    id="longitude" placeholder="Longitude" maxlength="50"
-                                                                    readonly required>
-                                                                @error('longitude')
-                                                                    <div class="invalid-feedback">
-                                                                        {{ $message }}
-                                                                    </div>
-                                                                @enderror
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="radius">*Radius</label>
-                                                                <input type="text" name="radius"
-                                                                    value="{{ $data['setting'] ? $data['setting']->radius : '' }}"
-                                                                    class="form-control @error('radius') is-invalid @enderror"
-                                                                    id="radius" placeholder="Radius" maxlength="11"
-                                                                    autofocus required>
-                                                                @error('radius')
-                                                                    <div class="invalid-feedback">
-                                                                        {{ $message }}
-                                                                    </div>
-                                                                @enderror
-                                                            </div>
-
-                                                            <button type="button" id="save-map"
-                                                                class="btn btn-primary">Simpan</button>
-                                                        </form>
-                                                    </div>
-
-                                                </div>
-                                                <div id="map" data-height="400"></div>
+                                                </form>
                                             </div>
+                                            <div class="col-12 col-12 col-md-12 col-lg-12">
+                                                <form id="location-form" class="form-map">
+                                                    <div class="form-group">
+                                                        <label for="location-name">*Name Location</label>
+                                                        <input type="text" name="location_name"
+                                                            value="{{ $data['setting'] ? $data['setting']->location_name : '' }}"
+                                                            class="form-control @error('location_name') is-invalid @enderror"
+                                                            id="location-name" placeholder="Name Location"
+                                                            maxlength="100" readonly required>
+                                                        @error('location_name')
+                                                            <div class="invalid-feedback">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="latitude">*Latitude</label>
+                                                        <input type="text" name="latitude"
+                                                            value="{{ $data['setting'] ? $data['setting']->latitude : '' }}"
+                                                            class="form-control @error('latitude') is-invalid @enderror"
+                                                            id="latitude" placeholder="Latitude" maxlength="50" readonly
+                                                            required>
+                                                        @error('latitude')
+                                                            <div class="invalid-feedback">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="longitude">*Longitude</label>
+                                                        <input type="text" name="longitude"
+                                                            value="{{ $data['setting'] ? $data['setting']->longitude : '' }}"
+                                                            class="form-control @error('longitude') is-invalid @enderror"
+                                                            id="longitude" placeholder="Longitude" maxlength="50"
+                                                            readonly required>
+                                                        @error('longitude')
+                                                            <div class="invalid-feedback">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="radius">*Radius</label>
+                                                        <input type="text" name="radius"
+                                                            value="{{ $data['setting'] ? $data['setting']->radius : '' }}"
+                                                            class="form-control @error('radius') is-invalid @enderror"
+                                                            id="radius" placeholder="Radius" maxlength="11" autofocus
+                                                            required>
+                                                        @error('radius')
+                                                            <div class="invalid-feedback">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </div>
+
+                                                    <button type="button" id="save-map"
+                                                        class="btn btn-primary">Simpan</button>
+                                                </form>
+                                            </div>
+
                                         </div>
+                                        <div id="map" data-height="400"></div>
                                     </div>
                                 </div>
                             </div>

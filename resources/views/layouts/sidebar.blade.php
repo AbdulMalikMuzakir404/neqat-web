@@ -10,8 +10,9 @@
                 <img src="{{ asset('assets/images/logo-neqat-icon.png') }}" alt="logo-neqat-banner" style="width: 50%">
             </a>
         </div>
+
         <ul class="sidebar-menu">
-            <li class="{{ (Request::segment(1) == 'home') ? 'active' : '' }}">
+            <li class="{{ Request::segment(1) == 'home' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('home.index') }}">
                     <i class="fas fa-fire"></i><span>Home</span>
                 </a>
@@ -19,7 +20,7 @@
         </ul>
 
         <ul class="sidebar-menu">
-            <li class="{{ (Request::segment(1) == 'user') ? 'active' : '' }}">
+            <li class="{{ Request::segment(1) == 'user' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('user.index') }}">
                     <i class="fas fa-users"></i><span>User</span>
                 </a>
@@ -27,7 +28,7 @@
         </ul>
 
         <ul class="sidebar-menu">
-            <li class="{{ (Request::segment(1) == 'announcement') ? 'active' : '' }}">
+            <li class="{{ Request::segment(1) == 'announcement' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('announcement.index') }}">
                     <i class="fas fa-bullhorn"></i><span>Announcement</span>
                 </a>
@@ -35,7 +36,7 @@
         </ul>
 
         <ul class="sidebar-menu">
-            <li class="{{ (Request::segment(1) == 'classroom') ? 'active' : '' }}">
+            <li class="{{ Request::segment(1) == 'classroom' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('classroom.index') }}">
                     <i class="fas fa-person-booth"></i><span>Class Room</span>
                 </a>
@@ -43,7 +44,7 @@
         </ul>
 
         <ul class="sidebar-menu">
-            <li class="{{ (Request::segment(1) == 'student') ? 'active' : '' }}">
+            <li class="{{ Request::segment(1) == 'student' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('student.index') }}">
                     <i class="fas fa-graduation-cap"></i><span>Student</span>
                 </a>
@@ -51,7 +52,7 @@
         </ul>
 
         <ul class="sidebar-menu">
-            <li class="{{ (Request::segment(1) == 'attendance') ? 'active' : '' }}">
+            <li class="{{ Request::segment(1) == 'attendance' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('attendance.index') }}">
                     <i class="fas fa-list"></i><span>Attendance</span>
                 </a>
@@ -59,7 +60,7 @@
         </ul>
 
         <ul class="sidebar-menu">
-            <li class="{{ (Request::segment(1) == 'setting') ? 'active' : '' }}">
+            <li class="{{ Request::segment(1) == 'setting' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('setting.index') }}">
                     <i class="fas fa-toolbox"></i><span>Setting</span>
                 </a>
@@ -67,7 +68,8 @@
         </ul>
 
         <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
-            <a href="https://docs-neqat.vercel.app/pages/documentation/what-is-neqat" target="_blank" class="btn btn-primary btn-lg btn-block btn-icon-split">
+            <a href="https://docs-neqat.vercel.app/pages/documentation/what-is-neqat" target="_blank"
+                class="btn btn-primary btn-lg btn-block btn-icon-split">
                 <i class="fas fa-rocket"></i> Documentation
             </a>
         </div>
