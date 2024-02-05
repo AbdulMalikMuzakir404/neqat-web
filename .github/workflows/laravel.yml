@@ -32,6 +32,9 @@ jobs:
           touch database/database.sqlite
 
       - name: Ensure .ssh directory exists
+        run: sudo -u rplnekat mkdir -p /home/rplnekat/.ssh
+
+      - name: Ensure .ssh directory exists
         run: mkdir -p /home/rplnekat/.ssh
 
       - name: Use SSH Known Hosts
