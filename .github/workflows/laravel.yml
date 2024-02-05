@@ -36,8 +36,15 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
+    - name: Add SSH key to agent
+      run: |
+        eval $(ssh-agent -s)
+        ssh-add <(echo "${{ secrets.SSH_PRIVATE_KEY }}")
+
     - name: Deploy to cPanel
       run: ssh -o StrictHostKeyChecking=no -p 64000 rplnekat@103.56.204.29 "cd /home/rplnekat/neqat.absensi && git pull origin main"
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Display SSH key
+      run: cat /home/rplnekat/.ssh/id_rsa
+
 
