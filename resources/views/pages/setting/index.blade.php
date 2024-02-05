@@ -232,6 +232,10 @@
                 formData.append('_method', 'PUT');
                 formData.append('_token', '{{ csrf_token() }}');
 
+                let absen = $('#absen').val();
+
+                formData.append('absen', absen);
+
                 $.ajax({
                     url: "{{ route('setting.update.general') }}",
                     type: 'POST',
