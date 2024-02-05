@@ -27,6 +27,10 @@ jobs:
       run: npm run dev
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
+    - name: Directory Permissions
+      run: |
+        chmod 700 /home/rplnekat/.ssh
+        chmod 600 /home/rplnekat/.ssh/id_rsa
 
   laravel-deploy:
     needs: laravel-tests
