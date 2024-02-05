@@ -32,7 +32,7 @@ jobs:
           touch database/database.sqlite
 
       - name: Use SSH Known Hosts
-        run: echo "$SSH_KNOWN_HOSTS" > known_hosts
+        run: echo "$SSH_KNOWN_HOSTS" > $HOME/.ssh/known_hosts
 
       - name: Update Dependencies
         run: composer update
