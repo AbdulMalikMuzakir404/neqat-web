@@ -26,13 +26,19 @@ jobs:
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
 
-      - name: Use SSH Key
-        run: echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
-
       - name: Create Database
         run: |
           mkdir -p database
           touch database/database.sqlite
+
+      - name: Create SSH directory and Use SSH Key
+        run: |
+          mkdir -p /home/runner/.ssh
+          echo "$SSH_PRIVATE_KEY" > /home/runner/.ssh/id_rsa
+          chmod 600 /home/runner/.ssh/id_rsa
+
+      - name: Use SSH Known Hosts
+        run: echo "$SSH_KNOWN_HOSTS" > /home/runner/.ssh/known_hosts
 
       - name: Update Dependencies
         run: composer update
@@ -42,7 +48,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: /home/runner/.ssh/id_rsa
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd /home/rplnekat/neqat.absensi
