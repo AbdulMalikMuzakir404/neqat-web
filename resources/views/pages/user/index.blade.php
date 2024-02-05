@@ -29,7 +29,7 @@
                         </div>
                         <div class="modal-body">
                             <!-- Your modal content goes here -->
-                            <p>ini adalah modal</p>
+                            <p>test ci cd</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
