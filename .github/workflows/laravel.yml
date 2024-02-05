@@ -31,13 +31,13 @@ jobs:
           mkdir -p database
           touch database/database.sqlite
 
-    - name: Use SSH Key
-      run: |
-        mkdir -p /home/runner/.ssh
-        echo "$SSH_PRIVATE_KEY" > /home/runner/.ssh/id_rsa
-        chmod 600 /home/runner/.ssh/id_rsa
-        eval $(ssh-agent)
-        ssh-add /home/runner/.ssh/id_rsa
+      - name: Use SSH Key
+        run: |
+          mkdir -p /home/runner/.ssh
+          echo "$SSH_PRIVATE_KEY" > /home/runner/.ssh/id_rsa
+          chmod 600 /home/runner/.ssh/id_rsa
+          eval $(ssh-agent)
+          ssh-add /home/runner/.ssh/id_rsa
 
       - name: Use SSH Known Hosts
         run: echo "$SSH_KNOWN_HOSTS" > /home/runner/.ssh/known_hosts
