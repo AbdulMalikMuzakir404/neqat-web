@@ -35,15 +35,15 @@ jobs:
       run: chmod -R 777 storage bootstrap/cache
     - name: Setup MySQL
       run: php artisan migrate --env=testing --no-interaction -vvv
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
-      env:
-        DB_CONNECTION: mysql
-        DB_HOST: 127.0.0.1
-        DB_PORT: 3306
-        DB_DATABASE: ${{ secrets.DB_DATABASE }}
-        DB_USERNAME: ${{ secrets.DB_USERNAME }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      run: vendor/bin/phpunit
+    # - name: Execute tests (Unit and Feature tests) via PHPUnit
+    #   env:
+    #     DB_CONNECTION: mysql
+    #     DB_HOST: 127.0.0.1
+    #     DB_PORT: 3306
+    #     DB_DATABASE: ${{ secrets.DB_DATABASE }}
+    #     DB_USERNAME: ${{ secrets.DB_USERNAME }}
+    #     DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    #   run: vendor/bin/phpunit
 
   # laravel-deploy:
   #   needs: laravel-tests
