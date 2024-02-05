@@ -31,20 +31,14 @@ jobs:
           mkdir -p database
           touch database/database.sqlite
 
+      - name: Ensure .ssh directory exists
+        run: mkdir -p /home/rplnekat/.ssh
+
       - name: Use SSH Known Hosts
         run: echo "$SSH_KNOWN_HOSTS" > /home/rplnekat/.ssh/known_hosts
 
       - name: Update Dependencies
         run: composer update
-        if: failure()
-
-      - name: Commit Composer.lock
-        run: |
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
-          git add composer.lock
-          git commit -m "Update composer.lock"
-        if: failure()
 
       - name: SSH to Server and Pull Changes
         uses: appleboy/ssh-action@master
