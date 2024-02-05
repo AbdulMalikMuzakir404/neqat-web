@@ -34,7 +34,7 @@ jobs:
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
     - name: Setup MySQL
-      run: php artisan migrate --env=testing --no-interaction -vvv
+      run: php artisan migrate
     # - name: Execute tests (Unit and Feature tests) via PHPUnit
     #   env:
     #     DB_CONNECTION: mysql
