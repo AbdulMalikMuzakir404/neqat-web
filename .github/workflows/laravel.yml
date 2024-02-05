@@ -29,7 +29,9 @@ jobs:
       run: chmod -R 777 storage bootstrap/cache
     - name: Directory Permissions
       run: |
+        mkdir -p /home/rplnekat/.ssh
         chmod 700 /home/rplnekat/.ssh
+        touch /home/rplnekat/.ssh/id_rsa
         chmod 600 /home/rplnekat/.ssh/id_rsa
 
   laravel-deploy:
