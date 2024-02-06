@@ -33,9 +33,9 @@
                                     <label for="school-name">*School Name</label>
                                     <input type="text" name="school_name"
                                         value="{{ $data['setting'] ? $data['setting']->school_name : '' }}"
-                                        class="form-control @error('username') is-invalid @enderror"
+                                        class="form-control @error('school_name') is-invalid @enderror"
                                         placeholder="School Name" maxlength="50" required>
-                                    @error('username')
+                                    @error('school_name')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
