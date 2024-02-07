@@ -267,10 +267,7 @@
                                                     @if ($user && $user->email_verified == 1)
                                                         <div class="badge badge-success">verified</div>
                                                     @elseif ($user && $user->email_verified == 0)
-                                                        <div class="badge badge-secondary"><a href="#"
-                                                                id="not-verified"
-                                                                style="text-decoration: none; color: inherit; cursor: default">not
-                                                                verified</a></div>
+                                                        <div class="badge badge-secondary">not verified</div>
                                                     @else
                                                         <div class="badge badge-danger">null</div>
                                                     @endif
@@ -427,7 +424,7 @@
     </script>
 
     <script>
-        // update data user
+        // update data user active
         $(document).ready(function() {
             // Mendengarkan klik pada tautan nonaktif
             $('#table-2').on('click', '#active', function(e) {
@@ -455,12 +452,64 @@
                         if (response.success) {
                             toastr.success(response.message, 'Success');
 
-                            // Mendapatkan instance DataTable yang ada
-                            let dataTable = $('#table-2').DataTable();
+                            if ($.fn.DataTable.isDataTable('#table-2')) {
+                                $('#table-2').DataTable().destroy();
+                            }
 
-                            someId = 1 ; //first row
-                            newData = [ "ted", "London", "23" ] //Array, data here must match structure of table data
-                            dataTable.row(someId).data( newData ).draw();
+                            // Mendapatkan instance DataTable yang ada
+                            let dataTable = $('#table-2').DataTable({
+                                columns: [
+                                    { data: 'selected', orderable: false, searchable: false },
+                                    { data: 'id' },
+                                    { data: 'name' },
+                                    { data: 'username' },
+                                    { data: 'email' },
+                                    { data: 'verified' },
+                                    { data: 'active' },
+                                    { data: 'role' },
+                                    { data: 'first_access' },
+                                    { data: 'last_access' },
+                                    { data: 'action', orderable: false, searchable: false },
+                                ]
+                            });
+
+                            // Periksa apakah response.data.user berisi data yang valid
+                            if (response.data.user) {
+
+                                // Mendapatkan indeks baris yang sesuai dengan ID dari database
+                                var index = dataTable.column(1).data().indexOf(response.data.user.id.toString());
+
+                                // Hapus baris dengan indeks yang ditemukan
+                                if (index !== -1) {
+                                    dataTable.row(index).remove().draw();
+                                } else {
+                                    toastr.error('Baris dengan ID ' + response.data.user.id + ' tidak ditemukan dalam DataTable.', 'Error');
+                                    console.log('Baris dengan ID ' + response.data.user.id + ' tidak ditemukan dalam DataTable.');
+                                }
+
+                                // Tambahkan data pengguna ke dalam DataTable
+                                dataTable.row.add({
+                                    'selected': '<td>\
+                                                <div class="custom-checkbox custom-control">\
+                                                    <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-' + response.data.user.id + '">\
+                                                    <label for="checkbox-' + response.data.user.id + '" class="custom-control-label">&nbsp;</label>\
+                                                </div>\
+                                            </td>',
+                                    'id': response.data.user.id ?? '-',
+                                    'name': response.data.user.name ?? '-',
+                                    'username': response.data.user.username ?? '-',
+                                    'email': response.data.user.email ?? '-',
+                                    'verified': response.data.user.email_verified == 1 ? '<td><div class="badge badge-success">verified</div></td>' : '<td><div class="badge badge-secondary">not verified</div></td>',
+                                    'active': response.data.user.active == 1 ? '<td><div class="badge badge-success"><a href="#" id="active" data-id="' + response.data.user.id + '" style="text-decoration: none; color: inherit; cursor: default">active</a></div></td>' : '<td><div class="badge badge-secondary"><a href="#" id="active" data-id="' + response.data.user.id + '" style="text-decoration: none; color: inherit; cursor: default">nonactive</a></div></td>',
+                                    'role': response.data.role,
+                                    'first_access': response.data.user.first_access ?? '-',
+                                    'last_access': response.data.user.last_access ?? '-',
+                                    'action': '<button class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>' +
+                                        '<button class="btn btn-primary btn-sm"><i class="ion ion-compose"></i></button>',
+                                }).draw();
+
+                                dataTable.order([1, 'asc']).draw();
+                            }
                         } else {
                             toastr.error(response.message, 'Error');
                         }
