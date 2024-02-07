@@ -73,10 +73,33 @@ class UserController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function updateActive(Request $req)
     {
         try {
-            $user = $this->service->deleteUser($id);
+            $user = $this->service->updateUserActive($req);
+
+            return response()->json([
+                'success' => true,
+                'kode' => 200,
+                'data' => $user,
+                'message' => 'data user active berhasil di ubah'
+            ], 200);
+        } catch (Exception $e) {
+            Log::info("data user controller update active error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data user controller update active error : ' . $e,
+            ], 422);
+        }
+    }
+
+    public function destroy(Request $req)
+    {
+        try {
+            $user = $this->service->deleteUser($req);
 
             return response()->json([
                 'success' => true,

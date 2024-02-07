@@ -59,9 +59,14 @@ class UserService
                 'password' => Hash::make($data->password)
             ]);
 
+            $role = $this->role->where('name', $data->role)->first();
+
             $user->assignRole($data->role);
 
-            return $user;
+            return [
+                'user' => $user,
+                'role' => $role->name
+            ];
         } catch (Exception $e) {
             Log::info("user service store user error : " . $e);
 
@@ -81,11 +86,16 @@ class UserService
                 'password' => Hash::make($data->password)
             ]);
 
+            $role = $this->role->where('name', $data->role)->first();
+
             if ($data->role) {
                 $user->role()->associate($data->role);
             }
 
-            return $user;
+            return [
+                'user' => $user,
+                'role' => $role->name
+            ];
         } catch (Exception $e) {
             Log::info("user service store user error : " . $e);
 
@@ -93,12 +103,40 @@ class UserService
         }
     }
 
-    public function deleteUser($id)
+    public function updateUserActive($data)
     {
         try {
-            $user = $this->model->query();
-            $user->findOrFail($id);
-            $user->delete();
+            $user = $this->model->where('id', $data->id)->first();
+            if ($user->active == true) {
+                $user->update([
+                    'active' => false
+                ]);
+            } elseif ($user->active == false) {
+                $user->update([
+                    'active' => true
+                ]);
+            }
+
+            $role = $user->getRoleNames()->first();
+
+            return [
+                'user' => $user,
+                'role' => $role
+            ];
+        } catch (Exception $e) {
+            Log::info("user service update user active error : " . $e);
+
+            return false;
+        }
+    }
+
+    public function deleteUser($data)
+    {
+        try {
+            foreach ($data->ids as $id) {
+                $user = $this->model->findOrFail($id);
+                $user->delete();
+            }
 
             return $user;
         } catch (Exception $e) {
