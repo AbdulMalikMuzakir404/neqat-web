@@ -235,7 +235,7 @@
                                                     <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
                                                 </div>
                                             </th>
-                                            <th data-orderable="true" style="display: none;">ID</th>
+                                            <th data-orderable="true">ID</th>
                                             <th data-orderable="false">Name</th>
                                             <th data-orderable="false">Username</th>
                                             <th data-orderable="false">Email</th>
@@ -259,7 +259,7 @@
                                                     </div>
                                                 </td>
 
-                                                <td style="display: none;">{{ $user && $user->id ? $user->id : '-' }}</td>
+                                                <td>{{ $user && $user->id ? $user->id : '-' }}</td>
                                                 <td>{{ $user && $user->name ? $user->name : '-' }}</td>
                                                 <td>{{ $user && $user->username ? $user->username : '-' }}</td>
                                                 <td>{{ $user && $user->email ? $user->email : '-' }}</td>
@@ -371,7 +371,7 @@
                         let dataTable = $('#table-2').DataTable({
                             columns: [
                                 { data: 'selected', orderable: false, searchable: false },
-                                { data: 'id', visible: false },
+                                { data: 'id' },
                                 { data: 'name' },
                                 { data: 'username' },
                                 { data: 'email' },
