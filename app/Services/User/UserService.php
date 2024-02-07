@@ -74,23 +74,22 @@ class UserService
         }
     }
 
-    public function updateUser($data, $id)
+    public function updateUser($data)
     {
         try {
-            $user = $this->model->query();
-            $user->findOrFail($id);
+            $user = $this->model->where('id', $data->user_id)->first();
             $user->update([
-                'name' => $data->name,
-                'username' => $data->username,
-                'email' => $data->email,
-                'password' => Hash::make($data->password)
+                'name' => $data->name_edit,
+                'username' => $data->username_edit,
+                'email' => $data->email_edit,
+                'password' => Hash::make($data->password_edit)
             ]);
 
-            $role = $this->role->where('name', $data->role)->first();
+            // Temukan atau buat peran baru
+            $role = $this->role->where('name', $data->role_edit)->firstOrFail();
 
-            if ($data->role) {
-                $user->role()->associate($data->role);
-            }
+            // Perbarui peran pengguna
+            $user->syncRoles([$role->id]);
 
             return [
                 'user' => $user,

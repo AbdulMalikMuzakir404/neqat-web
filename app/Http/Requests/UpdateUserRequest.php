@@ -22,38 +22,42 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:50',
-            'username' => 'required|string|max:50|unique:users,username',
-            'email' => 'required|email|max:70|unique:users,email',
-            'password' => 'required|max:100'
+            'user_id' => 'required|string|max:11',
+            'name_edit' => 'required|string|min:5|max:50',
+            'username_edit' => 'required|string|min:5|max:50|unique:users,username, ' . $this->user_id,
+            'email_edit' => 'required|email|min:8|max:70|unique:users,email,' . $this->user_id,
+            'password_edit' => 'nullable|min:8|max:100',
+            'role_edit' => 'required'
         ];
     }
 
     public function attributes()
     {
         return [
-            'name' => 'nama',
-            'username' => 'username',
-            'email' => 'email',
-            'password' => 'kata sandi'
+            'name_edit' => 'nama',
+            'username_edit' => 'username',
+            'email_edit' => 'email',
+            'password_edit' => 'kata sandi',
+            'role_edit' => 'Role'
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => ':attribute tidak boleh kosong',
-            'username.required' => ':attribute tidak boleh kosong',
-            'email.required' => ':attribute tidak boleh kosong',
-            'password.required' => ':attribute tidak boleh kosong',
+            'name_edit.required' => ':attribute tidak boleh kosong',
+            'username_edit.required' => ':attribute tidak boleh kosong',
+            'email_edit.required' => ':attribute tidak boleh kosong',
+            'password_edit.required' => ':attribute tidak boleh kosong',
+            'role_edit.required' => ':attribute tidak boleh kosong',
 
-            'name.max' => ':attribute melebihi batas maksimal karakter',
-            'username.max' => ':attribute melebihi batas maksimal karakter',
-            'email.max' => ':attribute melebihi batas maksimal karakter',
-            'password.max' => ':attribute melebihi batas maksimal karakter',
+            'name_edit.max' => ':attribute melebihi batas maksimal karakter',
+            'username_edit.max' => ':attribute melebihi batas maksimal karakter',
+            'email_edit.max' => ':attribute melebihi batas maksimal karakter',
+            'password_edit.max' => ':attribute melebihi batas maksimal karakter',
 
-            'username.uniqid' => ':attribute sudah terdaftar',
-            'email.uniqid' => ':attribute sudah terdaftar',
+            'username_edit.uniqid' => ':attribute sudah terdaftar',
+            'email_edit.uniqid' => ':attribute sudah terdaftar',
         ];
     }
 }

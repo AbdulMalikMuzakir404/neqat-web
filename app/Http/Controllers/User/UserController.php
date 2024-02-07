@@ -50,10 +50,10 @@ class UserController extends Controller
         }
     }
 
-    public function update(UpdateUserRequest $req, $id)
+    public function update(UpdateUserRequest $req)
     {
         try {
-            $user = $this->service->updateUser($req, $id);
+            $user = $this->service->updateUser($req);
 
             return response()->json([
                 'success' => true,
