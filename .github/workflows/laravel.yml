@@ -43,5 +43,8 @@ jobs:
         script: |
           cd /home/rplnekat/neqat.absensi
           git pull origin main
+          composer install
+          npm install
+          npm run dev
 
 
