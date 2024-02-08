@@ -44,6 +44,8 @@ jobs:
           cd /home/rplnekat/neqat.absensi
           git pull origin main
           composer install
+          composer dump-autoload --optimize
+          php artisan optimize:clear
           npm install
           npm run dev
 
