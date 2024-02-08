@@ -78,12 +78,21 @@ class UserService
     {
         try {
             $user = $this->model->where('id', $data->user_id)->first();
-            $user->update([
-                'name' => $data->name_edit,
-                'username' => $data->username_edit,
-                'email' => $data->email_edit,
-                'password' => Hash::make($data->password_edit)
-            ]);
+
+            if ($data->password_edit !== null) {
+                $user->update([
+                    'name' => $data->name_edit,
+                    'username' => $data->username_edit,
+                    'email' => $data->email_edit,
+                    'password' => Hash::make($data->password_edit)
+                ]);
+            } else {
+                $user->update([
+                    'name' => $data->name_edit,
+                    'username' => $data->username_edit,
+                    'email' => $data->email_edit,
+                ]);
+            }
 
             // Temukan atau buat peran baru
             $role = $this->role->where('name', $data->role_edit)->firstOrFail();

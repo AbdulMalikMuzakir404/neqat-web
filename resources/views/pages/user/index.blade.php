@@ -368,56 +368,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($data['users'] as $user)
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-checkbox custom-control">
-                                                        <input type="checkbox" data-checkboxes="mygroup"
-                                                            class="custom-control-input" id="checkbox-{{ $user && $user->id ? $user->id : null }}">
-                                                        <label for="checkbox-{{ $user && $user->id ? $user->id : null }}"
-                                                            class="custom-control-label">&nbsp;</label>
-                                                    </div>
-                                                </td>
-
-                                                <td>{{ $user && $user->id ? $user->id : '-' }}</td>
-                                                <td>{{ $user && $user->name ? $user->name : '-' }}</td>
-                                                <td>{{ $user && $user->username ? $user->username : '-' }}</td>
-                                                <td>{{ $user && $user->email ? $user->email : '-' }}</td>
-                                                <td>
-                                                    @if ($user && $user->email_verified == 1)
-                                                        <div class="badge badge-success">verified</div>
-                                                    @elseif ($user && $user->email_verified == 0)
-                                                        <div class="badge badge-secondary">not verified</div>
-                                                    @else
-                                                        <div class="badge badge-danger">null</div>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($user && $user->active == 1)
-                                                        <div class="badge badge-success"><a href="#"
-                                                            id="active" data-id="{{ $user->id }}"
-                                                            style="text-decoration: none; color: inherit; cursor: default">active</a></div>
-                                                    @elseif ($user && $user->active == 0)
-                                                    <div class="badge badge-secondary"><a href="#"
-                                                        id="active" data-id="{{ $user->id }}"
-                                                        style="text-decoration: none; color: inherit; cursor: default">nonactive</a></div>
-                                                    @else
-                                                        <div class="badge badge-danger">null</div>
-                                                    @endif
-                                                </td>
-                                                <td>{{ $user && $user->getRoleNames()->first() ? $user->getRoleNames()->first() : '-' }}</td>
-                                                <td>{{ $user && $user->first_access ? $user->first_access : '-' }}</td>
-                                                <td>{{ $user && $user->last_access ? $user->last_access : '-' }}</td>
-                                                <td>
-                                                    <button class="btn btn-secondary btn-sm"><i
-                                                            class="ion ion-eye" data-toggle="modal"
-                                                            data-target="#detailUserModal-{{ $user->id }}"></i></button>
-                                                    <button class="btn btn-primary btn-sm"><i
-                                                            class="ion ion-compose" data-toggle="modal"
-                                                            data-target="#editUserModal-{{ $user->id }}"></i></button>
-                                                </td>
-                                            </tr>
-                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -443,7 +393,7 @@
 
     <script>
         // Mendengarkan perubahan pada checkbox
-        $('input[data-checkboxes="mygroup"]').change(function() {
+        $(document).on('change', 'input[data-checkboxes="mygroup"]', function() {
             // Mengaktifkan atau menonaktifkan tombol hapus berdasarkan apakah ada baris yang dipilih
             if ($('input[data-checkboxes="mygroup"]:checked').length > 0) {
                 $('#deleteButton').prop('disabled', false);
@@ -451,6 +401,50 @@
                 $('#deleteButton').prop('disabled', true);
             }
         });
+    </script>
+
+    <script>
+        // GOBAL SETUP AJAX
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+
+    <script>
+        // GET DATA USER
+        $(document).ready(function() {
+            getDataUser();
+        });
+
+        function getDataUser() {
+            if ($.fn.DataTable.isDataTable('#table-2')) {
+                $('#table-2').DataTable().destroy();
+            }
+
+            $('#table-2').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('user.getuser') }}",
+                    type: 'POST'
+                },
+                columns: [
+                    { data: 'checkbox', orderable: false, searchable: false },
+                    { data: 'id' },
+                    { data: 'name' },
+                    { data: 'username' },
+                    { data: 'email' },
+                    { data: 'email_verified' },
+                    { data: 'active' },
+                    { data: 'role' },
+                    { data: 'first_access' },
+                    { data: 'last_access' },
+                    { data: 'action', orderable: false, searchable: false }
+                ]
+            });
+        }
     </script>
 
     <script>
@@ -482,52 +476,9 @@
                         $('#password').val("");
                         $('#role').val("");
 
-                        if ($.fn.DataTable.isDataTable('#table-2')) {
-                            $('#table-2').DataTable().destroy();
-                        }
+                        $('#createUserModal').modal('hide');
 
-                        let dataTable = $('#table-2').DataTable({
-                            columns: [
-                                { data: 'selected', orderable: false, searchable: false },
-                                { data: 'id' },
-                                { data: 'name' },
-                                { data: 'username' },
-                                { data: 'email' },
-                                { data: 'verified' },
-                                { data: 'active' },
-                                { data: 'role' },
-                                { data: 'first_access' },
-                                { data: 'last_access' },
-                                { data: 'action', orderable: false, searchable: false },
-                            ]
-                        });
-
-                        // Tambahkan data baru
-                        dataTable.row.add({
-                            'selected': `<td>
-                                        <div class="custom-checkbox custom-control">
-                                            <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-${response.data.user.id}">
-                                            <label for="checkbox-${response.data.user.id}" class="custom-control-label">&nbsp;</label>
-                                        </div>
-                                    </td>`,
-                            'id': response.data.user.id ? '<th data-orderable="false">' + response.data.user.id + '</th>' : '<th data-orderable="false">-</th>',
-                            'name': response.data.user.name ? '<th data-orderable="false">' + response.data.user.name + '</th>' : '<th data-orderable="false">-</th>',
-                            'username': response.data.user.username ? '<th data-orderable="false">' + response.data.user.username + '</th>' : '<th data-orderable="false">-</th>',
-                            'email': response.data.user.email ? '<th data-orderable="false">' + response.data.user.email + '</th>' : '<th data-orderable="false">-</th>',
-                            'verified': response.data.user.email_verified == 1 ? '<td><div class="badge badge-success">verified</div></td>' : '<td><div class="badge badge-secondary">not verified</div></td>',
-                            'active': response.data.user.active == 1 ? '<td><div class="badge badge-success"><a href="#" id="active" data-id="' + response.data.user.id + '" style="text-decoration: none; color: inherit; cursor: default">active</a></div></td>' : '<td><div class="badge badge-secondary"><a href="#" id="active" data-id="' + response.data.user.id + '" style="text-decoration: none; color: inherit; cursor: default">nonactive</a></div></td>',
-                            'role': response.data.role ? '<th data-orderable="false">' + response.data.role + '</th>' : '<th data-orderable="false">-</th>',
-                            'first_access': response.data.user.first_access ? '<th data-orderable="false">' + response.data.user.first_access + '</th>' : '<th data-orderable="false">-</th>',
-                            'last_access': response.data.user.last_access ? '<th data-orderable="false">' + response.data.user.last_access + '</th>' : '<th data-orderable="false">-</th>',
-                            'action': `<td>
-                                <button class="btn btn-secondary btn-sm"><i class="ion ion-eye" data-toggle="modal"
-                                        data-target="#detailUserModal-${response.data.user.id}"></i></button>
-                                <button class="btn btn-primary btn-sm"><i class="ion ion-compose" data-toggle="modal"
-                                        data-target="#editUserModal-${response.data.user.id}"></i></button>
-                            </td>`
-                        });
-
-                        dataTable.draw(false);
+                        getDataUser();
                     },
                     error: function(xhr, status, error) {
                         if (xhr.responseJSON) {
@@ -554,11 +505,14 @@
             $('[id^="save-edit-user"]').on('click', function() {
                 // Mendapatkan ID yang digunakan pada tombol
                 let userId = $(this).attr('id').split('-').pop();
-                // Memanggil fungsi saveEditUser dan memberikan ID pengguna
-                saveEditUser(userId);
+                // Mendapatkan nomor halaman saat ini
+                let currentPage = $('#table-2').DataTable().page.info().page;
+
+                // Memanggil fungsi saveEditUser dan memberikan ID pengguna serta nomor halaman saat ini
+                saveEditUser(userId, currentPage);
             });
 
-            function saveEditUser(userId) {
+            function saveEditUser(userId, currentPage) {
                 let formData = new FormData($('.form-edit-user-' + userId)[0]);
                 formData.append('_method', 'POST');
                 formData.append('_token', '{{ csrf_token() }}');
@@ -579,61 +533,17 @@
                         $('#password_edit' + userId).val("");
                         $('#role_edit' + userId).val("");
 
-                        if ($.fn.DataTable.isDataTable('#table-2')) {
-                            $('#table-2').DataTable().destroy();
-                        }
+                        $('#editUserModal-' + userId).modal('hide');
 
-                        let dataTable = $('#table-2').DataTable({
-                            columns: [
-                                { data: 'selected', orderable: false, searchable: false },
-                                { data: 'id' },
-                                { data: 'name' },
-                                { data: 'username' },
-                                { data: 'email' },
-                                { data: 'verified' },
-                                { data: 'active' },
-                                { data: 'role' },
-                                { data: 'first_access' },
-                                { data: 'last_access' },
-                                { data: 'action', orderable: false, searchable: false },
-                            ]
-                        });
-
-                        if (response.data.user) {
-                            var index = dataTable.column(1).data().indexOf(response.data.user.id.toString());
-                            if (index !== -1) {
-                                dataTable.row(index).remove().draw();
-                            } else {
-                                toastr.error('Baris dengan ID ' + response.data.user.id + ' tidak ditemukan dalam DataTable.', 'Error');
-                                console.log('Baris dengan ID ' + response.data.user.id + ' tidak ditemukan dalam DataTable.');
-                            }
-
-                            dataTable.row.add({
-                                'selected': `<td>
-                                        <div class="custom-checkbox custom-control">
-                                            <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-${response.data.user.id}">
-                                            <label for="checkbox-${response.data.user.id}" class="custom-control-label">&nbsp;</label>
-                                        </div>
-                                    </td>`,
-                                'id': response.data.user.id ? '<th data-orderable="false">' + response.data.user.id + '</th>' : '<th data-orderable="false">-</th>',
-                                'name': response.data.user.name ? '<th data-orderable="false">' + response.data.user.name + '</th>' : '<th data-orderable="false">-</th>',
-                                'username': response.data.user.username ? '<th data-orderable="false">' + response.data.user.username + '</th>' : '<th data-orderable="false">-</th>',
-                                'email': response.data.user.email ? '<th data-orderable="false">' + response.data.user.email + '</th>' : '<th data-orderable="false">-</th>',
-                                'verified': response.data.user.email_verified == 1 ? '<td><div class="badge badge-success">verified</div></td>' : '<td><div class="badge badge-secondary">not verified</div></td>',
-                                'active': response.data.user.active == 1 ? '<td><div class="badge badge-success"><a href="#" id="active" data-id="' + response.data.user.id + '" style="text-decoration: none; color: inherit; cursor: default">active</a></div></td>' : '<td><div class="badge badge-secondary"><a href="#" id="active" data-id="' + response.data.user.id + '" style="text-decoration: none; color: inherit; cursor: default">nonactive</a></div></td>',
-                                'role': response.data.role ? '<th data-orderable="false">' + response.data.role + '</th>' : '<th data-orderable="false">-</th>',
-                                'first_access': response.data.user.first_access ? '<th data-orderable="false">' + response.data.user.first_access + '</th>' : '<th data-orderable="false">-</th>',
-                                'last_access': response.data.user.last_access ? '<th data-orderable="false">' + response.data.user.last_access + '</th>' : '<th data-orderable="false">-</th>',
-                                'action': `<td>
-                                    <button class="btn btn-secondary btn-sm"><i class="ion ion-eye" data-toggle="modal"
-                                            data-target="#detailUserModal-${response.data.user.id}"></i></button>
-                                    <button class="btn btn-primary btn-sm"><i class="ion ion-compose" data-toggle="modal"
-                                            data-target="#editUserModal-${response.data.user.id}"></i></button>
-                                </td>`
-
-                            }).draw();
-
-                            dataTable.order([1, 'asc']).draw();
+                        // Periksa apakah nomor halaman saat ini masih tersedia dalam data yang diperbarui
+                        let table = $('#table-2').DataTable();
+                        let info = table.page.info();
+                        if (info.pages >= currentPage) {
+                            // Jika nomor halaman masih tersedia, atur kembali tabel pada nomor halaman tersebut
+                            table.page(currentPage).draw('page');
+                        } else {
+                            // Jika nomor halaman tidak tersedia, atur kembali tabel pada halaman pertama
+                            table.page(0).draw('page');
                         }
                     },
                     error: function(xhr, status, error) {

@@ -4,6 +4,7 @@ use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [UserController::class, 'index'])->name('index');
+Route::post('/get-user', [UserController::class, 'getUser'])->name('getuser');
 Route::post('/store', [UserController::class, 'store'])->name('store');
 Route::post('/update', [UserController::class, 'update'])->name('update');
 Route::post('/update/active', [UserController::class, 'updateActive'])->name('update.active');
