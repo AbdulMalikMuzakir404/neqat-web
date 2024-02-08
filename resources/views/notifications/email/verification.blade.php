@@ -2,7 +2,7 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Email From Neqat</title>
+    <title>Email From NeQat</title>
     <style>
         /* -------------------------------------
                 GLOBAL RESETS
@@ -355,7 +355,7 @@
 </head>
 
 <body>
-    <span class="preheader">Email From Neqat.</span>
+    <span class="preheader">Email From NeQat.</span>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
         <tr>
             <td>&nbsp;</td>
@@ -365,8 +365,7 @@
                         <tr>
                             <td class="wrapper">
                                 <center>
-                                    <img src="{{ asset('assets/images/logo-neqat-icon.png') }}" alt="neqat" style="width: 80px;">
-                                    SMARTLMS
+                                    <img src="{{ asset('assets/images/logo-neqat-banner.jpg') }}" alt="neqat" style="width: 80px;">
                                 </center>
                                 <hr>
                                 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
@@ -393,8 +392,6 @@
                                                     </tbody>
                                                 </table>
                                             <br><br>
-                                            Regards, <br>
-                                            <strong><em>Neqat</em></strong>
                                         </td>
                                     </tr>
                                 </table>
@@ -405,7 +402,7 @@
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td class="content-block">
-                                    <span class="apple-link">Neqat</span>
+                                    <span class="apple-link">NeQat</span>
                                 </td>
                             </tr>
                             <tr>

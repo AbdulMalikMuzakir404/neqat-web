@@ -52,15 +52,12 @@
                             </div>
 
                             <div class="card-body">
-                                <form method="POST" action="{{ route('login') }}" class="needs-validation"
-                                    novalidate="">
+                                <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate="">
                                     @csrf
                                     <div class="form-group">
                                         <label for="username">Username</label>
-                                        <input id="username" type="text"
-                                            class="form-control @error('username') is-invalid @enderror"
-                                            value="{{ old('username') }}" name="username" tabindex="1" required
-                                            autofocus>
+                                        <input id="username" type="text" class="form-control @error('username') is-invalid @enderror"
+                                            value="{{ old('username') }}" name="username" tabindex="1" required autofocus>
                                         @error('username')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -70,8 +67,7 @@
 
                                     <div class="form-group">
                                         <label for="password">Password</label>
-                                        <input id="password" type="password"
-                                            class="form-control @error('password') is-invalid @enderror"
+                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
                                             value="{{ old('password') }}" name="password" tabindex="2" required>
                                         @error('password')
                                             <div class="invalid-feedback">
@@ -81,9 +77,18 @@
                                     </div>
 
                                     <div class="form-group">
+                                        {!! NoCaptcha::renderJs() !!}
+                                        {!! NoCaptcha::display() !!}
+                                        @if ($errors->has('g-recaptcha-response'))
+                                            <span class="invalid-feedback" style="display:block">
+                                                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+
+                                    <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" name="remember" class="custom-control-input"
-                                                tabindex="3" id="remember-me">
+                                            <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
                                             <label class="custom-control-label" for="remember-me">Remember Me</label>
                                         </div>
                                     </div>
@@ -94,11 +99,10 @@
                                         </button>
                                     </div>
                                 </form>
-
                             </div>
                         </div>
                         <div class="simple-footer">
-                            Copyright &copy; Neqat 2023
+                            Copyright &copy; NeQat 2023
                         </div>
                     </div>
                 </div>
