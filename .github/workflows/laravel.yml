@@ -47,6 +47,5 @@ jobs:
           composer dump-autoload --optimize
           php artisan optimize:clear
           npm install
-          npm run dev
 
 
