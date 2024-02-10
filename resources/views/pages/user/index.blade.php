@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-<title>Neqat &mdash; User</title>
+@section('title')
+    <title>Neqat &mdash; User</title>
+@endsection
 
 @push('styles')
     <!-- CSS Libraries -->

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    <title>Neqat &mdash; Home</title>
+@endsection
+
 @push('styles')
 @include('pages.home.styles.main-style')
 @endpush

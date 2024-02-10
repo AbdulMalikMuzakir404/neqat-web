@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    <title>Neqat &mdash; Class Room</title>
+@endsection
+
 @push('styles')
 @include('pages.classroom.styles.main-style')
 @endpush

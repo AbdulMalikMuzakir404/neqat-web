@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    <title>Neqat &mdash; Attendance</title>
+@endsection
+
 @push('styles')
 @include('pages.attendance.styles.main-style')
 @endpush

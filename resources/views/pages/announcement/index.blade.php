@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    <title>Neqat &mdash; Announcement</title>
+@endsection
+
 @push('styles')
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('template/assets/modules/datatables/datatables.min.css') }}">
