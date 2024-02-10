@@ -18,7 +18,41 @@ class UserService
         $this->role = $role;
     }
 
-    public function getUser()
+    public function getOneData($id)
+    {
+        try {
+            $data = $this->model->query();
+            $data->where('id', $id);
+            $result = $data->first();
+
+            $role = $result->getRoleNames()->first();
+
+            return [
+                'data' => $result,
+                'role' => $role
+            ];
+        } catch (Exception $e) {
+            Log::info("user service get user error : " . $e);
+
+            return false;
+        }
+    }
+
+    public function getAllRole()
+    {
+        try {
+            $roles = $this->role->where('name', '!=', 'student');
+            $result = $roles->get();
+
+            return $result;
+        } catch (Exception $e) {
+            Log::info("user service get roles error : " . $e);
+
+            return false;
+        }
+    }
+
+    public function getAllData()
     {
         try {
             $users = $this->model->whereDoesntHave('roles', function ($query) {
@@ -35,36 +69,22 @@ class UserService
         }
     }
 
-    public function getRoles()
+    public function storeData($req)
     {
         try {
-            $roles = $this->role->where('name', '!=', 'student');
-            $result = $roles->get();
-
-            return $result;
-        } catch (Exception $e) {
-            Log::info("user service get roles error : " . $e);
-
-            return false;
-        }
-    }
-
-    public function storeUser($data)
-    {
-        try {
-            $user = $this->model->create([
-                'name' => $data->name,
-                'username' => $data->username,
-                'email' => $data->email,
-                'password' => Hash::make($data->password)
+            $data = $this->model->create([
+                'name' => $req->name,
+                'username' => $req->username,
+                'email' => $req->email,
+                'password' => Hash::make($req->password)
             ]);
 
-            $role = $this->role->where('name', $data->role)->first();
+            $role = $this->role->where('id', $req->role)->first();
 
-            $user->assignRole($data->role);
+            $data->assignRole($role);
 
             return [
-                'user' => $user,
+                'data' => $data,
                 'role' => $role->name
             ];
         } catch (Exception $e) {
@@ -74,34 +94,34 @@ class UserService
         }
     }
 
-    public function updateUser($data)
+    public function updateData($req)
     {
         try {
-            $user = $this->model->where('id', $data->user_id)->first();
+            $data = $this->model->where('id', $req->dataId)->first();
 
-            if ($data->password_edit !== null) {
-                $user->update([
-                    'name' => $data->name_edit,
-                    'username' => $data->username_edit,
-                    'email' => $data->email_edit,
-                    'password' => Hash::make($data->password_edit)
+            if ($req->password !== null) {
+                $data->update([
+                    'name' => $req->name,
+                    'username' => $req->username,
+                    'email' => $req->email,
+                    'password' => Hash::make($req->password)
                 ]);
             } else {
-                $user->update([
-                    'name' => $data->name_edit,
-                    'username' => $data->username_edit,
-                    'email' => $data->email_edit,
+                $data->update([
+                    'name' => $req->name,
+                    'username' => $req->username,
+                    'email' => $req->email,
                 ]);
             }
 
             // Temukan atau buat peran baru
-            $role = $this->role->where('name', $data->role_edit)->firstOrFail();
+            $role = $this->role->where('id', $req->role)->firstOrFail();
 
             // Perbarui peran pengguna
-            $user->syncRoles([$role->id]);
+            $data->syncRoles([$role->id]);
 
             return [
-                'user' => $user,
+                'data' => $data,
                 'role' => $role->name
             ];
         } catch (Exception $e) {
@@ -114,21 +134,21 @@ class UserService
     public function updateUserActive($data)
     {
         try {
-            $user = $this->model->where('id', $data->id)->first();
-            if ($user->active == true) {
-                $user->update([
+            $data = $this->model->where('id', $data->id)->first();
+            if ($data->active == true) {
+                $data->update([
                     'active' => false
                 ]);
-            } elseif ($user->active == false) {
-                $user->update([
+            } elseif ($data->active == false) {
+                $data->update([
                     'active' => true
                 ]);
             }
 
-            $role = $user->getRoleNames()->first();
+            $role = $data->getRoleNames()->first();
 
             return [
-                'user' => $user,
+                'data' => $data,
                 'role' => $role
             ];
         } catch (Exception $e) {
@@ -138,17 +158,17 @@ class UserService
         }
     }
 
-    public function deleteUser($data)
+    public function deleteData($data)
     {
         try {
             foreach ($data->ids as $id) {
-                $user = $this->model->findOrFail($id);
-                $user->delete();
+                $data = $this->model->findOrFail($id);
+                $data->delete();
             }
 
-            return $user;
+            return $data;
         } catch (Exception $e) {
-            Log::info("user service store user error : " . $e);
+            Log::info("user service delete user error : " . $e);
 
             return false;
         }

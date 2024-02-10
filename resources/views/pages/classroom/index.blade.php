@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @push('styles')
-
+@include('pages.classroom.styles.main-style')
 @endpush
 
 @section('content')
@@ -15,4 +15,5 @@
 @endsection
 
 @push('scripts')
+@include('pages.classroom.scripts.main-script')
 @endpush

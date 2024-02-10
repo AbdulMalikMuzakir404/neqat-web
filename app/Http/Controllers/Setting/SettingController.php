@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SettingGeneralRequest;
-use App\Http\Requests\SettingMapRequest;
+use App\Http\Requests\Setting\SettingGeneralRequest;
+use App\Http\Requests\Setting\SettingMapRequest;
 use App\Services\Setting\SettingService;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class SettingController extends Controller

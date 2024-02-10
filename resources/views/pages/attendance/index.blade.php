@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @push('styles')
-
+@include('pages.attendance.styles.main-style')
 @endpush
 
 @section('content')
@@ -15,4 +15,5 @@
 @endsection
 
 @push('scripts')
+@include('pages.attendance.scripts.main-script')
 @endpush
