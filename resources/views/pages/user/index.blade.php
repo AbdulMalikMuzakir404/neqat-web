@@ -108,7 +108,7 @@
             </div>
         </div>
 
-        {{-- MODAL DETAIL USER --}}
+        {{-- MODAL DETAIL DATA --}}
         <div class="modal fade" id="detailModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
             aria-labelledby="detailLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -198,7 +198,7 @@
             </div>
         </div>
 
-        {{-- MODAL DELETE USER --}}
+        {{-- MODAL DELETE DATA --}}
         <div class="modal fade" id="deleteModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
             aria-labelledby="deleteLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -240,7 +240,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-striped" id="table-2">
+                                <table class="table table-striped" id="table-2" style="width: 100%;">
                                     <thead>
                                         <tr>
                                             <th data-orderable="false" class="text-center">
@@ -263,8 +263,6 @@
                                             <th data-orderable="false">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                    </tbody>
                                 </table>
                             </div>
                         </div>

@@ -15,9 +15,6 @@
 <script src="{{ asset('template/assets/modules/summernote/summernote-bs4.js') }}"></script>
 <script src="{{ asset('template/assets/modules/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
 
-<!-- Page Specific JS File -->
-<script src="{{ asset('template/assets/js/page/index-0.js') }}"></script>
-
 <!-- Template JS File -->
 <script src="{{ asset('template/assets/js/scripts.js') }}"></script>
 <script src="{{ asset('template/assets/js/custom.js') }}"></script>

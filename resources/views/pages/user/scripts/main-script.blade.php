@@ -20,6 +20,15 @@
 </script>
 
 <script>
+    // KETIKA BTN DELETE DI KLIK MAKA MUNCULKAN MODAL
+    $(document).ready(function() {
+        $(document).on('click', '#deleteBtn', function() {
+            $('#deleteModal').modal('show');
+        });
+    });
+</script>
+
+<script>
     // HAPUS CLASS JIKA MODAL DI TUTUP
     $(document).ready(function() {
         $('#dataModal').on('hidden.bs.modal', function(e) {
@@ -150,15 +159,6 @@
                 }
             });
         }
-    });
-</script>
-
-<script>
-    // KETIKA BTN DELETE DI KLIK MAKA MUNCULKAN MODAL
-    $(document).ready(function() {
-        $(document).on('click', '#deleteBtn', function() {
-            $('#deleteModal').modal('show');
-        });
     });
 </script>
 
@@ -300,7 +300,8 @@
                     orderable: false,
                     searchable: false
                 }
-            ]
+            ],
+            order: []
         });
     }
 </script>

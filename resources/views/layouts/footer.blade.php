@@ -1,6 +1,6 @@
 <footer class="main-footer">
     <div class="footer-left">
-        Copyright &copy; 2023 <div class="bullet"></div> Design By <a href="#">SMKN 01 KATAPANG</a>
+        Copyright &copy; 2023 <div class="bullet"></div> Design By <a href="https://www.linkedin.com/in/abdul-malik-muzakir-7b69bb224/">Abdul Malik Muzakir</a>
     </div>
     <div class="footer-right">
 

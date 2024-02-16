@@ -22,9 +22,7 @@ class AnnouncementController extends Controller
 
     public function index()
     {
-        $data['data'] = $this->service->getData();
-
-        return view('pages.announcement.index', compact('data'));
+        return view('pages.announcement.index');
     }
 
     public function store(StoreAnnouncementRequest $req)
@@ -32,12 +30,21 @@ class AnnouncementController extends Controller
         try {
             $store = $this->service->storeData($req);
 
-            return response()->json([
-                'success' => true,
-                'kode' => 200,
-                'data' => $store,
-                'message' => 'data announcement berhasil di tambahkan'
-            ], 200);
+            if ($store) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $store,
+                    'message' => 'data announcement berhasil di tambahkan'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data announcement gagal di tambahkan'
+                ], 400);
+            }
         } catch (Exception $e) {
             Log::info("data announcement controller store error : " . $e);
 
@@ -50,23 +57,67 @@ class AnnouncementController extends Controller
         }
     }
 
-    public function getData(Request $req)
+    public function getOneData($id)
+    {
+        try {
+            $data = $this->service->getOneData($id);
+
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data one announcement berhasil di ambil'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data one announcement gagal di ambil'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::info("data user controller getOneData error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data announcement controller getOneData error : ' . $e,
+            ], 422);
+        }
+    }
+
+    public function getAllData(Request $req)
     {
         if ($req->ajax()) {
-            $data = $this->service->getData();
-            return DataTables::of($data)
-                    ->addColumn('checkbox', function($user) {
-                        return '<div class="custom-checkbox custom-control">
-                                    <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-'.$user->id.'">
-                                    <label for="checkbox-'.$user->id.'" class="custom-control-label">&nbsp;</label>
-                                </div>';
-                    })
-                    ->addColumn('action', function($user) {
-                        return '<button class="btn btn-secondary btn-sm"><i class="ion ion-eye" data-toggle="modal" data-target="#detailUserModal-'.$user->id.'"></i></button>
-                                <button class="btn btn-primary btn-sm"><i class="ion ion-compose" data-toggle="modal" data-target="#editUserModal-'.$user->id.'"></i></button>';
-                    })
-                    ->rawColumns(['checkbox', 'action'])
-                    ->make(true);
+            $data = $this->service->getAllData();
+
+            if ($data) {
+                return DataTables::of($data)
+                        ->addColumn('checkbox', function($user) {
+                            return '<div class="custom-checkbox custom-control text-center">
+                                        <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-'.$user->id.'">
+                                        <label for="checkbox-'.$user->id.'" class="custom-control-label">&nbsp;</label>
+                                    </div>';
+                        })
+                        ->addColumn('action', function($data) {
+                            return '<button type="button" id="detailBtn" data-id="'. $data->id .'" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
+                                    <button type="button" id="editBtn" data-id="'. $data->id .'" class="btn btn-primary btn-sm"><i class="ion ion-compose"></i></button>';
+                        })
+                        ->rawColumns(['checkbox', 'action'])
+                        ->make(true);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data announcement gagal di ambil'
+                ], 400);
+
+                return false;
+            }
         }
 
         return view('pages.announcement.index');
@@ -77,12 +128,21 @@ class AnnouncementController extends Controller
         try {
             $update = $this->service->updateData($req);
 
-            return response()->json([
-                'success' => true,
-                'kode' => 200,
-                'data' => $update,
-                'message' => 'data announcement berhasil di ubah'
-            ], 200);
+            if ($update) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $update,
+                    'message' => 'data announcement berhasil di ubah'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data announcement gagal di ubah'
+                ], 400);
+            }
         } catch (Exception $e) {
             Log::info("data announcement controller update error : " . $e);
 
@@ -100,12 +160,21 @@ class AnnouncementController extends Controller
         try {
             $delete = $this->service->deleteData($req);
 
-            return response()->json([
-                'success' => true,
-                'kode' => 200,
-                'data' => $delete,
-                'message' => 'data announcement berhasil di hapus'
-            ], 200);
+            if ($delete) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $delete,
+                    'message' => 'data announcement berhasil di hapus'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data announcement gagal di hapus'
+                ], 400);
+            }
         } catch (Exception $e) {
             Log::info("data announcement controller delete error : " . $e);
 

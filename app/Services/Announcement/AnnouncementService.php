@@ -3,19 +3,41 @@
 namespace App\Services\Announcement;
 
 use App\Models\Announcement;
+use App\Models\TemporaryFile;
+use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\File;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class AnnouncementService
 {
-    public $model;
+    public $model, $tmpFileModel;
 
-    public function __construct(Announcement $model)
+    public function __construct(Announcement $model, TemporaryFile $tmpFileModel)
     {
         $this->model = $model;
+        $this->tmpFileModel = $tmpFileModel;
     }
 
-    public function getData()
+    public function getOneData($id)
+    {
+        try {
+            $data = $this->model->query();
+            $data->where('id', $id);
+            $result = $data->first();
+
+            return $result;
+        } catch (Exception $e) {
+            Log::info("announcement service get announcement error : " . $e);
+
+            return false;
+        }
+    }
+
+    public function getAllData()
     {
         try {
             $data = $this->model->query();
@@ -29,51 +51,135 @@ class AnnouncementService
         }
     }
 
-    public function storeData($data)
+    public function storeData($req)
     {
         try {
             $data = $this->model->create([
-                'title' => $data->title,
-                'description' => $data->description,
-                'email' => $data->email,
+                'user_id' => auth()->user()->id,
+                'title' => $req->title,
+                'description' => $req->description,
+                'image' => '',
+                'send_at' => Carbon::now(),
             ]);
 
-            return $data;
-        } catch (Exception $e) {
-            Log::info("announcement service store data error : " . $e);
+            if ($req->image) {
+                $tmp = json_decode($req->image);
 
-            return false;
-        }
-    }
+                $tmpFile = $this->tmpFileModel->where('folder', $tmp->folder)->first();
 
-    public function updateData($data)
-    {
-        try {
-            $data = $this->model->where('id', $data->data_id)->first();
+                if ($tmpFile) {
+                    $fileSystem = new Filesystem;
 
-            $data->update([
-                'title' => $data->title_edit,
-                'description' => $data->description_edit,
-                'email' => $data->email_edit,
-            ]);
+                    // Pindahkan file ke lokasi yang diinginkan
+                    $oldPath = 'orders/temp/' . $tmpFile->folder . '/' . $tmpFile->filename;
+                    $randomCode = Str::random(20); // 20 digit kode acak
+                    $fileName = $randomCode . '-' . $tmpFile->filename;
+                    $newPath = 'public/announcement/' . $data->id . '/' . $tmpFile->folder . '/' . $fileName;
+                    $newFile = 'announcement/' . $data->id . '/' . $tmpFile->folder . '/' . $fileName;
+                    Storage::move($oldPath, $newPath);
+                    $folderPath = storage_path('app/orders/temp/' . $tmpFile->folder);
+                    $fileSystem->deleteDirectory($folderPath);
 
-            return $data;
-        } catch (Exception $e) {
-            Log::info("announcement service store data error : " . $e);
+                    $data->update([
+                        'image' => $newFile
+                    ]);
 
-            return false;
-        }
-    }
+                    // Hapus record file sementara dari database
+                    $tmpFile->delete();
 
-    public function deleteData($data)
-    {
-        try {
-            foreach ($data->ids as $id) {
-                $user = $this->model->findOrFail($id);
-                $user->delete();
+                    return true;
+                } else {
+                    Log::info("data tmp tidak di temukan");
+
+                    return false;
+                }
             }
 
-            return $user;
+            return true;
+        } catch (Exception $e) {
+            Log::info("announcement service store data error : " . $e);
+
+            return false;
+        }
+    }
+
+    public function updateData($req)
+    {
+        try {
+            $data = $this->model->where('id', $req->dataId)->first();
+
+            $data->update([
+                'title' => $req->title,
+                'description' => $req->description,
+                'send_at' => Carbon::now(),
+            ]);
+
+            if ($req->image) {
+                $tmp = json_decode($req->image);
+
+                $tmpFile = $this->tmpFileModel->where('folder', $tmp->folder)->first();
+
+                if ($tmpFile) {
+                    if ($data->image) {
+                        $imagePath = storage_path('app/public/announcement/' . $data->id);
+                        if (File::exists($imagePath)) {
+                            File::deleteDirectory($imagePath); // Menghapus direktori beserta isinya
+                        }
+                    }
+
+                    $fileSystem = new Filesystem;
+
+                    // Pindahkan file ke lokasi yang diinginkan
+                    $oldPath = 'orders/temp/' . $tmpFile->folder . '/' . $tmpFile->filename;
+                    $randomCode = Str::random(20); // 20 digit kode acak
+                    $fileName = $randomCode . '-' . $tmpFile->filename;
+                    $newPath = 'public/announcement/' . $data->id . '/' . $tmpFile->folder . '/' . $fileName;
+                    $newFile = 'announcement/' . $data->id . '/' . $tmpFile->folder . '/' . $fileName;
+                    Storage::move($oldPath, $newPath);
+                    $folderPath = storage_path('app/orders/temp/' . $tmpFile->folder);
+                    $fileSystem->deleteDirectory($folderPath);
+
+                    $data->update([
+                        'image' => $newFile
+                    ]);
+
+                    // Hapus record file sementara dari database
+                    $tmpFile->delete();
+
+                    return true;
+                } else {
+                    Log::info("data tmp tidak di temukan");
+
+                    return false;
+                }
+            }
+
+            return true;
+        } catch (Exception $e) {
+            Log::info("announcement service store data error : " . $e);
+
+            return false;
+        }
+    }
+
+    public function deleteData($req)
+    {
+        try {
+            foreach ($req->ids as $id) {
+                $data = $this->model->findOrFail($id);
+
+                // Menghapus gambar terkait jika ada
+                if ($data->image) {
+                    $imagePath = storage_path('app/public/announcement/' . $data->id);
+                    if (File::exists($imagePath)) {
+                        File::deleteDirectory($imagePath); // Menghapus direktori beserta isinya
+                    }
+                }
+
+                $data->delete();
+            }
+
+            return true;
         } catch (Exception $e) {
             Log::info("announcement service delete data error : " . $e);
 

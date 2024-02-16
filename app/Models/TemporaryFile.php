@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Announcement extends Model
+class TemporaryFile extends Model
 {
     use HasFactory;
 
-    protected $table = 'announcements';
+    protected $table = 'temporary_files';
 
-    protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $fillable = ['folder', 'filename'];
 }

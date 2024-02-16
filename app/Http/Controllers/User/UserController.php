@@ -30,12 +30,21 @@ class UserController extends Controller
         try {
             $data = $this->service->getOneData($id);
 
-            return response()->json([
-                'success' => true,
-                'kode' => 200,
-                'data' => $data,
-                'message' => 'data user berhasil di ambil'
-            ], 200);
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data one user berhasil di ambil'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data one user gagal di ambil'
+                ], 400);
+            }
         } catch (Exception $e) {
             Log::info("data user controller getOneData error : " . $e);
 
@@ -52,12 +61,21 @@ class UserController extends Controller
         try {
             $data = $this->service->getAllRole();
 
-            return response()->json([
-                'success' => true,
-                'kode' => 200,
-                'data' => $data,
-                'message' => 'data role berhasil di ambil'
-            ], 200);
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data role berhasil di ambil'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => $data,
+                    'message' => 'data role gagal di ambil'
+                ], 400);
+            }
         } catch (Exception $e) {
             Log::info("data role controller getOneData error : " . $e);
 
@@ -74,28 +92,38 @@ class UserController extends Controller
     {
         if ($req->ajax()) {
             $data = $this->service->getAllData();
-            return DataTables::of($data)
-                    ->addColumn('checkbox', function($data) {
-                        return '<div class="custom-checkbox custom-control">
-                                    <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-'.$data->id.'">
-                                    <label for="checkbox-'.$data->id.'" class="custom-control-label">&nbsp;</label>
-                                </div>';
-                    })
-                    ->addColumn('email_verified', function($data) {
-                        return $data->email_verified == 1 ? '<div class="badge badge-success">verified</div>' : ($data->email_verified == 0 ? '<div class="badge badge-secondary">not verified</div>' : '<div class="badge badge-danger">null</div>');
-                    })
-                    ->addColumn('active', function($data) {
-                        return $data->active == 1 ? '<div class="badge badge-success"><a href="#" id="active" data-id="'.$data->id.'" style="text-decoration: none; color: inherit; cursor: default">active</a></div>' : ($data->active == 0 ? '<div class="badge badge-secondary"><a href="#" id="active" data-id="'.$data->id.'" style="text-decoration: none; color: inherit; cursor: default">nonactive</a></div>' : '<div class="badge badge-danger">null</div>');
-                    })
-                    ->addColumn('role', function($data) {
-                        return $data->getRoleNames()->first() ?? '-';
-                    })
-                    ->addColumn('action', function($data) {
-                        return '<button type="button" id="detailBtn" data-id="'. $data->id .'" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
-                                <button type="button" id="editBtn" data-id="'. $data->id .'" class="btn btn-primary btn-sm"><i class="ion ion-compose"></i></button>';
-                    })
-                    ->rawColumns(['checkbox', 'email_verified', 'active', 'role', 'action'])
-                    ->make(true);
+
+            if ($data) {
+                return DataTables::of($data)
+                        ->addColumn('checkbox', function($data) {
+                            return '<div class="custom-checkbox custom-control text-center">
+                                        <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-'.$data->id.'">
+                                        <label for="checkbox-'.$data->id.'" class="custom-control-label">&nbsp;</label>
+                                    </div>';
+                        })
+                        ->addColumn('email_verified', function($data) {
+                            return $data->email_verified == 1 ? '<div class="badge badge-success">verified</div>' : ($data->email_verified == 0 ? '<div class="badge badge-secondary">not verified</div>' : '<div class="badge badge-danger">null</div>');
+                        })
+                        ->addColumn('active', function($data) {
+                            return $data->active == 1 ? '<div class="badge badge-success"><a href="#" id="active" data-id="'.$data->id.'" style="text-decoration: none; color: inherit; cursor: default">active</a></div>' : ($data->active == 0 ? '<div class="badge badge-secondary"><a href="#" id="active" data-id="'.$data->id.'" style="text-decoration: none; color: inherit; cursor: default">nonactive</a></div>' : '<div class="badge badge-danger">null</div>');
+                        })
+                        ->addColumn('role', function($data) {
+                            return $data->getRoleNames()->first() ?? '-';
+                        })
+                        ->addColumn('action', function($data) {
+                            return '<button type="button" id="detailBtn" data-id="'. $data->id .'" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
+                                    <button type="button" id="editBtn" data-id="'. $data->id .'" class="btn btn-primary btn-sm"><i class="ion ion-compose"></i></button>';
+                        })
+                        ->rawColumns(['checkbox', 'email_verified', 'active', 'role', 'action'])
+                        ->make(true);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data user gagal di ambil'
+                ], 400);
+            }
         }
 
         return view('pages.user.index');
@@ -106,12 +134,21 @@ class UserController extends Controller
         try {
             $data = $this->service->storeData($req);
 
-            return response()->json([
-                'success' => true,
-                'kode' => 200,
-                'data' => $data,
-                'message' => 'data user berhasil di tambahkan'
-            ], 200);
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data user berhasil di tambahkan'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data user gagal di tambahkan'
+                ], 400);
+            }
         } catch (Exception $e) {
             Log::info("data user controller store error : " . $e);
 
@@ -130,12 +167,21 @@ class UserController extends Controller
         try {
             $data = $this->service->updateData($req);
 
-            return response()->json([
-                'success' => true,
-                'kode' => 200,
-                'data' => $data,
-                'message' => 'data user berhasil di ubah'
-            ], 200);
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data user berhasil di ubah'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data user gagal di ubah'
+                ], 400);
+            }
         } catch (Exception $e) {
             Log::info("data user controller update error : " . $e);
 
@@ -153,12 +199,21 @@ class UserController extends Controller
         try {
             $data = $this->service->updateUserActive($req);
 
-            return response()->json([
-                'success' => true,
-                'kode' => 200,
-                'data' => $data,
-                'message' => 'data user active berhasil di ubah'
-            ], 200);
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data user active berhasil di ubah'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data user active gagal di ubah'
+                ], 400);
+            }
         } catch (Exception $e) {
             Log::info("data user controller update active error : " . $e);
 
@@ -176,12 +231,21 @@ class UserController extends Controller
         try {
             $data = $this->service->deleteData($req);
 
-            return response()->json([
-                'success' => true,
-                'kode' => 200,
-                'data' => $data,
-                'message' => 'data user berhasil di hapus'
-            ], 200);
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data user berhasil di hapus'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data user gagal di hapus'
+                ], 400);
+            }
         } catch (Exception $e) {
             Log::info("data user controller delete error : " . $e);
 
