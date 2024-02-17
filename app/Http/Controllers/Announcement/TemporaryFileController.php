@@ -30,7 +30,7 @@ class TemporaryFileController extends Controller
             $filepond = $request->json()->all();
             $folder = $filepond['folder'];
             $tempFile = TemporaryFile::query()->where('folder', $folder)->first();
-            $path = storage_path('app/orders/temp/' . $folder);
+            $path = public_path('orders/temp/' . $folder);
             if (is_dir($path) && $tempFile) {
                 DB::beginTransaction();
 
@@ -54,13 +54,13 @@ class TemporaryFileController extends Controller
             $filename = $file->getClientOriginalName();
             $folder = uniqid() . '-' . time();
 
-            // Pastikan direktori penyimpanan ada
-            if (!file_exists(storage_path('app/orders/temp/' . $folder))) {
-                mkdir(storage_path('app/orders/temp/' . $folder), 0777, true);
+            // Pastikan direktori penyimpanan di public path ada
+            if (!file_exists(public_path('orders/temp/' . $folder))) {
+                mkdir(public_path('orders/temp/' . $folder), 0777, true);
             }
 
-            // Simpan file
-            $file->storeAs('orders/temp/' . $folder, $filename);
+            // Simpan file di public path
+            $file->move(public_path('orders/temp/' . $folder), $filename);
 
             // Simpan informasi file ke database
             TemporaryFile::create(['folder' => $folder, 'filename' => $filename]);
@@ -68,5 +68,6 @@ class TemporaryFileController extends Controller
             // Mengembalikan folder yang dibuat
             return response()->json(['folder' => $folder], 200);
         }
+
     }
 }

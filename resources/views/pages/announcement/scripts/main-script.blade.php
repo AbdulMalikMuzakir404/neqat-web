@@ -222,10 +222,19 @@
                         $('#detailDescription').text(response.data.description ?? '-');
                         $('#detailSendAt').text(response.data.send_at ?? '-');
                         if (response.data.image) {
-                            let imageUrl = "{{ asset('storage') }}" + "/" + response.data.image;
+                            let imageUrl = "{{ asset('') }}" + response.data.image;
+                            function openImagePage(imageUrl) {
+                                window.open(imageUrl, '_blank');
+                            }
+
                             $('#detailImage').html(
                                 '<div class="gallery-item" data-image="' + imageUrl + '" data-title="Image" href="' + imageUrl + '" title="Image" style="height: 100px; background-image: url(&quot;' + imageUrl + '&quot;);"></div>'
                             );
+
+                            // Attach click event handler using jQuery
+                            $('#detailImage').on('click', '.gallery-item', function() {
+                                openImagePage($(this).data('image'));
+                            });
                         } else {
                             let defaultImageUrl = "{{ asset('template/assets/img/news/img10.jpg') }}";
                             $('#detailImage').html(
@@ -283,10 +292,19 @@
                         $('#description').val(response.data.description);
 
                         if (response.data.image) {
-                            let imageUrl = "{{ asset('storage') }}" + "/" + response.data.image;
+                            let imageUrl = "{{ asset('') }}" + response.data.image;
+                            function openImagePage(imageUrl) {
+                                window.open(imageUrl, '_blank');
+                            }
+
                             $('#viewImage').html(
                                 '<div class="gallery-item" data-image="' + imageUrl + '" data-title="Image" href="' + imageUrl + '" title="Image" style="height: 100px; background-image: url(&quot;' + imageUrl + '&quot;);"></div>'
                             );
+
+                            // Attach click event handler using jQuery
+                            $('#viewImage').on('click', '.gallery-item', function() {
+                                openImagePage($(this).data('image'));
+                            });
                         } else {
                             let defaultImageUrl = "{{ asset('template/assets/img/news/img10.jpg') }}";
                             $('#viewImage').html(

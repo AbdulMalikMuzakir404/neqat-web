@@ -68,17 +68,24 @@ class AnnouncementService
                 $tmpFile = $this->tmpFileModel->where('folder', $tmp->folder)->first();
 
                 if ($tmpFile) {
+
                     $fileSystem = new Filesystem;
 
                     // Pindahkan file ke lokasi yang diinginkan
-                    $oldPath = 'orders/temp/' . $tmpFile->folder . '/' . $tmpFile->filename;
+                    $oldPath = public_path('orders/temp/' . $tmpFile->folder . '/' . $tmpFile->filename);
                     $randomCode = Str::random(20); // 20 digit kode acak
                     $fileName = $randomCode . '-' . $tmpFile->filename;
-                    $newPath = 'public/announcement/' . $data->id . '/' . $tmpFile->folder . '/' . $fileName;
-                    $newFile = 'announcement/' . $data->id . '/' . $tmpFile->folder . '/' . $fileName;
-                    Storage::move($oldPath, $newPath);
-                    $folderPath = storage_path('app/orders/temp/' . $tmpFile->folder);
-                    $fileSystem->deleteDirectory($folderPath);
+                    $newDirectory = 'file/announcement/' . $data->id . '/' . $tmpFile->folder;
+                    $newPath = public_path($newDirectory . '/' . $fileName);
+                    $newFile = $newDirectory . '/' . $fileName;
+
+                    // Pastikan direktori baru ada
+                    if (!file_exists(public_path($newDirectory))) {
+                        mkdir(public_path($newDirectory), 0777, true);
+                    }
+
+                    // Pindahkan file ke direktori baru
+                    $fileSystem->move($oldPath, $newPath);
 
                     $data->update([
                         'image' => $newFile
@@ -121,7 +128,7 @@ class AnnouncementService
 
                 if ($tmpFile) {
                     if ($data->image) {
-                        $imagePath = storage_path('app/public/announcement/' . $data->id);
+                        $imagePath = public_path('file/announcement/' . $data->id);
                         if (File::exists($imagePath)) {
                             File::deleteDirectory($imagePath); // Menghapus direktori beserta isinya
                         }
@@ -130,14 +137,20 @@ class AnnouncementService
                     $fileSystem = new Filesystem;
 
                     // Pindahkan file ke lokasi yang diinginkan
-                    $oldPath = 'orders/temp/' . $tmpFile->folder . '/' . $tmpFile->filename;
+                    $oldPath = public_path('orders/temp/' . $tmpFile->folder . '/' . $tmpFile->filename);
                     $randomCode = Str::random(20); // 20 digit kode acak
                     $fileName = $randomCode . '-' . $tmpFile->filename;
-                    $newPath = 'public/announcement/' . $data->id . '/' . $tmpFile->folder . '/' . $fileName;
-                    $newFile = 'announcement/' . $data->id . '/' . $tmpFile->folder . '/' . $fileName;
-                    Storage::move($oldPath, $newPath);
-                    $folderPath = storage_path('app/orders/temp/' . $tmpFile->folder);
-                    $fileSystem->deleteDirectory($folderPath);
+                    $newDirectory = 'file/announcement/' . $data->id . '/' . $tmpFile->folder;
+                    $newPath = public_path($newDirectory . '/' . $fileName);
+                    $newFile = $newDirectory . '/' . $fileName;
+
+                    // Pastikan direktori baru ada
+                    if (!file_exists(public_path($newDirectory))) {
+                        mkdir(public_path($newDirectory), 0777, true);
+                    }
+
+                    // Pindahkan file ke direktori baru
+                    $fileSystem->move($oldPath, $newPath);
 
                     $data->update([
                         'image' => $newFile
