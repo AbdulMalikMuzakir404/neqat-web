@@ -272,6 +272,12 @@
             $('#dataModal').modal('show');
             $('#saveData').addClass('updateData');
 
+            // Hapus nilai input file
+            $('#image').val("");
+
+            // Hapus semua file yang dipilih dari FilePond
+            pond.removeFiles();
+
             editData(dataId);
         });
 

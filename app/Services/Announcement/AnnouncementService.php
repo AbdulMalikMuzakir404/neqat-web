@@ -183,7 +183,7 @@ class AnnouncementService
 
                 // Menghapus gambar terkait jika ada
                 if ($data->image) {
-                    $imagePath = storage_path('app/public/announcement/' . $data->id);
+                    $imagePath = public_path('file/announcement/' . $data->id);
                     if (File::exists($imagePath)) {
                         File::deleteDirectory($imagePath); // Menghapus direktori beserta isinya
                     }
