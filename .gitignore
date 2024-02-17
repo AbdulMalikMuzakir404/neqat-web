@@ -3,6 +3,8 @@
 /public/build
 /public/hot
 /public/storage
+/public/orders/*
+/public/file/*
 /public/js
 /public/css
 # /public/asset
