@@ -91,6 +91,9 @@ class AnnouncementService
                         'image' => $newFile
                     ]);
 
+                    // hapus folder sementara
+                    File::deleteDirectory(public_path('orders/temp/' . $tmpFile->folder));
+
                     // Hapus record file sementara dari database
                     $tmpFile->delete();
 
@@ -155,6 +158,9 @@ class AnnouncementService
                     $data->update([
                         'image' => $newFile
                     ]);
+
+                    // hapus folder sementara
+                    File::deleteDirectory(public_path('orders/temp/' . $tmpFile->folder));
 
                     // Hapus record file sementara dari database
                     $tmpFile->delete();

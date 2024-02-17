@@ -17,83 +17,11 @@
     <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
     <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
 
-    @include('pages.announcement.styles.main-style')
+    @include('pages.temporary.styles.main-style')
 @endpush
 
 @section('content')
     <div class="main-content">
-
-        {{-- MODAL CREATE AND UPDATE DATA --}}
-        <div class="modal fade" id="dataModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
-            aria-labelledby="dataLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="dataLabel"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-data">
-                            <div class="form-group">
-                                <input type="hidden" name="dataId" id="dataId" value=""
-                                    class="form-control @error('dataId') is-invalid @enderror" placeholder="Data ID"
-                                    maxlength="50" required>
-                                @error('dataId')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-
-                                <label for="title">*Title</label>
-                                <input type="text" name="title" id="title" value="{{ old('title') }}"
-                                    class="form-control @error('title') is-invalid @enderror" placeholder="Title"
-                                    maxlength="50" required autofocus>
-                                @error('title')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="description">*Description</label>
-                                <textarea name="description" id="description" value="{{ old('description') }}"
-                                    class="form-control @error('description') is-invalid @enderror" placeholder="Description" maxlength="225" required
-                                    cols="30" rows="10"></textarea>
-                                @error('description')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="image">Image</label>
-                                <input type="file" name="image" id="image">
-                                <p><strong>only(.png, .jpg, .jpeg)</strong></p>
-                                @error('image')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <div class="gallery gallery-fw" data-item-height="100" id="viewImage">
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="saveData"></button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         {{-- MODAL DELETE USER --}}
         <div class="modal fade" id="deleteModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
@@ -131,18 +59,13 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <label for="title">Title :</label>
-                                <p id="detailTitle">-</p>
+                                <label for="folder">Folder :</label>
+                                <p id="detailFolder">-</p>
                             </div>
 
                             <div class="form-group">
-                                <label for="description">Description :</label>
-                                <p id="detailDescription">-</p>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="sendAt">Send At :</label>
-                                <p id="detailSendAt">-</p>
+                                <label for="filename">File Name :</label>
+                                <p id="detailFileName">-</p>
                             </div>
 
                             <div class="form-group">
@@ -159,13 +82,14 @@
 
         <section class="section">
             <div class="section-header">
-                <h1>Announcement</h1>
+                <h1>Temporary</h1>
             </div>
 
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home.index') }}">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Announcement</li>
+                    <li class="breadcrumb-item"><a href="{{ route('announcement.index') }}">Announcement</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Temporary</li>
                 </ol>
             </nav>
 
@@ -174,14 +98,10 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="m-0">Announcement Table</h4>
+                            <h4 class="m-0">Temporary Table</h4>
                             <div class="">
-                                <a href="{{ route('temporary.index') }}" type="button" class="btn btn-info" disabled>Temporary File <i
-                                        class="ion ion-folder" style="font-size: 12px"></i></a>
                                 <button type="button" class="btn btn-danger" id="deleteBtn" disabled>Delete <i
                                         class="ion ion-trash-a" style="font-size: 12px"></i></button>
-                                <button type="button" class="btn btn-success" id="createBtn">Create <i
-                                        class="ion ion-plus" style="font-size: 12px"></i></button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -198,9 +118,8 @@
                                                 </div>
                                             </th>
                                             <th data-orderable="true">ID</th>
-                                            <th data-orderable="false">Title</th>
-                                            <th data-orderable="false">Description</th>
-                                            <th data-orderable="false">Send At</th>
+                                            <th data-orderable="false">Folder</th>
+                                            <th data-orderable="false">File Name</th>
                                             <th data-orderable="false">Action</th>
                                         </tr>
                                     </thead>
@@ -231,5 +150,5 @@
     <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
 
-    @include('pages.announcement.scripts.main-script')
+    @include('pages.temporary.scripts.main-script')
 @endpush

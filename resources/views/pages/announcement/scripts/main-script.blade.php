@@ -223,12 +223,16 @@
                         $('#detailSendAt').text(response.data.send_at ?? '-');
                         if (response.data.image) {
                             let imageUrl = "{{ asset('') }}" + response.data.image;
+
                             function openImagePage(imageUrl) {
                                 window.open(imageUrl, '_blank');
                             }
 
                             $('#detailImage').html(
-                                '<div class="gallery-item" data-image="' + imageUrl + '" data-title="Image" href="' + imageUrl + '" title="Image" style="height: 100px; background-image: url(&quot;' + imageUrl + '&quot;);"></div>'
+                                '<div class="gallery-item" data-image="' + imageUrl +
+                                '" data-title="Image" href="' + imageUrl +
+                                '" title="Image" style="height: 100px; background-image: url(&quot;' +
+                                imageUrl + '&quot;);"></div>'
                             );
 
                             // Attach click event handler using jQuery
@@ -236,9 +240,13 @@
                                 openImagePage($(this).data('image'));
                             });
                         } else {
-                            let defaultImageUrl = "{{ asset('template/assets/img/news/img10.jpg') }}";
+                            let defaultImageUrl =
+                                "{{ asset('template/assets/img/news/img10.jpg') }}";
                             $('#detailImage').html(
-                                '<div class="gallery-item" data-image="' + defaultImageUrl + '" data-title="Image" href="' + defaultImageUrl + '" title="Image" style="height: 100px; background-image: url(&quot;' + defaultImageUrl + '&quot;);"></div>'
+                                '<div class="gallery-item" data-image="' + defaultImageUrl +
+                                '" data-title="Image" href="' + defaultImageUrl +
+                                '" title="Image" style="height: 100px; background-image: url(&quot;' +
+                                defaultImageUrl + '&quot;);"></div>'
                             );
                         }
                     } else {
@@ -299,12 +307,16 @@
 
                         if (response.data.image) {
                             let imageUrl = "{{ asset('') }}" + response.data.image;
+
                             function openImagePage(imageUrl) {
                                 window.open(imageUrl, '_blank');
                             }
 
                             $('#viewImage').html(
-                                '<div class="gallery-item" data-image="' + imageUrl + '" data-title="Image" href="' + imageUrl + '" title="Image" style="height: 100px; background-image: url(&quot;' + imageUrl + '&quot;);"></div>'
+                                '<div class="gallery-item" data-image="' + imageUrl +
+                                '" data-title="Image" href="' + imageUrl +
+                                '" title="Image" style="height: 100px; background-image: url(&quot;' +
+                                imageUrl + '&quot;);"></div>'
                             );
 
                             // Attach click event handler using jQuery
@@ -312,9 +324,13 @@
                                 openImagePage($(this).data('image'));
                             });
                         } else {
-                            let defaultImageUrl = "{{ asset('template/assets/img/news/img10.jpg') }}";
+                            let defaultImageUrl =
+                                "{{ asset('template/assets/img/news/img10.jpg') }}";
                             $('#viewImage').html(
-                                '<div class="gallery-item" data-image="' + defaultImageUrl + '" data-title="Image" href="' + defaultImageUrl + '" title="Image" style="height: 100px; background-image: url(&quot;' + defaultImageUrl + '&quot;);"></div>'
+                                '<div class="gallery-item" data-image="' + defaultImageUrl +
+                                '" data-title="Image" href="' + defaultImageUrl +
+                                '" title="Image" style="height: 100px; background-image: url(&quot;' +
+                                defaultImageUrl + '&quot;);"></div>'
                             );
                         }
                     } else {
@@ -469,5 +485,49 @@
                 }
             });
         });
+    });
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
+<script type="module">
+    // GET DEVICE TOKEN
+    let firebaseConfig = {
+        apiKey: "{{ env('FIREBASE_API_KEY') }}",
+        authDomain: "{{ env('FIREBASE_AUTH_DOMAIN') }}",
+        projectId: "{{ env('FIREBASE_PROJECT_ID') }}",
+        storageBucket: "{{ env('FIREBASE_STORAGE_BUCKET') }}",
+        messagingSenderId: "{{ env('FIREBASE_MESSAGING_SENDER_ID') }}",
+        appId: "{{ env('FIREBASE_APP_ID') }}",
+        measurementId: "{{ env('FIREBASE_MEASUREMENT_ID') }}"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    function initFirebaseMessagingRegistration() {
+        messaging
+            .requestPermission()
+            .then(function() {
+                return messaging.getToken()
+            })
+            .then(function(token) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+            }).catch(function(err) {
+                toastr.success('User Chat Token Error' + err, 'Error');
+            });
+    }
+
+    messaging.onMessage(function(payload) {
+        const noteTitle = payload.notification.title;
+        const noteOptions = {
+            body: payload.notification.body,
+            icon: payload.notification.icon,
+        };
+        new Notification(noteTitle, noteOptions);
     });
 </script>

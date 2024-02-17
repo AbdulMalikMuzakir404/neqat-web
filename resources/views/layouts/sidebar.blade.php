@@ -28,7 +28,7 @@
         </ul>
 
         <ul class="sidebar-menu">
-            <li class="{{ Request::segment(1) == 'announcement' ? 'active' : '' }}">
+            <li class="{{ Request::segment(1) == 'announcement' || Request::segment(1) == 'temporary' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('announcement.index') }}">
                     <i class="fas fa-bullhorn"></i><span>Announcement</span>
                 </a>

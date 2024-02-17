@@ -41,6 +41,13 @@ Route::middleware(['auth', 'verify_email'])->group(function () {
     });
 });
 
+// TEMPORARY ROUTE
+Route::middleware(['auth', 'verify_email'])->group(function () {
+    Route::name('temporary.')->prefix('/temporary')->group(function () {
+        include __DIR__ . '/web/temporary.php';
+    });
+});
+
 // CLASS ROOM ROUTE
 Route::middleware(['auth', 'verify_email'])->group(function () {
     Route::name('classroom.')->prefix('/classroom')->group(function () {
