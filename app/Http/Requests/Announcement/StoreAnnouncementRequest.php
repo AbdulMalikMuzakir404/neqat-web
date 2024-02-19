@@ -22,8 +22,8 @@ class StoreAnnouncementRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:50',
-            'description' => 'required|string|max:225',
+            'title' => 'required|string|min:5|max:50',
+            'description' => 'required|string|min:10',
         ];
     }
 
@@ -42,7 +42,9 @@ class StoreAnnouncementRequest extends FormRequest
             'description.required' => ':attribute tidak boleh kosong',
 
             'title.max' => ':attribute melebihi batas maksimal karakter',
-            'description.max' => ':attribute melebihi batas maksimal karakter',
+
+            'title.min' => ':attribute harus lebih dari 5 karakter',
+            'description.min' => ':attribute harus lebih dari 10 karakter',
         ];
     }
 }

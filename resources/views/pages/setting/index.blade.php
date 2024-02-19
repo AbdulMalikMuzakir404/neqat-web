@@ -88,7 +88,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <div class="control-label">Absen Status</div>
+                                    <div class="control-label">*Absen Status</div>
                                     <div class="custom-control custom-checkbox" id="checkboxContainer">
                                         <input type="checkbox" name="absen" value=""
                                             class="custom-control-input @error('absen') is-invalid @enderror" id="absen"

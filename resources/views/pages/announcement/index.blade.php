@@ -60,7 +60,7 @@
                             <div class="form-group">
                                 <label for="description">*Description</label>
                                 <textarea name="description" id="description" value="{{ old('description') }}"
-                                    class="form-control @error('description') is-invalid @enderror" placeholder="Description" maxlength="225" required
+                                    class="form-control @error('description') is-invalid @enderror summernote" placeholder="Description" maxlength="225" required
                                     cols="30" rows="10"></textarea>
                                 @error('description')
                                     <div class="invalid-feedback">
