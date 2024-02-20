@@ -225,6 +225,13 @@
                 <h1>User</h1>
             </div>
 
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('home.index') }}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">User</li>
+                </ol>
+            </nav>
+
             {{-- TABLE --}}
             <div class="row">
                 <div class="col-12">
