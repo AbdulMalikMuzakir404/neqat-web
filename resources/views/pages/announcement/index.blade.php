@@ -201,7 +201,7 @@
                                             <th data-orderable="false">Title</th>
                                             <th data-orderable="false">Description</th>
                                             <th data-orderable="false">Send At</th>
-                                            <th data-orderable="false">Action</th>
+                                            <th data-orderable="false" class="align-middle text-center">Action</th>
                                         </tr>
                                     </thead>
                                 </table>

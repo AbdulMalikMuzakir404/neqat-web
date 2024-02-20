@@ -120,7 +120,7 @@
                                             <th data-orderable="true">ID</th>
                                             <th data-orderable="false">Folder</th>
                                             <th data-orderable="false">File Name</th>
-                                            <th data-orderable="false">Action</th>
+                                            <th data-orderable="false" class="align-middle text-center">Action</th>
                                         </tr>
                                     </thead>
                                 </table>

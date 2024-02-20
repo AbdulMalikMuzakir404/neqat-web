@@ -103,8 +103,10 @@ class AnnouncementController extends Controller
                                     </div>';
                         })
                         ->addColumn('action', function($data) {
-                            return '<button type="button" id="detailBtn" data-id="'. $data->id .'" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
-                                    <button type="button" id="editBtn" data-id="'. $data->id .'" class="btn btn-primary btn-sm"><i class="ion ion-compose"></i></button>';
+                            return '<div class="text-center">
+                                        <button type="button" id="detailBtn" data-id="'. $data->id .'" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
+                                        <button type="button" id="editBtn" data-id="'. $data->id .'" class="btn btn-primary btn-sm"><i class="ion ion-compose"></i></button>
+                                    </div>';
                         })
                         ->rawColumns(['checkbox', 'action'])
                         ->make(true);

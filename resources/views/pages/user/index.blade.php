@@ -260,7 +260,7 @@
                                             <th data-orderable="false">Role</th>
                                             <th data-orderable="false">First Access</th>
                                             <th data-orderable="false">Last Access</th>
-                                            <th data-orderable="false">Action</th>
+                                            <th data-orderable="false" class="align-middle text-center">Action</th>
                                         </tr>
                                     </thead>
                                 </table>
