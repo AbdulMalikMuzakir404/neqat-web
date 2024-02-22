@@ -18,6 +18,7 @@ return new class extends Migration
             $table->longText('description');
             $table->text('image', 255);
             $table->dateTime('send_at');
+            $table->boolean('is_delete')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')

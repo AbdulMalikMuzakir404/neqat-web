@@ -19,95 +19,6 @@
 @section('content')
     <div class="main-content">
 
-        {{-- MODAL CREATE AND UPDATE DATA --}}
-        <div class="modal fade" id="dataModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
-            aria-labelledby="dataLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="dataLabel"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-data">
-                            <input type="hidden" name="dataId" id="dataId" value=""
-                                    class="form-control @error('dataId') is-invalid @enderror" placeholder="Data ID"
-                                    maxlength="50" required>
-                                @error('dataId')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-
-                            <div class="form-group">
-                                <label for="name">*Name</label>
-                                <input type="text" name="name" id="name" value="{{ old('name') }}"
-                                    class="form-control @error('name') is-invalid @enderror" placeholder="Name"
-                                    maxlength="50" required>
-                                @error('name')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="username">*Username</label>
-                                <input type="text" name="username" id="username" value="{{ old('username') }}"
-                                    class="form-control @error('username') is-invalid @enderror" placeholder="Username"
-                                    maxlength="50" required>
-                                @error('username')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="email">*Email</label>
-                                <input type="email" name="email" id="email" value="{{ old('email') }}"
-                                    class="form-control @error('email') is-invalid @enderror" placeholder="Email Address"
-                                    maxlength="70" required>
-                                @error('email')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="password">*Password</label>
-                                <input type="password" name="password" id="password" value="{{ old('password') }}"
-                                    class="form-control @error('password') is-invalid @enderror" placeholder="Password"
-                                    maxlength="100" required>
-                                @error('password')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="role">*Role</label>
-                                <select name="role" id="role" class="form-control select2" required>
-                                </select>
-                                @error('role')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="saveData"></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         {{-- MODAL DETAIL DATA --}}
         <div class="modal fade" id="detailModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
             aria-labelledby="detailLabel" aria-hidden="true">
@@ -198,7 +109,7 @@
             </div>
         </div>
 
-        {{-- MODAL DELETE DATA --}}
+        {{-- MODAL DELETE PERMANEN DATA --}}
         <div class="modal fade" id="deleteModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
             aria-labelledby="deleteLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -210,11 +121,33 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Apakah anda yakin ingin menghapus data ini?</p>
+                        <p>Apakah anda yakin ingin menghapus data ini secara permanen?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="confirm-delete">Ya, Hapus</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- MODAL RECOVERY DATA --}}
+        <div class="modal fade" id="recoveryModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+            aria-labelledby="recoveryLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="recoveryLabel">Recovery Data</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Apakah anda yakin ingin memulihkan data ini?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="confirm-recovery">Ya, Pulihkan</button>
                     </div>
                 </div>
             </div>
@@ -228,7 +161,8 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home.index') }}">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">User</li>
+                    <li class="breadcrumb-item"><a href="{{ route('user.index') }}">User</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">User Recovery</li>
                 </ol>
             </nav>
 
@@ -239,12 +173,10 @@
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="m-0">User Table</h4>
                             <div class="">
-                                <a href="{{ route('user.trash') }}" class="btn btn-primary" id="btnTrash">Trans <i class="ion ion-trash-a"
-                                    style="font-size: 12px"></i></a>
+                                <button type="button" class="btn btn-success" id="recoveryBtn" disabled>Recovery <i class="ion ion-loop"
+                                    style="font-size: 12px"></i></button>
                                 <button type="button" class="btn btn-danger" id="deleteBtn" disabled>Delete <i class="ion ion-close-circled"
                                     style="font-size: 12px"></i></button>
-                                <button type="button" class="btn btn-success" id="createBtn">Create <i class="ion ion-plus"
-                                        style="font-size: 12px"></i></button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -258,6 +190,14 @@
                                                         data-checkbox-role="dad" class="custom-control-input"
                                                         id="checkbox-delete">
                                                     <label for="checkbox-delete" class="custom-control-label">&nbsp;</label>
+                                                </div>
+                                            </th>
+                                            <th data-orderable="false" class="text-center">
+                                                <div class="custom-checkbox custom-control">
+                                                    <input type="checkbox" data-checkboxes="recovery"
+                                                        data-checkbox-role="dad" class="custom-control-input"
+                                                        id="checkbox-recovery">
+                                                    <label for="checkbox-recovery" class="custom-control-label">&nbsp;</label>
                                                 </div>
                                             </th>
                                             <th data-orderable="true">ID</th>
@@ -294,5 +234,5 @@
     <!-- Page Specific JS File -->
     <script src="{{ asset('template/assets/js/page/modules-datatables.js') }}"></script>
 
-    @include('pages.user.scripts.main-script')
+    @include('pages.user.scripts.trash-script')
 @endpush

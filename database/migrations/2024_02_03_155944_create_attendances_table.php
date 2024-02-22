@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('token_in', 100);
             $table->dateTime('time_out');
             $table->string('token_out', 100);
+            $table->boolean('is_delete')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')

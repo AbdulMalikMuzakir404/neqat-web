@@ -9,14 +9,48 @@
 
 <script>
     // MENDENGARKAN PERUBAHAN PADA CHECKBOX
-    $(document).on('change', 'input[data-checkboxes="mygroup"]', function() {
+    $(document).on('change', 'input[data-checkboxes="delete"]', function() {
         // Mengaktifkan atau menonaktifkan tombol hapus berdasarkan apakah ada baris yang dipilih
-        if ($('input[data-checkboxes="mygroup"]:checked').length > 0) {
+        if ($('input[data-checkboxes="delete"]:checked').length > 0) {
             $('#deleteBtn').prop('disabled', false);
         } else {
             $('#deleteBtn').prop('disabled', true);
         }
     });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: "/user/data-trash",
+            type: "GET",
+            cache: false,
+            success: function(response) {
+                if (response.data) {
+                    if (response.data.length >= 1) {
+                        $("#btnTrash").show();
+                    } else {
+                        $("#btnTrash").hide();
+                    }
+                } else {
+                    console.log('Terjadi kesalahan response');
+                    toastr.error('Terjadi kesalahan response', 'Error');
+                }
+            },
+            error: function(xhr, status, error) {
+                if (xhr.responseJSON) {
+                    let errors = xhr.responseJSON.errors;
+                    if (errors) {
+                        $.each(errors, function(key, value) {
+                            toastr.error(value[0], 'Error');
+                        });
+                    }
+                } else {
+                    toastr.error("An error occurred: " + error, 'Error');
+                }
+            }
+        });
+    })
 </script>
 
 <script>
@@ -115,7 +149,7 @@
                         $('#detailEmail').text(response.data.data.email ?? '-');
                         if (response.data.data.active == 1) {
                             $('#detailActive').html(
-                            '<div class="badge badge-success">active</div>');
+                                '<div class="badge badge-success">active</div>');
                         } else if (response.data.data.active == 0) {
                             $('#detailActive').html(
                                 '<div class="badge badge-secondary">nonactive</div>');
@@ -264,7 +298,7 @@
                 type: 'POST'
             },
             columns: [{
-                    data: 'checkbox',
+                    data: 'delete',
                     orderable: false,
                     searchable: false
                 },
@@ -486,6 +520,7 @@
                             }
                         } else {
                             console.log('Terjadi kesalahan response');
+                            toastr.error("Terjadi kesalahan response", 'Error');
                         }
                     } else {
                         toastr.error(response.message, 'Error');
@@ -506,7 +541,7 @@
         $('#confirm-delete').click(function() {
             // Mengumpulkan ID dari baris yang dipilih
             let formData = new FormData(); // Inisialisasi objek FormData
-            $('input[data-checkboxes="mygroup"]:checked').each(function() {
+            $('input[data-checkboxes="delete"]:checked').each(function() {
                 // Mengabaikan baris header
                 let id = $(this).closest('tr').find('td:eq(1)').text().trim();
                 if (id !== '') {
@@ -529,12 +564,13 @@
                         toastr.success(response.message, 'Success');
 
                         // Hapus baris dari DOM
-                        $('input[data-checkboxes="mygroup"]:checked').each(function() {
+                        $('input[data-checkboxes="delete"]:checked').each(function() {
                             $(this).closest('tr').remove();
                         });
 
                         $('#deleteBtn').prop('disabled', true);
                         $('#deleteModal').modal('hide');
+                        $('#btnTrash').show();
                     } else {
                         toastr.error("An error occurred: " + response.message, 'Error');
                     }

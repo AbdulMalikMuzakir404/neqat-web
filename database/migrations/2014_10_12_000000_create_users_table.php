@@ -28,6 +28,7 @@ return new class extends Migration
             $table->timestamp('first_access')->nullable();
             $table->timestamp('last_login')->nullable();
             $table->timestamp('last_access')->nullable();
+            $table->boolean('is_delete')->default(false);
             $table->timestamps();
         });
     }

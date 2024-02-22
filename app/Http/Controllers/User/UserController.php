@@ -25,6 +25,11 @@ class UserController extends Controller
         return view('pages.user.index');
     }
 
+    public function trash()
+    {
+        return view('pages.user.trash');
+    }
+
     public function getOneData($id)
     {
         try {
@@ -57,7 +62,8 @@ class UserController extends Controller
         }
     }
 
-    public function getAllRole() {
+    public function getAllRole()
+    {
         try {
             $data = $this->service->getAllRole();
 
@@ -95,27 +101,27 @@ class UserController extends Controller
 
             if ($data) {
                 return DataTables::of($data)
-                        ->addColumn('checkbox', function($data) {
-                            return '<div class="custom-checkbox custom-control text-center">
-                                        <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-'.$data->id.'">
-                                        <label for="checkbox-'.$data->id.'" class="custom-control-label">&nbsp;</label>
-                                    </div>';
-                        })
-                        ->addColumn('email_verified', function($data) {
-                            return $data->email_verified == 1 ? '<div class="badge badge-success">verified</div>' : ($data->email_verified == 0 ? '<div class="badge badge-secondary">not verified</div>' : '<div class="badge badge-danger">null</div>');
-                        })
-                        ->addColumn('active', function($data) {
-                            return $data->active == 1 ? '<div class="badge badge-success"><a href="#" id="active" data-id="'.$data->id.'" style="text-decoration: none; color: inherit; cursor: default">active</a></div>' : ($data->active == 0 ? '<div class="badge badge-secondary"><a href="#" id="active" data-id="'.$data->id.'" style="text-decoration: none; color: inherit; cursor: default">nonactive</a></div>' : '<div class="badge badge-danger">null</div>');
-                        })
-                        ->addColumn('role', function($data) {
-                            return $data->getRoleNames()->first() ?? '-';
-                        })
-                        ->addColumn('action', function($data) {
-                            return '<button type="button" id="detailBtn" data-id="'. $data->id .'" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
-                                    <button type="button" id="editBtn" data-id="'. $data->id .'" class="btn btn-primary btn-sm"><i class="ion ion-compose"></i></button>';
-                        })
-                        ->rawColumns(['checkbox', 'email_verified', 'active', 'role', 'action'])
-                        ->make(true);
+                    ->addColumn('delete', function ($data) {
+                        return '<div class="custom-checkbox custom-control text-center">
+                                <input type="checkbox" data-checkboxes="delete" class="custom-control-input" id="checkbox-delete-' . $data->id . '">
+                                <label for="checkbox-delete-' . $data->id . '" class="custom-control-label">&nbsp;</label>
+                            </div>';
+                    })
+                    ->addColumn('email_verified', function ($data) {
+                        return $data->email_verified == 1 ? '<div class="badge badge-success">verified</div>' : ($data->email_verified == 0 ? '<div class="badge badge-secondary">not verified</div>' : '<div class="badge badge-danger">null</div>');
+                    })
+                    ->addColumn('active', function ($data) {
+                        return $data->active == 1 ? '<div class="badge badge-success"><a href="#" id="active" data-id="' . $data->id . '" style="text-decoration: none; color: inherit; cursor: default">active</a></div>' : ($data->active == 0 ? '<div class="badge badge-secondary"><a href="#" id="active" data-id="' . $data->id . '" style="text-decoration: none; color: inherit; cursor: default">nonactive</a></div>' : '<div class="badge badge-danger">null</div>');
+                    })
+                    ->addColumn('role', function ($data) {
+                        return $data->getRoleNames()->first() ?? '-';
+                    })
+                    ->addColumn('action', function ($data) {
+                        return '<button type="button" id="detailBtn" data-id="' . $data->id . '" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
+                                    <button type="button" id="editBtn" data-id="' . $data->id . '" class="btn btn-primary btn-sm"><i class="ion ion-compose"></i></button>';
+                    })
+                    ->rawColumns(['delete', 'email_verified', 'active', 'role', 'action'])
+                    ->make(true);
             } else {
                 return response()->json([
                     'success' => false,
@@ -127,6 +133,84 @@ class UserController extends Controller
         }
 
         return view('pages.user.index');
+    }
+
+    public function getDataTrash()
+    {
+        try {
+            $data = $this->service->getAllDataTrash();
+
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data user trash berhasil di ambil'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => $data,
+                    'message' => 'data user trash gagal di ambil'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::info("data user trash controller getAllDataTrash error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data user trash controller getAllDataTrash error : ' . $e,
+            ], 422);
+        }
+    }
+
+    public function getAllDataTrash(Request $req)
+    {
+        if ($req->ajax()) {
+            $data = $this->service->getAllDataTrash();
+
+            if ($data) {
+                return DataTables::of($data)
+                    ->addColumn('delete', function ($data) {
+                        return '<div class="custom-checkbox custom-control text-center">
+                                            <input type="checkbox" data-checkboxes="delete" class="custom-control-input" id="checkbox-delete-' . $data->id . '">
+                                            <label for="checkbox-delete-' . $data->id . '" class="custom-control-label">&nbsp;</label>
+                                        </div>';
+                    })
+                    ->addColumn('recovery', function ($data) {
+                        return '<div class="custom-checkbox custom-control text-center">
+                                            <input type="checkbox" data-checkboxes="recovery" class="custom-control-input" id="checkbox-recovery-' . $data->id . '">
+                                            <label for="checkbox-recovery-' . $data->id . '" class="custom-control-label">&nbsp;</label>
+                                        </div>';
+                    })
+                    ->addColumn('email_verified', function ($data) {
+                        return $data->email_verified == 1 ? '<div class="badge badge-success">verified</div>' : ($data->email_verified == 0 ? '<div class="badge badge-secondary">not verified</div>' : '<div class="badge badge-danger">null</div>');
+                    })
+                    ->addColumn('active', function ($data) {
+                        return $data->active == 1 ? '<div class="badge badge-success"><a href="#" id="active" data-id="' . $data->id . '" style="text-decoration: none; color: inherit; cursor: default">active</a></div>' : ($data->active == 0 ? '<div class="badge badge-secondary"><a href="#" id="active" data-id="' . $data->id . '" style="text-decoration: none; color: inherit; cursor: default">nonactive</a></div>' : '<div class="badge badge-danger">null</div>');
+                    })
+                    ->addColumn('role', function ($data) {
+                        return $data->getRoleNames()->first() ?? '-';
+                    })
+                    ->addColumn('action', function ($data) {
+                        return '<button type="button" id="detailBtn" data-id="' . $data->id . '" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>';
+                    })
+                    ->rawColumns(['delete', 'recovery', 'email_verified', 'active', 'role', 'action'])
+                    ->make(true);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data user recovery gagal di ambil'
+                ], 400);
+            }
+        }
+
+        return view('pages.user.trash');
     }
 
     public function store(StoreUserRequest $req)
@@ -244,6 +328,70 @@ class UserController extends Controller
                     'kode' => 400,
                     'data' => null,
                     'message' => 'data user gagal di hapus'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::info("data user controller delete error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data user controller delete error : ' . $e,
+            ], 422);
+        }
+    }
+
+    public function destroyPermanen(Request $req)
+    {
+        try {
+            $data = $this->service->deleteDatapermanen($req);
+
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data user recovery berhasil di hapus'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data user recovery gagal di hapus'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::info("data user recovery controller delete error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data user recovery controller delete error : ' . $e,
+            ], 422);
+        }
+    }
+
+    public function recovery(Request $req)
+    {
+        try {
+            $data = $this->service->recoveryData($req);
+
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data user berhasil di pulihkan'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data user gagal di pulihkan'
                 ], 400);
             }
         } catch (Exception $e) {

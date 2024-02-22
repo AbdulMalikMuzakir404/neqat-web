@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('school_programs', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
+            $table->boolean('is_delete')->default(false);
             $table->timestamps();
         });
     }

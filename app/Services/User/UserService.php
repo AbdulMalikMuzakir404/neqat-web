@@ -55,11 +55,30 @@ class UserService
     public function getAllData()
     {
         try {
-            $users = $this->model->whereDoesntHave('roles', function ($query) {
+            $data = $this->model->whereDoesntHave('roles', function ($query) {
                 $query->where('name', 'student');
             });
-            $users->where('id', '!=', auth()->user()->id);
-            $result = $users->get();
+            $data->where('is_delete', 0);
+            $data->where('id', '!=', auth()->user()->id);
+            $result = $data->get();
+
+            return $result;
+        } catch (Exception $e) {
+            Log::info("user service get user error : " . $e);
+
+            return false;
+        }
+    }
+
+    public function getAllDataTrash()
+    {
+        try {
+            $data = $this->model->whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'student');
+            });
+            $data->where('is_delete', 1);
+            $data->where('id', '!=', auth()->user()->id);
+            $result = $data->get();
 
             return $result;
         } catch (Exception $e) {
@@ -131,10 +150,10 @@ class UserService
         }
     }
 
-    public function updateUserActive($data)
+    public function updateUserActive($req)
     {
         try {
-            $data = $this->model->where('id', $data->id)->first();
+            $data = $this->model->where('id', $req->id)->first();
             if ($data->active == true) {
                 $data->update([
                     'active' => false
@@ -158,17 +177,53 @@ class UserService
         }
     }
 
-    public function deleteData($data)
+    public function deleteData($req)
     {
         try {
-            foreach ($data->ids as $id) {
+            foreach ($req->ids as $id) {
+                $data = $this->model->findOrFail($id);
+                $data->update([
+                    'is_delete' => true
+                ]);
+            }
+
+            return $data;
+        } catch (Exception $e) {
+            Log::info("user service delete user error : " . $e);
+
+            return false;
+        }
+    }
+
+    public function deleteDataPermanen($req)
+    {
+        try {
+            foreach ($req->ids as $id) {
                 $data = $this->model->findOrFail($id);
                 $data->delete();
             }
 
             return $data;
         } catch (Exception $e) {
-            Log::info("user service delete user error : " . $e);
+            Log::info("user service delete user recovery error : " . $e);
+
+            return false;
+        }
+    }
+
+    public function recoveryData($req)
+    {
+        try {
+            foreach ($req->ids as $id) {
+                $data = $this->model->findOrFail($id);
+                $data->update([
+                    'is_delete' => false
+                ]);
+            }
+
+            return $data;
+        } catch (Exception $e) {
+            Log::info("user service recovery user error : " . $e);
 
             return false;
         }
