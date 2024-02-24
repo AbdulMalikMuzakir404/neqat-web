@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Exports\User\Export;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Models\User;
 use App\Services\User\UserService;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -107,6 +111,12 @@ class UserController extends Controller
                                 <label for="checkbox-delete-' . $data->id . '" class="custom-control-label">&nbsp;</label>
                             </div>';
                     })
+                    ->addColumn('export', function ($data) {
+                        return '<div class="custom-checkbox custom-control text-center">
+                                <input type="checkbox" data-checkboxes="export" class="custom-control-input" id="checkbox-export-' . $data->id . '">
+                                <label for="checkbox-export-' . $data->id . '" class="custom-control-label">&nbsp;</label>
+                            </div>';
+                    })
                     ->addColumn('email_verified', function ($data) {
                         return $data->email_verified == 1 ? '<div class="badge badge-success">verified</div>' : ($data->email_verified == 0 ? '<div class="badge badge-secondary">not verified</div>' : '<div class="badge badge-danger">null</div>');
                     })
@@ -120,7 +130,7 @@ class UserController extends Controller
                         return '<button type="button" id="detailBtn" data-id="' . $data->id . '" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
                                     <button type="button" id="editBtn" data-id="' . $data->id . '" class="btn btn-primary btn-sm"><i class="ion ion-compose"></i></button>';
                     })
-                    ->rawColumns(['delete', 'email_verified', 'active', 'role', 'action'])
+                    ->rawColumns(['delete', 'export', 'email_verified', 'active', 'role', 'action'])
                     ->make(true);
             } else {
                 return response()->json([
@@ -403,6 +413,34 @@ class UserController extends Controller
                 'data' => null,
                 'message' => 'data user controller delete error : ' . $e,
             ], 422);
+        }
+    }
+
+    public function export(Request $req)
+    {
+        try {
+            $now = Carbon::now();
+            $filename = 'user_' . $now->format('Y-m-d_H-i-s') . '.xlsx';
+            $export = Excel::raw(new Export(new User(), $req->ids), 'Xlsx');
+
+            // Encode file Excel menjadi base64
+            $base64File = base64_encode($export);
+
+            return response()->json([
+                'success' => true,
+                'kode' => 200,
+                'file' => $base64File,
+                'filename' => $filename,
+                'message' => 'Data user berhasil diexport'
+            ], 200);
+        } catch (Exception $e) {
+            Log::error("Data user export error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 500,
+                'message' => 'Data user gagal diexport: ' . $e->getMessage(),
+            ], 500);
         }
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Services\User;
 
+use App\Models\Role;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Spatie\Permission\Models\Role;
 
 class UserService
 {

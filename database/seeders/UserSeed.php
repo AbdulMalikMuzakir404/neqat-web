@@ -2,6 +2,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -19,33 +20,33 @@ class UserSeed extends Seeder
                 'name' => 'Developer Neqat',
                 'email' => 'developer@gmail.com',
                 'email_verified' => 1,
-                'email_verified_at' => now(),
+                'email_verified_at' => Carbon::now(),
                 'username' => 'neqatdev',
                 'password' => Hash::make('neqatdev'),
                 'active' => 1,
-                'active_at' => now(),
+                'active_at' => Carbon::now(),
                 'roles' => 'developer',
             ],
             1 => [
                 'name' => 'Admin Neqat',
                 'email' => 'admin@gmail.com',
                 'email_verified' => 1,
-                'email_verified_at' => now(),
+                'email_verified_at' => Carbon::now(),
                 'username' => 'admin123',
                 'password' => Hash::make('admin123'),
                 'active' => 1,
-                'active_at' => now(),
+                'active_at' => Carbon::now(),
                 'roles' => 'admin',
             ],
             2 => [
                 'name' => 'Officer Neqat',
                 'email' => 'officer@gmail.com',
                 'email_verified' => 1,
-                'email_verified_at' => now(),
+                'email_verified_at' => Carbon::now(),
                 'username' => 'officer123',
                 'password' => Hash::make('officer123'),
                 'active' => 1,
-                'active_at' => now(),
+                'active_at' => Carbon::now(),
                 'roles' => 'officer',
             ],
         ];

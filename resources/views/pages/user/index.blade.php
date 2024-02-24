@@ -33,13 +33,13 @@
                     <div class="modal-body">
                         <form class="form-data">
                             <input type="hidden" name="dataId" id="dataId" value=""
-                                    class="form-control @error('dataId') is-invalid @enderror" placeholder="Data ID"
-                                    maxlength="50" required>
-                                @error('dataId')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                                class="form-control @error('dataId') is-invalid @enderror" placeholder="Data ID"
+                                maxlength="50" required>
+                            @error('dataId')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
 
                             <div class="form-group">
                                 <label for="name">*Name</label>
@@ -220,6 +220,28 @@
             </div>
         </div>
 
+        {{-- MODAL EXPORT DATA --}}
+        <div class="modal fade" id="exportModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+            aria-labelledby="exportLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exportLabel">Export Data</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Apakah anda yakin ingin export data ini?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="confirm-export">Ya, Export</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <section class="section">
             <div class="section-header">
                 <h1>User</h1>
@@ -239,12 +261,14 @@
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="m-0">User Table</h4>
                             <div class="">
-                                <a href="{{ route('user.trash') }}" class="btn btn-primary" id="btnTrash">Trans <i class="ion ion-trash-a"
-                                    style="font-size: 12px"></i></a>
-                                <button type="button" class="btn btn-danger" id="deleteBtn" disabled>Delete <i class="ion ion-close-circled"
-                                    style="font-size: 12px"></i></button>
-                                <button type="button" class="btn btn-success" id="createBtn">Create <i class="ion ion-plus"
-                                        style="font-size: 12px"></i></button>
+                                <a href="{{ route('user.trash') }}" class="btn btn-secondary" id="btnTrash">Trans <i
+                                        class="ion ion-trash-a" style="font-size: 12px"></i></a>
+                                <button type="button" class="btn btn-primary" id="exportBtn" style="display: none">Export <i
+                                        class="ion ion-archive" style="font-size: 12px"></i></button>
+                                <button type="button" class="btn btn-danger" id="deleteBtn" disabled>Delete <i
+                                        class="ion ion-close-circled" style="font-size: 12px"></i></button>
+                                <button type="button" class="btn btn-success" id="createBtn">Create <i
+                                        class="ion ion-plus" style="font-size: 12px"></i></button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -257,7 +281,17 @@
                                                     <input type="checkbox" data-checkboxes="delete"
                                                         data-checkbox-role="dad" class="custom-control-input"
                                                         id="checkbox-delete">
-                                                    <label for="checkbox-delete" class="custom-control-label">&nbsp;</label>
+                                                    <label for="checkbox-delete"
+                                                        class="custom-control-label">&nbsp;</label>
+                                                </div>
+                                            </th>
+                                            <th data-orderable="false" class="text-center">
+                                                <div class="custom-checkbox custom-control">
+                                                    <input type="checkbox" data-checkboxes="export"
+                                                        data-checkbox-role="dad" class="custom-control-input"
+                                                        id="checkbox-export">
+                                                    <label for="checkbox-export"
+                                                        class="custom-control-label">&nbsp;</label>
                                                 </div>
                                             </th>
                                             <th data-orderable="true">ID</th>
