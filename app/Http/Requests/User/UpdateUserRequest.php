@@ -22,9 +22,9 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'dataId' => 'required|string|max:11',
+            'dataId' => 'required|string|max:40',
             'name' => 'required|string|min:5|max:50',
-            'username' => 'required|string|min:5|max:50|unique:users,username, ' . $this->dataId,
+            'username' => 'required|string|min:5|max:50|unique:users,username,' . $this->dataId,
             'email' => 'required|email|min:8|max:70|unique:users,email,' . $this->dataId,
             'password' => 'nullable|min:8|max:100',
             'role' => 'required'
@@ -56,8 +56,8 @@ class UpdateUserRequest extends FormRequest
             'email.max' => ':attribute melebihi batas maksimal karakter',
             'password.max' => ':attribute melebihi batas maksimal karakter',
 
-            'username.uniqid' => ':attribute sudah terdaftar',
-            'email.uniqid' => ':attribute sudah terdaftar',
+            'username.unique' => ':attribute sudah terdaftar',
+            'email.unique' => ':attribute sudah terdaftar',
         ];
     }
 }
