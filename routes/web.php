@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [LoginController::class, 'showLoginForm']);
+Route::get('/', [LoginController::class, 'showLoginForm'])->middleware('guest');
 
 Auth::routes(['verify' => true]);
 

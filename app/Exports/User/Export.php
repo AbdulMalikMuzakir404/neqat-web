@@ -26,19 +26,12 @@ class Export implements FromCollection, WithHeadings
             // Ambil semua data dari model
             $data = $this->model->get()->toArray();
             foreach ($data as $item) {
-                // Pilih kolom-kolom yang ingin diekspor
-                $selectedData = [
-                    'Name' => $item['name'],
-                    'Username' => $item['username'],
-                    'Email' => $item['email'],
-                    // Tambahkan kolom-kolom lain yang ingin diekspor di sini...
-                ];
-
+                // Hapus kolom ID
+                unset($item['id']);
                 // Format data dengan mengganti nilai null dengan '-'
                 $formattedData = array_map(function ($value) {
                     return $value !== null ? $value : '-';
-                }, $selectedData);
-
+                }, $item);
                 $collection->push($formattedData);
             }
         } catch (Exception $e) {
@@ -58,8 +51,6 @@ class Export implements FromCollection, WithHeadings
             'Email',
             'Email Verified',
             'Email Verified At',
-            'Password',
-            'Remember Token',
             'Active',
             'FCM Token',
             'Active At',

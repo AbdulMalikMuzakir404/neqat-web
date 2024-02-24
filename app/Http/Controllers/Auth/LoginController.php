@@ -17,7 +17,7 @@ class LoginController extends Controller
     use RedirectsUsers, ThrottlesLogins;
 
     public function __construct() {
-        $this->middleware('guest');
+        // $this->middleware('guest');
     }
 
     public function showLoginForm()

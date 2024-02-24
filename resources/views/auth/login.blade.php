@@ -77,6 +77,13 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
+                                            <label class="custom-control-label" for="remember-me">Remember Me</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
                                         {!! NoCaptcha::renderJs() !!}
                                         {!! NoCaptcha::display() !!}
                                         @if ($errors->has('g-recaptcha-response'))
@@ -84,13 +91,6 @@
                                                 <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
                                             </span>
                                         @endif
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
-                                            <label class="custom-control-label" for="remember-me">Remember Me</label>
-                                        </div>
                                     </div>
 
                                     <div class="form-group">
