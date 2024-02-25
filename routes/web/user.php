@@ -19,4 +19,5 @@ Route::post('/get-data-trash', [UserController::class, 'getAllDataTrash'])->name
 Route::post('/delete-permanen', [UserController::class, 'destroyPermanen'])->name('delete.permanen');
 Route::post('/recovery', [UserController::class, 'recovery'])->name('recovery');
 
+Route::post('/import', [UserController::class, 'import'])->name('import');
 Route::post('/export', [UserController::class, 'export'])->name('export');

@@ -28,6 +28,8 @@ class Export implements FromCollection, WithHeadings
             foreach ($data as $item) {
                 // Hapus kolom ID
                 unset($item['id']);
+                // Hapus kolom Is Delete
+                unset($item['is_delete']);
                 // Format data dengan mengganti nilai null dengan '-'
                 $formattedData = array_map(function ($value) {
                     return $value !== null ? $value : '-';
@@ -36,7 +38,6 @@ class Export implements FromCollection, WithHeadings
             }
         } catch (Exception $e) {
             Log::error("User export error: " . $e->getMessage());
-            // Tampilkan pesan kesalahan atau tangani kesalahan dengan cara yang sesuai
         }
 
         return $collection;
@@ -58,7 +59,6 @@ class Export implements FromCollection, WithHeadings
             'First Access',
             'Last Login',
             'Last Access',
-            'Is Delete',
             'Created At',
             'Updated At'
         ];

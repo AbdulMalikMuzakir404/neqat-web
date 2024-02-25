@@ -4,8 +4,11 @@ namespace App\Http\Controllers\User;
 
 use App\Exports\User\Export;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\ImportRequest;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Imports\User\Import;
+use App\Models\Role;
 use App\Models\User;
 use App\Services\User\UserService;
 use Carbon\Carbon;
@@ -416,6 +419,51 @@ class UserController extends Controller
         }
     }
 
+    public function import(ImportRequest $req)
+    {
+        // Ambil file yang diunggah
+        $file = $req->file('file');
+
+        if (!$file) {
+            return response()->json([
+                'success' => false,
+                'kode' => 400,
+                'data' => null,
+                'message' => 'File tidak ditemukan'
+            ], 400);
+        }
+
+        try {
+            // Import data dari file Excel
+            $import = new Import(new User(), new Role());
+            $excel = Excel::import($import, $file);
+
+            if ($excel) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => null,
+                    'message' => 'Data user berhasil di import'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'Data user gagal di import'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::error("Data user import error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 500,
+                'message' => 'Data user gagal di import: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function export(Request $req)
     {
         try {
@@ -426,20 +474,30 @@ class UserController extends Controller
             // Encode file Excel menjadi base64
             $base64File = base64_encode($export);
 
-            return response()->json([
-                'success' => true,
-                'kode' => 200,
-                'file' => $base64File,
-                'filename' => $filename,
-                'message' => 'Data user berhasil diexport'
-            ], 200);
+            if ($export) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'file' => $base64File,
+                    'filename' => $filename,
+                    'message' => 'Data user berhasil di export'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'file' => null,
+                    'filename' => null,
+                    'message' => 'Data user gagal di export'
+                ], 400);
+            }
         } catch (Exception $e) {
             Log::error("Data user export error : " . $e);
 
             return response()->json([
                 'success' => false,
                 'kode' => 500,
-                'message' => 'Data user gagal diexport: ' . $e->getMessage(),
+                'message' => 'Data user gagal di export: ' . $e->getMessage(),
             ], 500);
         }
     }

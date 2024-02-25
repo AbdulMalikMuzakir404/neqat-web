@@ -53,8 +53,8 @@ class StoreUserRequest extends FormRequest
             'email.max' => ':attribute melebihi batas maksimal karakter',
             'password.max' => ':attribute melebihi batas maksimal karakter',
 
-            'username.uniqid' => ':attribute sudah terdaftar',
-            'email.uniqid' => ':attribute sudah terdaftar',
+            'username.unique' => ':attribute sudah terdaftar',
+            'email.unique' => ':attribute sudah terdaftar',
         ];
     }
 }

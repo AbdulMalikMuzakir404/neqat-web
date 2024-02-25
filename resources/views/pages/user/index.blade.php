@@ -220,6 +220,42 @@
             </div>
         </div>
 
+        {{-- MODAL IMPORT DATA --}}
+        <div class="modal fade" id="importModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+            aria-labelledby="importLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="importLabel">Import Data</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Format Excel(Name, Username, Email, Password, Role) atau bisa unduh contoh excelnya <strong id="download-contoh-excel">disini</strong></p>
+                        <form class="form-import">
+                            <div class="form-group">
+                                <label for="file">*File</label>
+                                <input type="file" name="file" id="file" value="{{ old('file') }}"
+                                    class="form-control @error('file') is-invalid @enderror" placeholder="File"
+                                    maxlength="70" required>
+                                <p>hanya bisa upload file <strong>(.csv, .xls, .xlsx)</strong></p>
+                                @error('file')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="confirm-import">Import</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {{-- MODAL EXPORT DATA --}}
         <div class="modal fade" id="exportModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
             aria-labelledby="exportLabel" aria-hidden="true">
@@ -263,8 +299,11 @@
                             <div class="">
                                 <a href="{{ route('user.trash') }}" class="btn btn-secondary" id="btnTrash">Trans <i
                                         class="ion ion-trash-a" style="font-size: 12px"></i></a>
-                                <button type="button" class="btn btn-primary" id="exportBtn" style="display: none">Export <i
-                                        class="ion ion-archive" style="font-size: 12px"></i></button>
+                                <button type="button" class="btn btn-info" id="importBtn">Import <i
+                                        class="ion ion-upload" style="font-size: 12px"></i></button>
+                                <button type="button" class="btn btn-primary" id="exportBtn"
+                                    style="display: none">Export <i class="ion ion-archive"
+                                        style="font-size: 12px"></i></button>
                                 <button type="button" class="btn btn-danger" id="deleteBtn" disabled>Delete <i
                                         class="ion ion-close-circled" style="font-size: 12px"></i></button>
                                 <button type="button" class="btn btn-success" id="createBtn">Create <i

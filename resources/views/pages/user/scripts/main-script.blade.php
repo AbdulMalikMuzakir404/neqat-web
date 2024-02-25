@@ -20,6 +20,41 @@
 </script>
 
 <script>
+    $(document).ready(function() {
+        $('#download-contoh-excel').click(function() {
+            // Kirim permintaan AJAX untuk mengunduh file
+            $.ajax({
+                url: "{{ asset('assets/excel/User_Example.xlsx') }}",
+                method: 'GET',
+                xhrFields: {
+                    responseType: 'blob' // Mengatur respons ke tipe blob (binary large object)
+                },
+                success: function(data) {
+                    // Buat URL objek untuk file
+                    var url = window.URL.createObjectURL(data);
+
+                    // Buat elemen <a> sementara untuk mengunduh file
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'User_Example.xlsx'; // Nama file yang diunduh
+                    document.body.appendChild(a);
+
+                    // Klik elemen <a> secara otomatis untuk mengunduh file
+                    a.click();
+
+                    // Hapus elemen <a> sementara setelah selesai
+                    window.URL.revokeObjectURL(url);
+                    a.remove();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Terjadi kesalahan saat mengunduh file:', error);
+                }
+            });
+        });
+    });
+    </script>
+
+<script>
     // MENDENGARKAN PERUBAHAN PADA CHECKBOX EXPORT
     $(document).on('change', 'input[data-checkboxes="export"]', function() {
         // Mengaktifkan atau menonaktifkan tombol hapus berdasarkan apakah ada baris yang dipilih
@@ -70,6 +105,16 @@
     $(document).ready(function() {
         $(document).on('click', '#deleteBtn', function() {
             $('#deleteModal').modal('show');
+        });
+    });
+</script>
+
+<script>
+    // KETIKA BTN IMPORT DI KLIK MAKA MUNCULKAN MODAL
+    $(document).ready(function() {
+        $(document).on('click', '#importBtn', function() {
+            $('#importModal').modal('show');
+            $('#file').val("");
         });
     });
 </script>
@@ -606,6 +651,65 @@
                 }
             });
         });
+    });
+</script>
+
+<script>
+    // IMPORT DATA
+    $(document).ready(function() {
+        $(document).on('click', '#confirm-import', function() {
+            let formData = new FormData($('.form-import')[0]);
+
+            formData.append('_method', 'POST');
+
+            // Mendapatkan nomor halaman saat ini
+            let currentPage = $('#table-2').DataTable().page.info().page;
+
+            storeData(formData, currentPage);
+        });
+
+        function storeData(formData, currentPage) {
+            $.ajax({
+                url: "{{ route('user.import') }}",
+                type: 'POST',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    toastr.success(response.message, 'Success');
+
+                    $('#importModal').modal('hide');
+
+                    $('#file').val("");
+
+                    // Periksa apakah nomor halaman saat ini masih tersedia dalam data yang diperbarui
+                    let table = $('#table-2').DataTable();
+                    let info = table.page.info();
+                    if (info.pages >= currentPage) {
+                        // Jika nomor halaman masih tersedia, atur kembali tabel pada nomor halaman tersebut
+                        table.page(currentPage).draw('page');
+                    } else {
+                        // Jika nomor halaman tidak tersedia, atur kembali tabel pada halaman pertama
+                        table.page(0).draw('page');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    if (xhr.responseJSON) {
+                        let errors = xhr.responseJSON.errors;
+                        if (errors) {
+                            // Display each error message
+                            $.each(errors, function(key, value) {
+                                toastr.error(value[0], 'Error');
+                            });
+                        }
+                    } else {
+                        // Handle other types of errors
+                        toastr.error("An error occurred: " + error, 'Error');
+                    }
+                }
+            });
+        }
     });
 </script>
 
