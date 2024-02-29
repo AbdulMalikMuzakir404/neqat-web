@@ -232,7 +232,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Format Excel(Name, Username, Email, Password, Role) atau bisa unduh contoh excelnya <strong id="download-contoh-excel">disini</strong></p>
+                        <p>Format Excel(Name, Username, Email, Password, Role) atau bisa unduh contoh excelnya <strong
+                                id="download-contoh-excel">disini</strong></p>
                         <form class="form-import">
                             <div class="form-group">
                                 <label for="file">*File</label>
@@ -304,8 +305,9 @@
                                 <button type="button" class="btn btn-primary" id="exportBtn"
                                     style="display: none">Export <i class="ion ion-archive"
                                         style="font-size: 12px"></i></button>
-                                <button type="button" class="btn btn-danger" id="deleteBtn" disabled>Delete <i
-                                        class="ion ion-close-circled" style="font-size: 12px"></i></button>
+                                <button type="button" class="btn btn-danger" id="deleteBtn"
+                                    style="display: none">Delete <i class="ion ion-close-circled"
+                                        style="font-size: 12px"></i></button>
                                 <button type="button" class="btn btn-success" id="createBtn">Create <i
                                         class="ion ion-plus" style="font-size: 12px"></i></button>
                             </div>
@@ -333,8 +335,8 @@
                                                         class="custom-control-label">&nbsp;</label>
                                                 </div>
                                             </th>
-                                            <th data-orderable="true">ID</th>
-                                            <th data-orderable="false">Name</th>
+                                            <th data-orderable="false">ID</th>
+                                            <th data-orderable="true">Name</th>
                                             <th data-orderable="false">Username</th>
                                             <th data-orderable="false">Email</th>
                                             <th data-orderable="false">Verified</th>

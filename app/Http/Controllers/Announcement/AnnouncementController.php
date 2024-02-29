@@ -125,6 +125,38 @@ class AnnouncementController extends Controller
         return view('pages.announcement.index');
     }
 
+    public function getDataTemp()
+    {
+        try {
+            $data = $this->service->getAllDataTemp();
+
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data announcement temporary berhasil di ambil'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => $data,
+                    'message' => 'data announcement temporary gagal di ambil'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::info("data announcement temporary controller getAllDataTrash error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data announcement temporary controller getAllDataTrash error : ' . $e,
+            ], 422);
+        }
+    }
+
     public function update(UpdateAnnouncementRequest $req)
     {
         try {

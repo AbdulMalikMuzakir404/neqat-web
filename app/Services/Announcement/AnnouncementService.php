@@ -51,6 +51,20 @@ class AnnouncementService
         }
     }
 
+    public function getAllDataTemp()
+    {
+        try {
+            $data = $this->tmpFileModel;
+            $result = $data->get();
+
+            return $result;
+        } catch (Exception $e) {
+            Log::info("announcement service get announcement temporary error : " . $e);
+
+            return false;
+        }
+    }
+
     public function storeData($req)
     {
         try {

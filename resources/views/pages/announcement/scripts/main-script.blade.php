@@ -93,6 +93,41 @@
 </script>
 
 <script>
+    // TRIGER BTN TEMPORARY
+    $(document).ready(function() {
+        $.ajax({
+            url: "/announcement/data-temp",
+            type: "GET",
+            cache: false,
+            success: function(response) {
+                if (response.data) {
+                    if (response.data.length >= 1) {
+                        $("#btnTemp").show();
+                    } else {
+                        $("#btnTemp").hide();
+                    }
+                } else {
+                    console.log('Terjadi kesalahan response');
+                    toastr.error('Terjadi kesalahan response', 'Error');
+                }
+            },
+            error: function(xhr, status, error) {
+                if (xhr.responseJSON) {
+                    let errors = xhr.responseJSON.errors;
+                    if (errors) {
+                        $.each(errors, function(key, value) {
+                            toastr.error(value[0], 'Error');
+                        });
+                    }
+                } else {
+                    toastr.error("An error occurred: " + error, 'Error');
+                }
+            }
+        });
+    })
+</script>
+
+<script>
     // AMBIL DATA SEMUA USER FILTER BY 10 DATA
     $(document).ready(function() {
         getData();

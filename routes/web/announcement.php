@@ -14,3 +14,5 @@ Route::get('/get/{id}/data', [AnnouncementController::class, 'getOneData'])->nam
 Route::controller(TemporaryFileController::class)->group(function(){
     Route::match(['post','delete'],'temp/upload', 'index')->name('temporary.upload');
 });
+
+Route::get('/data-temp', [AnnouncementController::class, 'getDataTemp'])->name('data.temp');

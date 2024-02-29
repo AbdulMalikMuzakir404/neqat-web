@@ -12,9 +12,9 @@
     $(document).on('change', 'input[data-checkboxes="delete"]', function() {
         // Mengaktifkan atau menonaktifkan tombol hapus berdasarkan apakah ada baris yang dipilih
         if ($('input[data-checkboxes="delete"]:checked').length > 0) {
-            $('#deleteBtn').prop('disabled', false);
+            $('#deleteBtn').show();
         } else {
-            $('#deleteBtn').prop('disabled', true);
+            $('#deleteBtn').hide();
         }
     });
 </script>
@@ -52,7 +52,7 @@
             });
         });
     });
-    </script>
+</script>
 
 <script>
     // MENDENGARKAN PERUBAHAN PADA CHECKBOX EXPORT
@@ -67,6 +67,7 @@
 </script>
 
 <script>
+    // TRIGER BTN TRASH
     $(document).ready(function() {
         $.ajax({
             url: "/user/data-trash",
@@ -289,6 +290,7 @@
                         $('#name').val(response.data.data.name);
                         $('#username').val(response.data.data.username);
                         $('#email').val(response.data.data.email);
+                        $('#password').val('');
 
                         // Panggil roleData dan gunakan .then() setelahnya
                         roleData().then(function(roles) {
