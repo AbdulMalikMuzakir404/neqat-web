@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('majors', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 50);
+        Schema::create('class_rooms', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('name', 100);
             $table->boolean('is_delete')->default(false);
             $table->timestamps();
         });
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('majors');
+        Schema::dropIfExists('class_rooms');
     }
 };

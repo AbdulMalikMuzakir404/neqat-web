@@ -60,6 +60,14 @@
         </ul>
 
         <ul class="sidebar-menu">
+            <li class="{{ Request::segment(1) == 'logactivity' ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('logactivity.index') }}">
+                    <i class="fas fa-chart-line"></i><span>Log Activity</span>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="sidebar-menu">
             <li class="{{ Request::segment(1) == 'setting' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('setting.index') }}">
                     <i class="fas fa-toolbox"></i><span>Setting</span>

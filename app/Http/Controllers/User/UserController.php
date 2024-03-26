@@ -10,6 +10,7 @@ use App\Http\Requests\User\UpdateUserRequest;
 use App\Imports\User\Import;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\LogActivity\LogActivityService;
 use App\Services\User\UserService;
 use Carbon\Carbon;
 use Exception;
@@ -20,11 +21,12 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
-    public $service;
+    public $service, $logactivity;
 
-    public function __construct(UserService $service)
+    public function __construct(UserService $service, LogActivityService $logactivity)
     {
         $this->service = $service;
+        $this->logactivity = $logactivity;
     }
 
     public function index()
@@ -258,7 +260,6 @@ class UserController extends Controller
         }
     }
 
-
     public function update(UpdateUserRequest $req)
     {
         try {
@@ -439,6 +440,10 @@ class UserController extends Controller
             $excel = Excel::import($import, $file);
 
             if ($excel) {
+                // buat sebuah log activity
+                $desc = 'Melakukan import data user';
+                $this->logactivity->storeData($desc);
+
                 return response()->json([
                     'success' => true,
                     'kode' => 200,
@@ -475,6 +480,10 @@ class UserController extends Controller
             $base64File = base64_encode($export);
 
             if ($export) {
+                // buat sebuah log activity
+                $desc = 'Melakukan export data user';
+                $this->logactivity->storeData($desc);
+
                 return response()->json([
                     'success' => true,
                     'kode' => 200,

@@ -4,18 +4,21 @@ namespace App\Services\User;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Services\LogActivity\LogActivityService;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class UserService
 {
-    public $model, $role;
+    public $model, $role, $logactivity;
 
-    public function __construct(User $model, Role $role)
+    public function __construct(User $model, Role $role, LogActivityService $logactivity)
     {
         $this->model = $model;
         $this->role = $role;
+        $this->logactivity = $logactivity;
     }
 
     public function getOneData($id)
@@ -41,7 +44,7 @@ class UserService
     public function getAllRole()
     {
         try {
-            $roles = $this->role->where('name', '!=', 'student');
+            $roles = $this->role->whereNotIn('name', ['student', 'developer']);
             $result = $roles->get();
 
             return $result;
@@ -57,15 +60,15 @@ class UserService
         try {
             $data = $this->model->whereDoesntHave('roles', function ($query) {
                 $query->where('name', 'student');
-            });
-            $data->where('is_delete', 0);
-            $data->where('id', '!=', auth()->user()->id);
-            $result = $data->get();
+            })
+                ->where('is_delete', 0)
+                ->where('id', '!=', auth()->user()->id)
+                ->get();
 
-            return $result;
+
+            return $data;
         } catch (Exception $e) {
-            Log::info("user service get user error : " . $e);
-
+            Log::error("Error while getting user data: " . $e->getMessage());
             return false;
         }
     }
@@ -95,12 +98,17 @@ class UserService
                 'name' => $req->name,
                 'username' => $req->username,
                 'email' => $req->email,
-                'password' => Hash::make($req->password)
+                'password' => Hash::make($req->password),
+                'created_by' => auth()->user()->id
             ]);
 
             $role = $this->role->where('id', $req->role)->first();
 
             $data->assignRole($role);
+
+            // buat sebuah log activity
+            $desc = 'Membuat user ' . $data->name;
+            $this->logactivity->storeData($desc);
 
             return [
                 'data' => $data,
@@ -123,13 +131,15 @@ class UserService
                     'name' => $req->name,
                     'username' => $req->username,
                     'email' => $req->email,
-                    'password' => Hash::make($req->password)
+                    'password' => Hash::make($req->password),
+                    'updated_by' => auth()->user()->id
                 ]);
             } else {
                 $data->update([
                     'name' => $req->name,
                     'username' => $req->username,
                     'email' => $req->email,
+                    'updated_by' => auth()->user()->name
                 ]);
             }
 
@@ -138,6 +148,10 @@ class UserService
 
             // Perbarui peran pengguna
             $data->syncRoles([$role->id]);
+
+            // buat sebuah log activity
+            $desc = 'Mengubah user ' . $data->name;
+            $this->logactivity->storeData($desc);
 
             return [
                 'data' => $data,
@@ -156,15 +170,21 @@ class UserService
             $data = $this->model->where('id', $req->id)->first();
             if ($data->active == true) {
                 $data->update([
-                    'active' => false
+                    'active' => false,
+                    'updated_by' => auth()->user()->id
                 ]);
             } elseif ($data->active == false) {
                 $data->update([
-                    'active' => true
+                    'active' => true,
+                    'updated_by' => auth()->user()->id
                 ]);
             }
 
             $role = $data->getRoleNames()->first();
+
+            // buat sebuah log activity
+            $desc = 'Mengubah user ' . $data->name;
+            $this->logactivity->storeData($desc);
 
             return [
                 'data' => $data,
@@ -187,6 +207,10 @@ class UserService
                 ]);
             }
 
+            // buat sebuah log activity
+            $desc = 'Menghapus user ' . $data->name;
+            $this->logactivity->storeData($desc);
+
             return $data;
         } catch (Exception $e) {
             Log::info("user service delete user error : " . $e);
@@ -202,6 +226,10 @@ class UserService
                 $data = $this->model->findOrFail($id);
                 $data->delete();
             }
+
+            // buat sebuah log activity
+            $desc = 'Menghapus permanen user ' . $data->name;
+            $this->logactivity->storeData($desc);
 
             return $data;
         } catch (Exception $e) {
@@ -220,6 +248,10 @@ class UserService
                     'is_delete' => false
                 ]);
             }
+
+            // buat sebuah log activity
+            $desc = 'Recovery user ' . $data->name;
+            $this->logactivity->storeData($desc);
 
             return $data;
         } catch (Exception $e) {

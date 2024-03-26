@@ -96,10 +96,10 @@ class AnnouncementController extends Controller
 
             if ($data) {
                 return DataTables::of($data)
-                        ->addColumn('checkbox', function($user) {
+                        ->addColumn('checkbox', function($data) {
                             return '<div class="custom-checkbox custom-control text-center">
-                                        <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-'.$user->id.'">
-                                        <label for="checkbox-'.$user->id.'" class="custom-control-label">&nbsp;</label>
+                                        <input type="checkbox" data-checkboxes="delete" class="custom-control-input" id="checkbox-'.$data->id.'">
+                                        <label for="checkbox-'.$data->id.'" class="custom-control-label">&nbsp;</label>
                                     </div>';
                         })
                         ->addColumn('action', function($data) {

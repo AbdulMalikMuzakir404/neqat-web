@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('announcements', function (Blueprint $table) {
+        Schema::create('log_activitys', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id');
-            $table->string('title', 50);
-            $table->longText('description');
-            $table->text('image', 255);
-            $table->dateTime('send_at');
-            $table->boolean('is_delete')->default(false);
+            $table->string('description', 100);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')
@@ -32,9 +28,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('announcements', function (Blueprint $table) {
+        Schema::table('log_activitys', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
         });
-        Schema::dropIfExists('announcements');
+        Schema::dropIfExists('log_activitys');
     }
 };

@@ -60,8 +60,8 @@
                             <div class="form-group">
                                 <label for="description">*Description</label>
                                 <textarea name="description" id="description" value="{{ old('description') }}"
-                                    class="form-control @error('description') is-invalid @enderror summernote" placeholder="Description" maxlength="225" required
-                                    cols="30" rows="10"></textarea>
+                                    class="form-control @error('description') is-invalid @enderror summernote" placeholder="Description" maxlength="225"
+                                    required cols="30" rows="10"></textarea>
                                 @error('description')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -95,7 +95,7 @@
             </div>
         </div>
 
-        {{-- MODAL DELETE USER --}}
+        {{-- MODAL DELETE DATA --}}
         <div class="modal fade" id="deleteModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
             aria-labelledby="deleteLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -176,8 +176,9 @@
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="m-0">Announcement Table</h4>
                             <div class="">
-                                <a href="{{ route('temporary.index') }}" type="button" class="btn btn-info" id="btnTemp" disabled>Temporary File <i
-                                        class="ion ion-folder" style="font-size: 12px"></i></a>
+                                <a href="{{ route('temporary.index') }}" type="button" class="btn btn-info"
+                                    id="btnTemp" disabled>Temporary File <i class="ion ion-folder"
+                                        style="font-size: 12px"></i></a>
                                 <button type="button" class="btn btn-danger" id="deleteBtn" disabled>Delete <i
                                         class="ion ion-trash-a" style="font-size: 12px"></i></button>
                                 <button type="button" class="btn btn-success" id="createBtn">Create <i
@@ -189,18 +190,20 @@
                                 <table class="table table-striped table-hover" id="table-2" style="width: 100%;">
                                     <thead>
                                         <tr>
+                                            <th data-orderable="true">No</th>
                                             <th data-orderable="false" class="text-center">
                                                 <div class="custom-checkbox custom-control">
-                                                    <input type="checkbox" data-checkboxes="mygroup"
+                                                    <input type="checkbox" data-checkboxes="delete"
                                                         data-checkbox-role="dad" class="custom-control-input"
-                                                        id="checkbox-all">
-                                                    <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
+                                                        id="checkbox-delete">
+                                                    <label for="checkbox-delete"
+                                                        class="custom-control-label">&nbsp;</label>
                                                 </div>
                                             </th>
-                                            <th data-orderable="true">ID</th>
+                                            <th data-orderable="false">ID</th>
                                             <th data-orderable="false">Title</th>
                                             <th data-orderable="false">Description</th>
-                                            <th data-orderable="false">Send At</th>
+                                            <th data-orderable="true">Send At</th>
                                             <th data-orderable="false" class="align-middle text-center">Action</th>
                                         </tr>
                                     </thead>

@@ -4,22 +4,23 @@ namespace App\Services\Announcement;
 
 use App\Models\Announcement;
 use App\Models\TemporaryFile;
+use App\Services\LogActivity\LogActivityService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\File;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class AnnouncementService
 {
-    public $model, $tmpFileModel;
+    public $model, $tmpFileModel, $logactivity;
 
-    public function __construct(Announcement $model, TemporaryFile $tmpFileModel)
+    public function __construct(Announcement $model, TemporaryFile $tmpFileModel, LogActivityService $logactivity)
     {
         $this->model = $model;
         $this->tmpFileModel = $tmpFileModel;
+        $this->logactivity = $logactivity;
     }
 
     public function getOneData($id)
@@ -75,6 +76,10 @@ class AnnouncementService
                 'image' => '',
                 'send_at' => Carbon::now(),
             ]);
+
+           // buat sebuah log activity
+           $desc = 'Membuat announcement ' . $data->title;
+           $this->logactivity->storeData($desc);
 
             if ($req->image) {
                 $tmp = json_decode($req->image);
@@ -137,6 +142,10 @@ class AnnouncementService
                 'description' => $req->description,
                 'send_at' => Carbon::now(),
             ]);
+
+            // buat sebuah log activity
+            $desc = 'Mengubah announcement ' . $data->title;
+            $this->logactivity->storeData($desc);
 
             if ($req->image) {
                 $tmp = json_decode($req->image);
@@ -208,6 +217,10 @@ class AnnouncementService
                         File::deleteDirectory($imagePath); // Menghapus direktori beserta isinya
                     }
                 }
+
+                // buat sebuah log activity
+                $desc = 'Menghapus announcement ' . $data->title;
+                $this->logactivity->storeData($desc);
 
                 $data->delete();
             }

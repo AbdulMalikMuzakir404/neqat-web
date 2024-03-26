@@ -6,15 +6,20 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TemporaryFile extends Model
+class LogActivity extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $table = 'temporary_files';
+    protected $table = 'log_activitys';
 
-    protected $fillable = ['folder', 'filename'];
+    protected $guarded = ['id'];
 
     protected $casts = [
         'id' => 'string',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

@@ -242,8 +242,11 @@
                         $('#detailFirstAccess').text(response.data.data.first_access ?? '-');
                         $('#detailLastLogin').text(response.data.data.last_login ?? '-');
                         $('#detailLastAccess').text(response.data.data.last_access ?? '-');
+                        $('#detailCreatedBy').text(response.data.data.created_by ?? '-');
+                        $('#detailUpdatedBy').text(response.data.data.updated_by ?? '-');
                     } else {
                         console.log('Terjadi kesalahan response');
+                        toastr.error("Terjadi kesalahan response", 'Error');
                     }
                 },
                 error: function(xhr, status, error) {
@@ -365,7 +368,16 @@
                 url: "{{ route('user.getalldata') }}",
                 type: 'POST'
             },
-            columns: [{
+            columns: [
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {
                     data: 'delete',
                     orderable: false,
                     searchable: false
@@ -408,7 +420,14 @@
                     searchable: false
                 }
             ],
-            order: []
+            order: [],
+            lengthMenu: [10, 20, 50, 100, 150, 200],
+            pageLength: 20,
+            rowCallback: function(row, data, dataIndex) {
+                var table = $('#table-2').DataTable();
+                var info = table.page.info();
+                $('td:eq(0)', row).html(info.start + dataIndex + 1);
+            }
         });
     }
 </script>
@@ -616,7 +635,7 @@
             let formData = new FormData(); // Inisialisasi objek FormData
             $('input[data-checkboxes="delete"]:checked').each(function() {
                 // Mengabaikan baris header
-                let id = $(this).closest('tr').find('td:eq(2)').text().trim();
+                let id = $(this).closest('tr').find('td:eq(3)').text().trim();
                 if (id !== '') {
                     formData.append('ids[]', id); // Menambahkan ID ke FormData
                 }
@@ -724,7 +743,7 @@
             let formData = new FormData(); // Inisialisasi objek FormData
             $('input[data-checkboxes="export"]:checked').each(function() {
                 // Mengabaikan baris header
-                let id = $(this).closest('tr').find('td:eq(2)').text().trim();
+                let id = $(this).closest('tr').find('td:eq(3)').text().trim();
                 if (id !== '') {
                     formData.append('ids[]', id); // Menambahkan ID ke FormData
                 }

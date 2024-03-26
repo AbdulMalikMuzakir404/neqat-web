@@ -68,14 +68,14 @@
                                         <label>IP Address :</label>
                                         <p id="detailIpAddress">-</p>
                                     </div>
-                                </div>
 
-                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Email Verified At :</label>
                                         <p id="detailEmailVerifiedAt">-</p>
                                     </div>
+                                </div>
 
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>FCM Token :</label>
                                         <p id="detailFcmToken">-</p>
@@ -99,6 +99,16 @@
                                     <div class="form-group">
                                         <label>Last Access :</label>
                                         <p id="detailLastAccess">-</p>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Created By :</label>
+                                        <p id="detailCreatedBy">-</p>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Updated By :</label>
+                                        <p id="detailUpdatedBy">-</p>
                                     </div>
                                 </div>
                             </div>
@@ -184,6 +194,7 @@
                                 <table class="table table-striped" id="table-2" style="width: 100%;">
                                     <thead>
                                         <tr>
+                                            <th data-orderable="true">No</th>
                                             <th data-orderable="false" class="text-center">
                                                 <div class="custom-checkbox custom-control">
                                                     <input type="checkbox" data-checkboxes="delete"
@@ -200,8 +211,8 @@
                                                     <label for="checkbox-recovery" class="custom-control-label">&nbsp;</label>
                                                 </div>
                                             </th>
-                                            <th data-orderable="true">ID</th>
-                                            <th data-orderable="false">Name</th>
+                                            <th data-orderable="false">ID</th>
+                                            <th data-orderable="true">Name</th>
                                             <th data-orderable="false">Username</th>
                                             <th data-orderable="false">Email</th>
                                             <th data-orderable="false">Verified</th>

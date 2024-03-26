@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('attendance_permits', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('attendance_id');
+            $table->uuid('id')->primary();
+            $table->uuid('attendance_id');
             $table->dateTime('date');
             $table->text('description', 255);
             $table->text('image', 255);

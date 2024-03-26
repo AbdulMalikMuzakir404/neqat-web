@@ -69,6 +69,13 @@ Route::middleware(['auth', 'verify_email'])->group(function () {
     });
 });
 
+// LOG ACTIVITY ROUTE
+Route::middleware(['auth', 'verify_email'])->group(function () {
+    Route::name('logactivity.')->prefix('/logactivity')->group(function () {
+        include __DIR__ . '/web/logactivity.php';
+    });
+});
+
 
 // SETTING ROUTE
 Route::middleware(['auth', 'verify_email'])->group(function () {

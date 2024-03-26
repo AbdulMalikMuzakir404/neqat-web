@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->uuid('user_id');
-            $table->unsignedBigInteger('school_program_id');
+            $table->uuid('class_room_id');
             $table->string('nis', 12);
             $table->string('nisn', 14);
             $table->string('phone', 15);
@@ -27,8 +27,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')
                 ->on('users')
                 ->cascadeOnDelete();
-            $table->foreign('school_program_id')->references('id')
-                ->on('school_programs')
+            $table->foreign('class_room_id')->references('id')
+                ->on('class_rooms')
                 ->cascadeOnDelete();
         });
     }
@@ -40,7 +40,7 @@ return new class extends Migration
     {
         Schema::table('students', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
-            $table->dropForeign(['school_program_id']);
+            $table->dropForeign(['class_room_id']);
         });
 
         Schema::dropIfExists('students');
