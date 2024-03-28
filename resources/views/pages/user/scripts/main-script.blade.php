@@ -210,6 +210,16 @@
                 type: "GET",
                 cache: false,
                 success: function(response) {
+                    function dateFormat(data) {
+                        return new Date(data).toLocaleString('id-ID', {
+                            day: '2-digit',
+                            month: 'long',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
+
                     if (response.data) {
                         $('#detailName').text(response.data.data.name ?? '-');
                         $('#detailUsername').text(response.data.data.username ?? '-');
@@ -235,15 +245,15 @@
                         }
                         $('#detailRole').text(response.data.role ?? '-');
                         $('#detailIpAddress').text(response.data.data.ip_address ?? '-');
-                        $('#detailEmailVerifiedAt').text(response.data.data.email_verified_at ??
+                        $('#detailEmailVerifiedAt').text(dateFormat(response.data.data.email_verified_at) ??
                             '-');
                         $('#detailFcmToken').text(response.data.data.fcm_token ?? '-');
-                        $('#detailActiveAt').text(response.data.data.active_at ?? '-');
-                        $('#detailFirstAccess').text(response.data.data.first_access ?? '-');
-                        $('#detailLastLogin').text(response.data.data.last_login ?? '-');
-                        $('#detailLastAccess').text(response.data.data.last_access ?? '-');
-                        $('#detailCreatedBy').text(response.data.data.created_by ?? '-');
-                        $('#detailUpdatedBy').text(response.data.data.updated_by ?? '-');
+                        $('#detailActiveAt').text(dateFormat(response.data.data.active_at) ?? '-');
+                        $('#detailFirstAccess').text(dateFormat(response.data.data.first_access) ?? '-');
+                        $('#detailLastLogin').text(dateFormat(response.data.data.last_login) ?? '-');
+                        $('#detailLastAccess').text(dateFormat(response.data.data.last_access) ?? '-');
+                        $('#detailCreatedBy').text(dateFormat(response.data.data.created_by) ?? '-');
+                        $('#detailUpdatedBy').text(dateFormat(response.data.data.updated_by) ?? '-');
                     } else {
                         console.log('Terjadi kesalahan response');
                         toastr.error("Terjadi kesalahan response", 'Error');
@@ -409,10 +419,32 @@
                     data: 'role'
                 },
                 {
-                    data: 'first_access'
+                    data: 'first_access',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data) {
+                        return new Date(data).toLocaleString('id-ID', {
+                            day: '2-digit',
+                            month: 'long',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
                 },
                 {
-                    data: 'last_access'
+                    data: 'last_access',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data) {
+                        return new Date(data).toLocaleString('id-ID', {
+                            day: '2-digit',
+                            month: 'long',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
                 },
                 {
                     data: 'action',

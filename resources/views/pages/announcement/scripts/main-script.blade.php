@@ -189,7 +189,18 @@
                     }
                 },
                 {
-                    data: 'send_at'
+                    data: 'send_at',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data) {
+                        return new Date(data).toLocaleString('id-ID', {
+                            day: '2-digit',
+                            month: 'long',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
                 },
                 {
                     data: 'action',
@@ -290,10 +301,20 @@
                 type: "GET",
                 cache: false,
                 success: function(response) {
+                    function dateFormat(data) {
+                        return new Date(data).toLocaleString('id-ID', {
+                            day: '2-digit',
+                            month: 'long',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
+
                     if (response.data) {
                         $('#detailTitle').text(response.data.title ?? '-');
                         $('#detailDescription').html(response.data.description ?? '-');
-                        $('#detailSendAt').text(response.data.send_at ?? '-');
+                        $('#detailSendAt').text(dateFormat(response.data.send_at) ?? '-');
                         if (response.data.image) {
                             let imageUrl = "{{ asset('') }}" + response.data.image;
 
@@ -442,24 +463,6 @@
                 }
             });
         }
-
-        // Mengembalikan promise untuk mendapatkan data peran
-        function roleData() {
-            return new Promise(function(resolve, reject) {
-                $.ajax({
-                    url: "{{ route('user.getallrole') }}",
-                    type: "GET",
-                    cache: false,
-                    success: function(response) {
-                        resolve(response.data);
-                    },
-                    error: function(xhr, status, error) {
-                        reject(error);
-                    }
-                });
-            });
-        }
-
     });
 </script>
 

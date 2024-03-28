@@ -35,6 +35,7 @@ class LogActivityService
         try {
             $data = $this->model->query();
             $data->with(['user']);
+            $data->orderBy('created_at', 'desc');
             $result = $data->get();
 
             return $result;

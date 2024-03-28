@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\ClassRoom;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ClassRoom\StoreClassRoomRequest;
+use App\Http\Requests\ClassRoom\UpdateClassRoomRequest;
 use App\Services\ClassRoom\ClassRoomService;
 use Exception;
 use Illuminate\Http\Request;
@@ -23,37 +25,42 @@ class ClassRoomController extends Controller
         return view('pages.classroom.index');
     }
 
-    // public function store(StoreClassRoomRequest $req)
-    // {
-    //     try {
-    //         $store = $this->service->storeData($req);
+    public function trash()
+    {
+        return view('pages.classroom.trash');
+    }
 
-    //         if ($store) {
-    //             return response()->json([
-    //                 'success' => true,
-    //                 'kode' => 200,
-    //                 'data' => $store,
-    //                 'message' => 'data announcement berhasil di tambahkan'
-    //             ], 200);
-    //         } else {
-    //             return response()->json([
-    //                 'success' => false,
-    //                 'kode' => 400,
-    //                 'data' => null,
-    //                 'message' => 'data announcement gagal di tambahkan'
-    //             ], 400);
-    //         }
-    //     } catch (Exception $e) {
-    //         Log::info("data announcement controller store error : " . $e);
+    public function store(StoreClassRoomRequest $req)
+    {
+        try {
+            $store = $this->service->storeData($req);
 
-    //         return response()->json([
-    //             'success' => false,
-    //             'kode' => 422,
-    //             'data' => null,
-    //             'message' => 'data announcement controller store error : ' . $e,
-    //         ], 422);
-    //     }
-    // }
+            if ($store) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $store,
+                    'message' => 'data classroom berhasil di tambahkan'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data classroom gagal di tambahkan'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::info("data classroom controller store error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data classroom controller store error : ' . $e,
+            ], 422);
+        }
+    }
 
     public function getOneData($id)
     {
@@ -96,7 +103,7 @@ class ClassRoomController extends Controller
                 return DataTables::of($data)
                         ->addColumn('checkbox', function($data) {
                             return '<div class="custom-checkbox custom-control text-center">
-                                        <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-'.$data->id.'">
+                                        <input type="checkbox" data-checkboxes="delete" class="custom-control-input" id="checkbox-'.$data->id.'">
                                         <label for="checkbox-'.$data->id.'" class="custom-control-label">&nbsp;</label>
                                     </div>';
                         })
@@ -123,67 +130,202 @@ class ClassRoomController extends Controller
         return view('pages.classroom.index');
     }
 
-    // public function update(UpdateAnnouncementRequest $req)
-    // {
-    //     try {
-    //         $update = $this->service->updateData($req);
+    public function getDataTrash()
+    {
+        try {
+            $data = $this->service->getAllDataTrash();
 
-    //         if ($update) {
-    //             return response()->json([
-    //                 'success' => true,
-    //                 'kode' => 200,
-    //                 'data' => $update,
-    //                 'message' => 'data announcement berhasil di ubah'
-    //             ], 200);
-    //         } else {
-    //             return response()->json([
-    //                 'success' => false,
-    //                 'kode' => 400,
-    //                 'data' => null,
-    //                 'message' => 'data announcement gagal di ubah'
-    //             ], 400);
-    //         }
-    //     } catch (Exception $e) {
-    //         Log::info("data announcement controller update error : " . $e);
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data classroom trash berhasil di ambil'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => $data,
+                    'message' => 'data classroom trash gagal di ambil'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::info("data classroom trash controller getAllDataTrash error : " . $e);
 
-    //         return response()->json([
-    //             'success' => false,
-    //             'kode' => 422,
-    //             'data' => null,
-    //             'message' => 'data announcement controller update error : ' . $e,
-    //         ], 422);
-    //     }
-    // }
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data classroom trash controller getAllDataTrash error : ' . $e,
+            ], 422);
+        }
+    }
 
-    // public function destroy(Request $req)
-    // {
-    //     try {
-    //         $delete = $this->service->deleteData($req);
+    public function getAllDataTrash(Request $req)
+    {
+        if ($req->ajax()) {
+            $data = $this->service->getAllDataTrash();
 
-    //         if ($delete) {
-    //             return response()->json([
-    //                 'success' => true,
-    //                 'kode' => 200,
-    //                 'data' => $delete,
-    //                 'message' => 'data announcement berhasil di hapus'
-    //             ], 200);
-    //         } else {
-    //             return response()->json([
-    //                 'success' => false,
-    //                 'kode' => 400,
-    //                 'data' => null,
-    //                 'message' => 'data announcement gagal di hapus'
-    //             ], 400);
-    //         }
-    //     } catch (Exception $e) {
-    //         Log::info("data announcement controller delete error : " . $e);
+            if ($data) {
+                return DataTables::of($data)
+                    ->addColumn('delete', function ($data) {
+                        return '<div class="custom-checkbox custom-control text-center">
+                                            <input type="checkbox" data-checkboxes="delete" class="custom-control-input" id="checkbox-delete-' . $data->id . '">
+                                            <label for="checkbox-delete-' . $data->id . '" class="custom-control-label">&nbsp;</label>
+                                        </div>';
+                    })
+                    ->addColumn('recovery', function ($data) {
+                        return '<div class="custom-checkbox custom-control text-center">
+                                            <input type="checkbox" data-checkboxes="recovery" class="custom-control-input" id="checkbox-recovery-' . $data->id . '">
+                                            <label for="checkbox-recovery-' . $data->id . '" class="custom-control-label">&nbsp;</label>
+                                        </div>';
+                    })
+                    ->addColumn('action', function($data) {
+                        return '<div class="text-center">
+                                    <button type="button" id="detailBtn" data-id="'. $data->id .'" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
+                                </div>';
+                    })
+                    ->rawColumns(['delete', 'recovery', 'action'])
+                    ->make(true);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data user recovery gagal di ambil'
+                ], 400);
+            }
+        }
 
-    //         return response()->json([
-    //             'success' => false,
-    //             'kode' => 422,
-    //             'data' => null,
-    //             'message' => 'data announcement controller delete error : ' . $e,
-    //         ], 422);
-    //     }
-    // }
+        return view('pages.classroom.trash');
+    }
+
+    public function update(UpdateClassRoomRequest $req)
+    {
+        try {
+            $update = $this->service->updateData($req);
+
+            if ($update) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $update,
+                    'message' => 'data classroom berhasil di ubah'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data classroom gagal di ubah'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::info("data classroom controller update error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data classroom controller update error : ' . $e,
+            ], 422);
+        }
+    }
+
+    public function destroy(Request $req)
+    {
+        try {
+            $data = $this->service->deleteData($req);
+
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data classroom berhasil di hapus'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data classroom gagal di hapus'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::info("data classroom controller delete error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data classroom controller delete error : ' . $e,
+            ], 422);
+        }
+    }
+
+    public function destroyPermanen(Request $req)
+    {
+        try {
+            $data = $this->service->deleteDatapermanen($req);
+
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data classroom trash berhasil di hapus'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data classroom trash gagal di hapus'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::info("data classroom trash controller delete error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data classroom trash controller delete error : ' . $e,
+            ], 422);
+        }
+    }
+
+    public function recovery(Request $req)
+    {
+        try {
+            $data = $this->service->recoveryData($req);
+
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data user berhasil di pulihkan'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data user gagal di pulihkan'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::info("data user controller delete error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data user controller delete error : ' . $e,
+            ], 422);
+        }
+    }
 }

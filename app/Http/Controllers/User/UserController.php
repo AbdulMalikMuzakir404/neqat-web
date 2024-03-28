@@ -211,7 +211,9 @@ class UserController extends Controller
                         return $data->getRoleNames()->first() ?? '-';
                     })
                     ->addColumn('action', function ($data) {
-                        return '<button type="button" id="detailBtn" data-id="' . $data->id . '" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>';
+                        return '<div class="text-center">
+                                    <button type="button" id="detailBtn" data-id="'. $data->id .'" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
+                                </div>';
                     })
                     ->rawColumns(['delete', 'recovery', 'email_verified', 'active', 'role', 'action'])
                     ->make(true);
@@ -366,24 +368,24 @@ class UserController extends Controller
                     'success' => true,
                     'kode' => 200,
                     'data' => $data,
-                    'message' => 'data user recovery berhasil di hapus'
+                    'message' => 'data user trash berhasil di hapus'
                 ], 200);
             } else {
                 return response()->json([
                     'success' => false,
                     'kode' => 400,
                     'data' => null,
-                    'message' => 'data user recovery gagal di hapus'
+                    'message' => 'data user trash gagal di hapus'
                 ], 400);
             }
         } catch (Exception $e) {
-            Log::info("data user recovery controller delete error : " . $e);
+            Log::info("data user trash controller delete error : " . $e);
 
             return response()->json([
                 'success' => false,
                 'kode' => 422,
                 'data' => null,
-                'message' => 'data user recovery controller delete error : ' . $e,
+                'message' => 'data user trash controller delete error : ' . $e,
             ], 422);
         }
     }

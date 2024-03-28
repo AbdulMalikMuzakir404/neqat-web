@@ -13,7 +13,7 @@
         href="{{ asset('template/assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
-    @include('pages.user.styles.main-style')
+    @include('pages.classroom.styles.main-style')
 @endpush
 
 @section('content')
@@ -32,87 +32,20 @@
                     </div>
                     <div class="modal-body">
                         <form>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="name">Name :</label>
-                                        <p id="detailName">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="username">Username :</label>
-                                        <p id="detailUsername">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="email">Email :</label>
-                                        <p id="detailEmail">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Active :</label>
-                                        <div id="detailActive"></div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Email Verified :</label>
-                                        <div id="detailEmailVerified"></div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Role :</label>
-                                        <p id="detailRole">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>IP Address :</label>
-                                        <p id="detailIpAddress">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Email Verified At :</label>
-                                        <p id="detailEmailVerifiedAt">-</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>FCM Token :</label>
-                                        <p id="detailFcmToken">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Active At :</label>
-                                        <p id="detailActiveAt">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>First Access :</label>
-                                        <p id="detailFirstAccess">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Last Login :</label>
-                                        <p id="detailLastLogin">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Last Access :</label>
-                                        <p id="detailLastAccess">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Created By :</label>
-                                        <p id="detailCreatedBy">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Updated By :</label>
-                                        <p id="detailUpdatedBy">-</p>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label for="name">Name :</label>
+                                <p id="detailName">-</p>
                             </div>
 
+                            <div class="form-group">
+                                <label for="create_at">Created At :</label>
+                                <p id="detailCreatedAt">-</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="updated_at">Updated At :</label>
+                                <p id="detailUpdatedAt">-</p>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -171,8 +104,8 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home.index') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('user.index') }}">User</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">User Trash</li>
+                    <li class="breadcrumb-item"><a href="{{ route('classroom.index') }}">Class Room</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Class Room Trash</li>
                 </ol>
             </nav>
 
@@ -181,7 +114,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="m-0">User Trash Table</h4>
+                            <h4 class="m-0">Class Room Trash Table</h4>
                             <div class="">
                                 <button type="button" class="btn btn-success" id="recoveryBtn" disabled>Recovery <i class="ion ion-loop"
                                     style="font-size: 12px"></i></button>
@@ -213,13 +146,8 @@
                                             </th>
                                             <th data-orderable="false">ID</th>
                                             <th data-orderable="true">Name</th>
-                                            <th data-orderable="false">Username</th>
-                                            <th data-orderable="false">Email</th>
-                                            <th data-orderable="false">Verified</th>
-                                            <th data-orderable="false">Active</th>
-                                            <th data-orderable="false">Role</th>
-                                            <th data-orderable="false">First Access</th>
-                                            <th data-orderable="false">Last Access</th>
+                                            <th data-orderable="true">Created At</th>
+                                            <th data-orderable="true">Updatedd At</th>
                                             <th data-orderable="false" class="align-middle text-center">Action</th>
                                         </tr>
                                     </thead>
@@ -245,5 +173,5 @@
     <!-- Page Specific JS File -->
     <script src="{{ asset('template/assets/js/page/modules-datatables.js') }}"></script>
 
-    @include('pages.user.scripts.trash-script')
+    @include('pages.classroom.scripts.trash-script')
 @endpush

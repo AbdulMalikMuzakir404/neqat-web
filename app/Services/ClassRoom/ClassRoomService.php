@@ -3,16 +3,18 @@
 namespace App\Services\ClassRoom;
 
 use App\Models\ClassRoom;
+use App\Services\LogActivity\LogActivityService;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
 class ClassRoomService
 {
-    public $model;
+    public $model, $logactivity;
 
-    public function __construct(ClassRoom $model)
+    public function __construct(ClassRoom $model, LogActivityService $logactivity)
     {
         $this->model = $model;
+        $this->logactivity = $logactivity;
     }
 
     public function getOneData($id)
@@ -34,11 +36,27 @@ class ClassRoomService
     {
         try {
             $data = $this->model->query();
+            $data->where('is_delete', 0);
             $result = $data->get();
 
             return $result;
         } catch (Exception $e) {
             Log::info("classroom service get data error : " . $e);
+
+            return false;
+        }
+    }
+
+    public function getAllDataTrash()
+    {
+        try {
+            $data = $this->model->query();
+            $data->where('is_delete', 1);
+            $result = $data->get();
+
+            return $result;
+        } catch (Exception $e) {
+            Log::info("classroom service get classroom trash error : " . $e);
 
             return false;
         }
@@ -51,6 +69,10 @@ class ClassRoomService
                 'name' => $req->name,
             ]);
             $result = $data->save();
+
+            // buat sebuah log activity
+            $desc = 'Membuat classroom ' . $data->name;
+            $this->logactivity->storeData($desc);
 
             return $result;
         } catch (Exception $e) {
@@ -69,9 +91,13 @@ class ClassRoomService
                 'name' => $req->name,
             ]);
 
+            // buat sebuah log activity
+            $desc = 'Mengubah classroom ' . $data->name;
+            $this->logactivity->storeData($desc);
+
             return $result;
         } catch (Exception $e) {
-            Log::info("announcement service store data error : " . $e);
+            Log::info("classroom service store data error : " . $e);
 
             return false;
         }
@@ -82,21 +108,60 @@ class ClassRoomService
         try {
             foreach ($req->ids as $id) {
                 $data = $this->model->findOrFail($id);
+                $data->update([
+                    'is_delete' => true
+                ]);
+            }
 
-                // Menghapus gambar terkait jika ada
-                if ($data->image) {
-                    $imagePath = public_path('file/announcement/' . $data->id);
-                    if (File::exists($imagePath)) {
-                        File::deleteDirectory($imagePath); // Menghapus direktori beserta isinya
-                    }
-                }
+            // buat sebuah log activity
+            $desc = 'Menghapus classroom ' . $data->name;
+            $this->logactivity->storeData($desc);
 
+            return $data;
+        } catch (Exception $e) {
+            Log::info("classroom service delete classeoom error : " . $e);
+
+            return false;
+        }
+    }
+
+    public function deleteDataPermanen($req)
+    {
+        try {
+            foreach ($req->ids as $id) {
+                $data = $this->model->findOrFail($id);
                 $data->delete();
             }
 
-            return true;
+            // buat sebuah log activity
+            $desc = 'Menghapus permanen classroom ' . $data->name;
+            $this->logactivity->storeData($desc);
+
+            return $data;
         } catch (Exception $e) {
-            Log::info("announcement service delete data error : " . $e);
+            Log::info("classroom service delete classroom recovery error : " . $e);
+
+            return false;
+        }
+    }
+
+    public function recoveryData($req)
+    {
+        try {
+            foreach ($req->ids as $id) {
+                $data = $this->model->findOrFail($id);
+                $data->update([
+                    'is_delete' => false
+                ]);
+            }
+
+            // buat sebuah log activity
+            $desc = 'Recovery classroom ' . $data->name;
+            $this->logactivity->storeData($desc);
+
+            return $data;
+        } catch (Exception $e) {
+            Log::info("classroom service recovery classroom error : " . $e);
 
             return false;
         }

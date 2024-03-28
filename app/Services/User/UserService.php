@@ -60,6 +60,7 @@ class UserService
         try {
             $data = $this->model->whereDoesntHave('roles', function ($query) {
                 $query->where('name', 'student');
+                $query->orWhere('name', 'developer');
             })
                 ->where('is_delete', 0)
                 ->where('id', '!=', auth()->user()->id)
