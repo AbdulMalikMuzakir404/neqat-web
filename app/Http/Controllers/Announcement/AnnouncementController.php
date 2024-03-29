@@ -25,6 +25,11 @@ class AnnouncementController extends Controller
         return view('pages.announcement.index');
     }
 
+    public function trash()
+    {
+        return view('pages.announcement.trash');
+    }
+
     public function store(StoreAnnouncementRequest $req)
     {
         try {
@@ -96,20 +101,20 @@ class AnnouncementController extends Controller
 
             if ($data) {
                 return DataTables::of($data)
-                        ->addColumn('checkbox', function($data) {
-                            return '<div class="custom-checkbox custom-control text-center">
-                                        <input type="checkbox" data-checkboxes="delete" class="custom-control-input" id="checkbox-'.$data->id.'">
-                                        <label for="checkbox-'.$data->id.'" class="custom-control-label">&nbsp;</label>
+                    ->addColumn('delete', function ($data) {
+                        return '<div class="custom-checkbox custom-control text-center">
+                                        <input type="checkbox" data-checkboxes="delete" class="custom-control-input" id="checkbox-' . $data->id . '">
+                                        <label for="checkbox-' . $data->id . '" class="custom-control-label">&nbsp;</label>
                                     </div>';
-                        })
-                        ->addColumn('action', function($data) {
-                            return '<div class="text-center">
-                                        <button type="button" id="detailBtn" data-id="'. $data->id .'" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
-                                        <button type="button" id="editBtn" data-id="'. $data->id .'" class="btn btn-primary btn-sm"><i class="ion ion-compose"></i></button>
+                    })
+                    ->addColumn('action', function ($data) {
+                        return '<div class="text-center">
+                                        <button type="button" id="detailBtn" data-id="' . $data->id . '" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
+                                        <button type="button" id="editBtn" data-id="' . $data->id . '" class="btn btn-primary btn-sm"><i class="ion ion-compose"></i></button>
                                     </div>';
-                        })
-                        ->rawColumns(['checkbox', 'action'])
-                        ->make(true);
+                    })
+                    ->rawColumns(['delete', 'action'])
+                    ->make(true);
             } else {
                 return response()->json([
                     'success' => false,
@@ -123,6 +128,79 @@ class AnnouncementController extends Controller
         }
 
         return view('pages.announcement.index');
+    }
+
+    public function getDataTrash()
+    {
+        try {
+            $data = $this->service->getAllDataTrash();
+
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data announcement trash berhasil di ambil'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => $data,
+                    'message' => 'data announcement trash gagal di ambil'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::info("data announcement trash controller getAllDataTrash error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data announcement trash controller getAllDataTrash error : ' . $e,
+            ], 422);
+        }
+    }
+
+    public function getAllDataTrash(Request $req)
+    {
+        if ($req->ajax()) {
+            $data = $this->service->getAllDataTrash();
+
+            if ($data) {
+                return DataTables::of($data)
+                    ->addColumn('delete', function ($data) {
+                        return '<div class="custom-checkbox custom-control text-center">
+                                        <input type="checkbox" data-checkboxes="delete" class="custom-control-input" id="checkbox-delete-' . $data->id . '">
+                                        <label for="checkbox-delete-' . $data->id . '" class="custom-control-label">&nbsp;</label>
+                                    </div>';
+                    })
+                    ->addColumn('recovery', function ($data) {
+                        return '<div class="custom-checkbox custom-control text-center">
+                                        <input type="checkbox" data-checkboxes="recovery" class="custom-control-input" id="checkbox-recovery-' . $data->id . '">
+                                        <label for="checkbox-recovery-' . $data->id . '" class="custom-control-label">&nbsp;</label>
+                                    </div>';
+                    })
+                    ->addColumn('action', function ($data) {
+                        return '<div class="text-center">
+                                        <button type="button" id="detailBtn" data-id="' . $data->id . '" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
+                                    </div>';
+                    })
+                    ->rawColumns(['delete', 'recovery', 'action'])
+                    ->make(true);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data announcement gagal di ambil'
+                ], 400);
+
+                return false;
+            }
+        }
+
+        return view('pages.announcement.trash');
     }
 
     public function getDataTemp()
@@ -192,13 +270,13 @@ class AnnouncementController extends Controller
     public function destroy(Request $req)
     {
         try {
-            $delete = $this->service->deleteData($req);
+            $data = $this->service->deleteData($req);
 
-            if ($delete) {
+            if ($data) {
                 return response()->json([
                     'success' => true,
                     'kode' => 200,
-                    'data' => $delete,
+                    'data' => $data,
                     'message' => 'data announcement berhasil di hapus'
                 ], 200);
             } else {
@@ -207,6 +285,70 @@ class AnnouncementController extends Controller
                     'kode' => 400,
                     'data' => null,
                     'message' => 'data announcement gagal di hapus'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::info("data announcement controller delete error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data announcement controller delete error : ' . $e,
+            ], 422);
+        }
+    }
+
+    public function destroyPermanen(Request $req)
+    {
+        try {
+            $data = $this->service->deleteDatapermanen($req);
+
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data announcement trash berhasil di hapus'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data announcement trash gagal di hapus'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::info("data announcement trash controller delete error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data announcement trash controller delete error : ' . $e,
+            ], 422);
+        }
+    }
+
+    public function recovery(Request $req)
+    {
+        try {
+            $data = $this->service->recoveryData($req);
+
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data announcement berhasil di pulihkan'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => null,
+                    'message' => 'data announcement gagal di pulihkan'
                 ], 400);
             }
         } catch (Exception $e) {

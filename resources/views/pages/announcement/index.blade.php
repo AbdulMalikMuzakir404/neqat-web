@@ -176,6 +176,8 @@
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="m-0">Announcement Table</h4>
                             <div class="">
+                                <a href="{{ route('announcement.trash') }}" class="btn btn-secondary" id="btnTrash">Trans <i
+                                    class="ion ion-trash-a" style="font-size: 12px"></i></a>
                                 <a href="{{ route('temporary.index') }}" type="button" class="btn btn-info"
                                     id="btnTemp" disabled>Temporary File <i class="ion ion-folder"
                                         style="font-size: 12px"></i></a>

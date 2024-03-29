@@ -93,6 +93,41 @@
 </script>
 
 <script>
+    // TRIGER BTN TRASH
+    $(document).ready(function() {
+        $.ajax({
+            url: "/announcement/data-trash",
+            type: "GET",
+            cache: false,
+            success: function(response) {
+                if (response.data) {
+                    if (response.data.length >= 1) {
+                        $("#btnTrash").show();
+                    } else {
+                        $("#btnTrash").hide();
+                    }
+                } else {
+                    console.log('Terjadi kesalahan response');
+                    toastr.error('Terjadi kesalahan response', 'Error');
+                }
+            },
+            error: function(xhr, status, error) {
+                if (xhr.responseJSON) {
+                    let errors = xhr.responseJSON.errors;
+                    if (errors) {
+                        $.each(errors, function(key, value) {
+                            toastr.error(value[0], 'Error');
+                        });
+                    }
+                } else {
+                    toastr.error("An error occurred: " + error, 'Error');
+                }
+            }
+        });
+    })
+</script>
+
+<script>
     // TRIGER BTN TEMPORARY
     $(document).ready(function() {
         $.ajax({
@@ -162,7 +197,7 @@
                     }
                 },
                 {
-                    data: 'checkbox',
+                    data: 'delete',
                     orderable: false,
                     searchable: false
                 },
@@ -569,6 +604,7 @@
 
                         $('#deleteBtn').prop('disabled', true);
                         $('#deleteModal').modal('hide');
+                        $('#btnTrash').show();
                     } else {
                         toastr.error("An error occurred: " + response.message, 'Error');
                     }

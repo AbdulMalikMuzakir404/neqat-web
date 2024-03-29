@@ -62,17 +62,19 @@ class TemporaryController extends Controller
 
             if ($data) {
                 return DataTables::of($data)
-                        ->addColumn('checkbox', function($user) {
-                            return '<div class="custom-checkbox custom-control text-center">
-                                        <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-'.$user->id.'">
-                                        <label for="checkbox-'.$user->id.'" class="custom-control-label">&nbsp;</label>
+                    ->addColumn('delete', function ($user) {
+                        return '<div class="custom-checkbox custom-control text-center">
+                                        <input type="checkbox" data-checkboxes="delete" class="custom-control-input" id="checkbox-' . $user->id . '">
+                                        <label for="checkbox-' . $user->id . '" class="custom-control-label">&nbsp;</label>
                                     </div>';
-                        })
-                        ->addColumn('action', function($data) {
-                            return '<button type="button" id="detailBtn" data-id="'. $data->id .'" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>';
-                        })
-                        ->rawColumns(['checkbox', 'action'])
-                        ->make(true);
+                    })
+                    ->addColumn('action', function ($data) {
+                        return '<div class="text-center">
+                                        <button type="button" id="detailBtn" data-id="' . $data->id . '" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
+                                    </div>';
+                    })
+                    ->rawColumns(['delete', 'action'])
+                    ->make(true);
             } else {
                 return response()->json([
                     'success' => false,

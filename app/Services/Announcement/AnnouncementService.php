@@ -52,6 +52,22 @@ class AnnouncementService
         }
     }
 
+    public function getAllDataTrash()
+    {
+        try {
+            $data = $this->model->query();
+            $data->where('is_delete', 1);
+            $data->with(['user']);
+            $result = $data->get();
+
+            return $result;
+        } catch (Exception $e) {
+            Log::info("announcement service get announcement error : " . $e);
+
+            return false;
+        }
+    }
+
     public function getAllDataTemp()
     {
         try {
@@ -209,25 +225,60 @@ class AnnouncementService
         try {
             foreach ($req->ids as $id) {
                 $data = $this->model->findOrFail($id);
+                $data->update([
+                    'is_delete' => true
+                ]);
+            }
 
-                // Menghapus gambar terkait jika ada
-                if ($data->image) {
-                    $imagePath = public_path('file/announcement/' . $data->id);
-                    if (File::exists($imagePath)) {
-                        File::deleteDirectory($imagePath); // Menghapus direktori beserta isinya
-                    }
-                }
+            // buat sebuah log activity
+            $desc = 'Menghapus announcement ' . $data->name;
+            $this->logactivity->storeData($desc);
 
-                // buat sebuah log activity
-                $desc = 'Menghapus announcement ' . $data->title;
-                $this->logactivity->storeData($desc);
+            return $data;
+        } catch (Exception $e) {
+            Log::info("announcement service delete announcement error : " . $e);
 
+            return false;
+        }
+    }
+
+    public function deleteDataPermanen($req)
+    {
+        try {
+            foreach ($req->ids as $id) {
+                $data = $this->model->findOrFail($id);
                 $data->delete();
             }
 
-            return true;
+            // buat sebuah log activity
+            $desc = 'Menghapus permanen announcement ' . $data->name;
+            $this->logactivity->storeData($desc);
+
+            return $data;
         } catch (Exception $e) {
-            Log::info("announcement service delete data error : " . $e);
+            Log::info("announcement service delete announcement recovery error : " . $e);
+
+            return false;
+        }
+    }
+
+    public function recoveryData($req)
+    {
+        try {
+            foreach ($req->ids as $id) {
+                $data = $this->model->findOrFail($id);
+                $data->update([
+                    'is_delete' => false
+                ]);
+            }
+
+            // buat sebuah log activity
+            $desc = 'Recovery announcement ' . $data->name;
+            $this->logactivity->storeData($desc);
+
+            return $data;
+        } catch (Exception $e) {
+            Log::info("announcement service recovery announcement error : " . $e);
 
             return false;
         }

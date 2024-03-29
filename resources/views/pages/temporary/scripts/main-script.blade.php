@@ -9,9 +9,9 @@
 
 <script>
     // Mendengarkan perubahan pada checkbox
-    $(document).on('change', 'input[data-checkboxes="mygroup"]', function() {
+    $(document).on('change', 'input[data-checkboxes="delete"]', function() {
         // Mengaktifkan atau menonaktifkan tombol hapus berdasarkan apakah ada baris yang dipilih
-        if ($('input[data-checkboxes="mygroup"]:checked').length > 0) {
+        if ($('input[data-checkboxes="delete"]:checked').length > 0) {
             $('#deleteBtn').prop('disabled', false);
         } else {
             $('#deleteBtn').prop('disabled', true);
@@ -73,8 +73,17 @@
                 url: "{{ route('temporary.getalldata') }}",
                 type: 'POST'
             },
-            columns: [{
-                    data: 'checkbox',
+            columns: [
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {
+                    data: 'delete',
                     orderable: false,
                     searchable: false
                 },
@@ -93,7 +102,14 @@
                     searchable: false
                 }
             ],
-            order: []
+            order: [],
+            lengthMenu: [10, 20, 50, 100, 150, 200],
+            pageLength: 20,
+            rowCallback: function(row, data, dataIndex) {
+                var table = $('#table-2').DataTable();
+                var info = table.page.info();
+                $('td:eq(0)', row).html(info.start + dataIndex + 1);
+            }
         });
     }
 </script>
@@ -176,9 +192,9 @@
         $('#confirm-delete').click(function() {
             // Mengumpulkan ID dari baris yang dipilih
             let formData = new FormData(); // Inisialisasi objek FormData
-            $('input[data-checkboxes="mygroup"]:checked').each(function() {
+            $('input[data-checkboxes="delete"]:checked').each(function() {
                 // Mengabaikan baris header
-                let id = $(this).closest('tr').find('td:eq(1)').text().trim();
+                let id = $(this).closest('tr').find('td:eq(2)').text().trim();
                 if (id !== '') {
                     formData.append('ids[]', id); // Menambahkan ID ke FormData
                 }
@@ -199,7 +215,7 @@
                         toastr.success(response.message, 'Success');
 
                         // Hapus baris dari DOM
-                        $('input[data-checkboxes="mygroup"]:checked').each(function() {
+                        $('input[data-checkboxes="delete"]:checked').each(function() {
                             $(this).closest('tr').remove();
                         });
 

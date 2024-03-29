@@ -17,4 +17,9 @@ class Announcement extends Model
     protected $casts = [
         'id' => 'string',
     ];
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }
