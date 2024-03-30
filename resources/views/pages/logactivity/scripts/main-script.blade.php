@@ -89,20 +89,6 @@
                             minute: '2-digit'
                         });
                     }
-                },
-                {
-                    data: 'updated_at',
-                    orderable: false,
-                    searchable: false,
-                    render: function(data) {
-                        return new Date(data).toLocaleString('id-ID', {
-                            day: '2-digit',
-                            month: 'long',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        });
-                    }
                 }
             ],
             order: [],

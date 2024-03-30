@@ -17,6 +17,21 @@ class ClassRoomService
         $this->logactivity = $logactivity;
     }
 
+    public function countAllDataTrash()
+    {
+        try {
+            $data = $this->model->query();
+            $data->where('is_delete', 1);
+            $result = $data->count();
+
+            return $result;
+        } catch (Exception $e) {
+            Log::info("classroom service count classroom trash error : " . $e);
+
+            return false;
+        }
+    }
+
     public function getOneData($id)
     {
         try {

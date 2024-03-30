@@ -19,10 +19,10 @@ Route::controller(TemporaryFileController::class)->group(function(){
 
 // crud data trash
 Route::get('/trash', [AnnouncementController::class, 'trash'])->name('trash');
-Route::get('/data-trash', [AnnouncementController::class, 'getDataTrash'])->name('data.trash');
+Route::get('/count-data-trash', [AnnouncementController::class, 'countDataTrash'])->name('countdata.trash');
 Route::post('/get-data-trash', [AnnouncementController::class, 'getAllDataTrash'])->name('getalldata.trash');
 Route::post('/delete-permanen', [AnnouncementController::class, 'destroyPermanen'])->name('delete.permanen');
 Route::post('/recovery', [AnnouncementController::class, 'recovery'])->name('recovery');
 
 // crud data temporary file
-Route::get('/data-temp', [AnnouncementController::class, 'getDataTemp'])->name('data.temp');
+Route::get('/count-data-temp', [AnnouncementController::class, 'countDataTemp'])->name('countdata.temp');

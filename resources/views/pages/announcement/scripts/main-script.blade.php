@@ -96,12 +96,12 @@
     // TRIGER BTN TRASH
     $(document).ready(function() {
         $.ajax({
-            url: "/announcement/data-trash",
+            url: "/announcement/count-data-trash",
             type: "GET",
             cache: false,
             success: function(response) {
-                if (response.data) {
-                    if (response.data.length >= 1) {
+                if (response) {
+                    if (response.data >= 1) {
                         $("#btnTrash").show();
                     } else {
                         $("#btnTrash").hide();
@@ -131,12 +131,12 @@
     // TRIGER BTN TEMPORARY
     $(document).ready(function() {
         $.ajax({
-            url: "/announcement/data-temp",
+            url: "/announcement/count-data-temp",
             type: "GET",
             cache: false,
             success: function(response) {
-                if (response.data) {
-                    if (response.data.length >= 1) {
+                if (response) {
+                    if (response.data >= 1) {
                         $("#btnTemp").show();
                     } else {
                         $("#btnTemp").hide();
@@ -225,7 +225,7 @@
                 },
                 {
                     data: 'send_at',
-                    orderable: false,
+                    orderable: true,
                     searchable: false,
                     render: function(data) {
                         return new Date(data).toLocaleString('id-ID', {
@@ -236,6 +236,9 @@
                             minute: '2-digit'
                         });
                     }
+                },
+                {
+                    data: 'user.name'
                 },
                 {
                     data: 'action',

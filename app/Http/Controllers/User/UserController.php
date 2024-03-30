@@ -39,6 +39,38 @@ class UserController extends Controller
         return view('pages.user.trash');
     }
 
+    public function countDataTrash()
+    {
+        try {
+            $data = $this->service->countAllDataTrash();
+
+            if ($data >= 1) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data count user trash berhasil di ambil'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data count user trash kosong'
+                ], 200);
+            }
+        } catch (Exception $e) {
+            Log::info("data count user trash controller countAllDataTrash error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data count user trash controller countAllDataTrash error : ' . $e,
+            ], 422);
+        }
+    }
+
     public function getOneData($id)
     {
         try {
@@ -148,38 +180,6 @@ class UserController extends Controller
         }
 
         return view('pages.user.index');
-    }
-
-    public function getDataTrash()
-    {
-        try {
-            $data = $this->service->getAllDataTrash();
-
-            if ($data) {
-                return response()->json([
-                    'success' => true,
-                    'kode' => 200,
-                    'data' => $data,
-                    'message' => 'data user trash berhasil di ambil'
-                ], 200);
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'kode' => 400,
-                    'data' => $data,
-                    'message' => 'data user trash gagal di ambil'
-                ], 400);
-            }
-        } catch (Exception $e) {
-            Log::info("data user trash controller getAllDataTrash error : " . $e);
-
-            return response()->json([
-                'success' => false,
-                'kode' => 422,
-                'data' => null,
-                'message' => 'data user trash controller getAllDataTrash error : ' . $e,
-            ], 422);
-        }
     }
 
     public function getAllDataTrash(Request $req)

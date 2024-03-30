@@ -206,6 +206,7 @@
                                             <th data-orderable="false">Title</th>
                                             <th data-orderable="false">Description</th>
                                             <th data-orderable="true">Send At</th>
+                                            <th data-orderable="false">Created By</th>
                                             <th data-orderable="false" class="align-middle text-center">Action</th>
                                         </tr>
                                     </thead>

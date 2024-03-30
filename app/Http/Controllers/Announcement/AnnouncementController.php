@@ -30,6 +30,70 @@ class AnnouncementController extends Controller
         return view('pages.announcement.trash');
     }
 
+    public function countDataTrash()
+    {
+        try {
+            $data = $this->service->countAllDataTrash();
+
+            if ($data >= 1) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data announcement count trash berhasil di ambil'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data announcement count trash kosong'
+                ], 200);
+            }
+        } catch (Exception $e) {
+            Log::info("data announcement count trash controller countAllDataTrash error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data announcement count trash controller countAllDataTrash error : ' . $e,
+            ], 422);
+        }
+    }
+
+    public function countDataTemp()
+    {
+        try {
+            $data = $this->service->countAllDataTemp();
+
+            if ($data >= 1) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data announcement count temporary berhasil di ambil'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data announcement count temporary kosong'
+                ], 200);
+            }
+        } catch (Exception $e) {
+            Log::info("data announcement count temporary controller countAllDataTrash error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data announcement count temporary controller countAllDataTrash error : ' . $e,
+            ], 422);
+        }
+    }
+
     public function store(StoreAnnouncementRequest $req)
     {
         try {
@@ -130,38 +194,6 @@ class AnnouncementController extends Controller
         return view('pages.announcement.index');
     }
 
-    public function getDataTrash()
-    {
-        try {
-            $data = $this->service->getAllDataTrash();
-
-            if ($data) {
-                return response()->json([
-                    'success' => true,
-                    'kode' => 200,
-                    'data' => $data,
-                    'message' => 'data announcement trash berhasil di ambil'
-                ], 200);
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'kode' => 400,
-                    'data' => $data,
-                    'message' => 'data announcement trash gagal di ambil'
-                ], 400);
-            }
-        } catch (Exception $e) {
-            Log::info("data announcement trash controller getAllDataTrash error : " . $e);
-
-            return response()->json([
-                'success' => false,
-                'kode' => 422,
-                'data' => null,
-                'message' => 'data announcement trash controller getAllDataTrash error : ' . $e,
-            ], 422);
-        }
-    }
-
     public function getAllDataTrash(Request $req)
     {
         if ($req->ajax()) {
@@ -201,38 +233,6 @@ class AnnouncementController extends Controller
         }
 
         return view('pages.announcement.trash');
-    }
-
-    public function getDataTemp()
-    {
-        try {
-            $data = $this->service->getAllDataTemp();
-
-            if ($data) {
-                return response()->json([
-                    'success' => true,
-                    'kode' => 200,
-                    'data' => $data,
-                    'message' => 'data announcement temporary berhasil di ambil'
-                ], 200);
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'kode' => 400,
-                    'data' => $data,
-                    'message' => 'data announcement temporary gagal di ambil'
-                ], 400);
-            }
-        } catch (Exception $e) {
-            Log::info("data announcement temporary controller getAllDataTrash error : " . $e);
-
-            return response()->json([
-                'success' => false,
-                'kode' => 422,
-                'data' => null,
-                'message' => 'data announcement temporary controller getAllDataTrash error : ' . $e,
-            ], 422);
-        }
     }
 
     public function update(UpdateAnnouncementRequest $req)

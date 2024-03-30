@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Student;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserRequest extends FormRequest
+class StoreStudentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,10 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'dataId' => 'required|string|max:40',
             'name' => 'required|string|min:5|max:50',
-            'username' => 'required|string|min:5|max:50|unique:users,username,' . $this->dataId,
-            'email' => 'required|email|min:8|max:70|unique:users,email,' . $this->dataId,
-            'password' => 'nullable|min:8|max:100',
-            'role' => 'required'
+            'username' => 'required|string|min:5|max:50|unique:users,username',
+            'email' => 'required|email|min:8|max:70|unique:users,email',
+            'password' => 'required|min:8|max:100',
         ];
     }
 
@@ -37,8 +35,7 @@ class UpdateUserRequest extends FormRequest
             'name' => 'nama',
             'username' => 'username',
             'email' => 'email',
-            'password' => 'kata sandi',
-            'role' => 'role'
+            'password' => 'kata sandi'
         ];
     }
 
@@ -49,7 +46,6 @@ class UpdateUserRequest extends FormRequest
             'username.required' => ':attribute tidak boleh kosong',
             'email.required' => ':attribute tidak boleh kosong',
             'password.required' => ':attribute tidak boleh kosong',
-            'role.required' => ':attribute tidak boleh kosong',
 
             'name.max' => ':attribute melebihi batas maksimal karakter',
             'username.max' => ':attribute melebihi batas maksimal karakter',

@@ -23,6 +23,36 @@ class AnnouncementService
         $this->logactivity = $logactivity;
     }
 
+    public function countAllDataTrash()
+    {
+        try {
+            $data = $this->model->query();
+            $data->where('is_delete', 1);
+            $data->with(['user']);
+            $result = $data->count();
+
+            return $result;
+        } catch (Exception $e) {
+            Log::info("announcement service count announcement error : " . $e);
+
+            return false;
+        }
+    }
+
+    public function countAllDataTemp()
+    {
+        try {
+            $data = $this->tmpFileModel;
+            $result = $data->count();
+
+            return $result;
+        } catch (Exception $e) {
+            Log::info("announcement service count announcement temporary error : " . $e);
+
+            return false;
+        }
+    }
+
     public function getOneData($id)
     {
         try {
@@ -42,6 +72,8 @@ class AnnouncementService
     {
         try {
             $data = $this->model->query();
+            $data->where('is_delete', 0);
+            $data->with(['user']);
             $result = $data->get();
 
             return $result;

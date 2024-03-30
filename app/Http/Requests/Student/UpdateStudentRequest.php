@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Student;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserRequest extends FormRequest
+class UpdateStudentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,6 @@ class UpdateUserRequest extends FormRequest
             'username' => 'required|string|min:5|max:50|unique:users,username,' . $this->dataId,
             'email' => 'required|email|min:8|max:70|unique:users,email,' . $this->dataId,
             'password' => 'nullable|min:8|max:100',
-            'role' => 'required'
         ];
     }
 
@@ -38,7 +37,6 @@ class UpdateUserRequest extends FormRequest
             'username' => 'username',
             'email' => 'email',
             'password' => 'kata sandi',
-            'role' => 'role'
         ];
     }
 
@@ -49,7 +47,6 @@ class UpdateUserRequest extends FormRequest
             'username.required' => ':attribute tidak boleh kosong',
             'email.required' => ':attribute tidak boleh kosong',
             'password.required' => ':attribute tidak boleh kosong',
-            'role.required' => ':attribute tidak boleh kosong',
 
             'name.max' => ':attribute melebihi batas maksimal karakter',
             'username.max' => ':attribute melebihi batas maksimal karakter',

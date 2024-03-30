@@ -83,7 +83,6 @@
                                             <th data-orderable="false">User</th>
                                             <th data-orderable="false">Description</th>
                                             <th data-orderable="false">Created At</th>
-                                            <th data-orderable="false">Updated At</th>
                                         </tr>
                                     </thead>
                                 </table>

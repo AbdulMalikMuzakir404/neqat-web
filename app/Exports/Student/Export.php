@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exports\User;
+namespace App\Exports\Student;
 
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -23,9 +23,8 @@ class Export implements FromCollection, WithHeadings
 
         try {
             // Ambil semua data dari model dengan kriteria role name nya adalah 'student'
-            $data = $this->model->whereDoesntHave('roles', function ($query) {
+            $data = $this->model->whereHas('roles', function ($query) {
                 $query->where('name', 'student');
-                $query->where('name', 'developer');
             })
                 ->get()
                 ->toArray();
@@ -44,7 +43,6 @@ class Export implements FromCollection, WithHeadings
         } catch (Exception $e) {
             Log::error("User export error: " . $e->getMessage());
         }
-
 
         return $collection;
     }

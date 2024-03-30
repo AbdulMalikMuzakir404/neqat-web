@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Imports\User;
+namespace App\Imports\Student;
 
 use Exception;
 use Illuminate\Support\Facades\Hash;
@@ -43,21 +43,21 @@ class Import implements ToModel, WithHeadingRow
                 'password' => Hash::make($row['password']),
             ]);
 
-            $role = $this->role->where('name', $row['role'])->first();
+            $role = $this->role->where('name', 'student')->first();
 
             $import->assignRole($role);
 
-            // Simpan data user ke dalam database
+            // Simpan data student ke dalam database
             $import->save();
 
             if ($import) {
                 return $import;
             } else {
                 return null;
-                Log::error("User import error: data import");
+                Log::error("Student import error: data import");
             }
         } catch (Exception $e) {
-            Log::error("User import error: " . $e->getMessage());
+            Log::error("Student import error: " . $e->getMessage());
         }
     }
 }

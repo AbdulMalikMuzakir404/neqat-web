@@ -17,7 +17,7 @@ Route::get('/get-role', [UserController::class, 'getAllRole'])->name('getallrole
 
 // crud data trash
 Route::get('/trash', [UserController::class, 'trash'])->name('trash');
-Route::get('/data-trash', [UserController::class, 'getDataTrash'])->name('data.trash');
+Route::get('/count-data-trash', [UserController::class, 'countDataTrash'])->name('countdata.trash');
 Route::post('/get-data-trash', [UserController::class, 'getAllDataTrash'])->name('getalldata.trash');
 Route::post('/delete-permanen', [UserController::class, 'destroyPermanen'])->name('delete.permanen');
 Route::post('/recovery', [UserController::class, 'recovery'])->name('recovery');

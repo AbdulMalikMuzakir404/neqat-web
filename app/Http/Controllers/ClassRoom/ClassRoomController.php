@@ -30,6 +30,38 @@ class ClassRoomController extends Controller
         return view('pages.classroom.trash');
     }
 
+    public function countDataTrash()
+    {
+        try {
+            $data = $this->service->countAllDataTrash();
+
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data classroom count trash berhasil di ambil'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data classroom count trash kosong'
+                ], 200);
+            }
+        } catch (Exception $e) {
+            Log::info("data classroom trash controller getAllDataTrash error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data classroom trash controller getAllDataTrash error : ' . $e,
+            ], 422);
+        }
+    }
+
     public function store(StoreClassRoomRequest $req)
     {
         try {
@@ -128,38 +160,6 @@ class ClassRoomController extends Controller
         }
 
         return view('pages.classroom.index');
-    }
-
-    public function getDataTrash()
-    {
-        try {
-            $data = $this->service->getAllDataTrash();
-
-            if ($data) {
-                return response()->json([
-                    'success' => true,
-                    'kode' => 200,
-                    'data' => $data,
-                    'message' => 'data classroom trash berhasil di ambil'
-                ], 200);
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'kode' => 400,
-                    'data' => $data,
-                    'message' => 'data classroom trash gagal di ambil'
-                ], 400);
-            }
-        } catch (Exception $e) {
-            Log::info("data classroom trash controller getAllDataTrash error : " . $e);
-
-            return response()->json([
-                'success' => false,
-                'kode' => 422,
-                'data' => null,
-                'message' => 'data classroom trash controller getAllDataTrash error : ' . $e,
-            ], 422);
-        }
     }
 
     public function getAllDataTrash(Request $req)

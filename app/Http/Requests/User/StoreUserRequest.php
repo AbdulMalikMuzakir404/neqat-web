@@ -36,7 +36,8 @@ class StoreUserRequest extends FormRequest
             'name' => 'nama',
             'username' => 'username',
             'email' => 'email',
-            'password' => 'kata sandi'
+            'password' => 'kata sandi',
+            'role' => 'role'
         ];
     }
 
@@ -47,6 +48,7 @@ class StoreUserRequest extends FormRequest
             'username.required' => ':attribute tidak boleh kosong',
             'email.required' => ':attribute tidak boleh kosong',
             'password.required' => ':attribute tidak boleh kosong',
+            'role.required' => ':attribute tidak boleh kosong',
 
             'name.max' => ':attribute melebihi batas maksimal karakter',
             'username.max' => ':attribute melebihi batas maksimal karakter',

@@ -58,12 +58,12 @@
     // TRIGER BTN TEMPORARY
     $(document).ready(function() {
         $.ajax({
-            url: "/classroom/data-trash",
+            url: "/classroom/count-data-trash",
             type: "GET",
             cache: false,
             success: function(response) {
-                if (response.data) {
-                    if (response.data.length >= 1) {
+                if (response) {
+                    if (response.data >= 1) {
                         $("#btnTrash").show();
                     } else {
                         $("#btnTrash").hide();

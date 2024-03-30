@@ -21,6 +21,24 @@ class UserService
         $this->logactivity = $logactivity;
     }
 
+    public function countAllDataTrash()
+    {
+        try {
+            $data = $this->model->whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'student');
+            });
+            $data->where('is_delete', 1);
+            $data->where('id', '!=', auth()->user()->id);
+            $result = $data->count();
+
+            return $result;
+        } catch (Exception $e) {
+            Log::info("user service count user error : " . $e);
+
+            return false;
+        }
+    }
+
     public function getOneData($id)
     {
         try {
