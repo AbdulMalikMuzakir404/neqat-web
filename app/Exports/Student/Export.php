@@ -26,6 +26,7 @@ class Export implements FromCollection, WithHeadings
             $data = $this->model->whereHas('roles', function ($query) {
                 $query->where('name', 'student');
             })
+                ->whereIn('id', $this->ids)
                 ->get()
                 ->toArray();
 

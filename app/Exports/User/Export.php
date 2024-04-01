@@ -22,11 +22,12 @@ class Export implements FromCollection, WithHeadings
         $collection = collect();
 
         try {
-            // Ambil semua data dari model dengan kriteria role name nya adalah 'student'
+            // Ambil semua data dari model dengan kriteria role name nya adalah selain 'student dan developer'
             $data = $this->model->whereDoesntHave('roles', function ($query) {
                 $query->where('name', 'student');
                 $query->where('name', 'developer');
             })
+                ->whereIn('id', $this->ids)
                 ->get()
                 ->toArray();
 

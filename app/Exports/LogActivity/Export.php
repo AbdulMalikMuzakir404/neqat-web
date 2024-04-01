@@ -9,11 +9,12 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class Export implements FromCollection, WithHeadings
 {
-    protected $model;
+    protected $model, $ids;
 
-    public function __construct($model)
+    public function __construct($model, array $ids)
     {
         $this->model = $model;
+        $this->ids = $ids;
     }
 
     public function collection()
@@ -22,7 +23,7 @@ class Export implements FromCollection, WithHeadings
 
         try {
             // Ambil data dari model hanya dengan kolom yang diinginkan
-            $data = $this->model->with(['user:id,name'])->get(['user_id', 'description', 'created_at', 'updated_at'])->toArray();
+            $data = $this->model->with(['user:id,name'])->whereIn('id', $this->ids)->get(['user_id', 'description', 'created_at', 'updated_at'])->toArray();
 
             // Ubah nama kolom user_id menjadi user.name
             foreach ($data as &$item) {
