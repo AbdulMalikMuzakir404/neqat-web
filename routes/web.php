@@ -34,6 +34,13 @@ Route::middleware(['auth', 'verify_email'])->group(function () {
     });
 });
 
+// USER ALL TRASH ROUTE
+Route::middleware(['auth', 'verify_email'])->group(function () {
+    Route::name('useralltrash.')->prefix('/useralltrash')->group(function () {
+        include __DIR__ . '/web/useralltrash.php';
+    });
+});
+
 // ANNOUNCEMENT ROUTE
 Route::middleware(['auth', 'verify_email'])->group(function () {
     Route::name('announcement.')->prefix('/announcement')->group(function () {
