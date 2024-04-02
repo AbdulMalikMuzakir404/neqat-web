@@ -81,12 +81,13 @@ class ClassRoomService
     {
         try {
             $data = $this->model->create([
-                'name' => $req->name,
+                'classname' => $req->classname,
+                'major' => $req->major,
             ]);
             $result = $data->save();
 
             // buat sebuah log activity
-            $desc = 'Membuat classroom ' . $data->name;
+            $desc = 'Membuat classroom ' . $data->classname . ' ' . $data->major;
             $this->logactivity->storeData($desc);
 
             return $result;
@@ -103,11 +104,12 @@ class ClassRoomService
             $data = $this->model->where('id', $req->dataId)->first();
 
             $result = $data->update([
-                'name' => $req->name,
+                'classname' => $req->classname,
+                'major' => $req->major,
             ]);
 
             // buat sebuah log activity
-            $desc = 'Mengubah classroom ' . $data->name;
+            $desc = 'Mengubah classroom ' . $data->classname . ' ' . $data->major;
             $this->logactivity->storeData($desc);
 
             return $result;

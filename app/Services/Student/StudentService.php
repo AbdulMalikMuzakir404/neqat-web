@@ -2,7 +2,9 @@
 
 namespace App\Services\Student;
 
+use App\Models\ClassRoom;
 use App\Models\Role;
+use App\Models\Student;
 use App\Models\User;
 use App\Services\LogActivity\LogActivityService;
 use Exception;
@@ -11,12 +13,14 @@ use Illuminate\Support\Facades\Log;
 
 class StudentService
 {
-    public $model, $role, $logactivity;
+    public $model, $student, $role, $classroom, $logactivity;
 
-    public function __construct(User $model, Role $role, LogActivityService $logactivity)
+    public function __construct(User $model, Student $student, Role $role, ClassRoom $classroom, LogActivityService $logactivity)
     {
         $this->model = $model;
+        $this->student = $student;
         $this->role = $role;
+        $this->classroom = $classroom;
         $this->logactivity = $logactivity;
     }
 
@@ -40,11 +44,13 @@ class StudentService
     public function getOneData($id)
     {
         try {
-            $data = $this->model->whereHas('roles', function ($query) {
-                $query->where('name', 'student');
-            })
-                ->where('id', $id)
-                ->get();
+            $data = $this->student->with(['user', 'classroom'])
+                ->whereHas('user.roles', function ($query) {
+                    $query->where('name', 'student');
+                })
+                ->whereHas('user', function ($query) use ($id) {
+                    $query->where('id', $id);
+                });
             $result = $data->first();
 
             return $result;
@@ -55,13 +61,30 @@ class StudentService
         }
     }
 
+    public function getAllClassRoom()
+    {
+        try {
+            $classrooms = $this->classroom->where('is_delete', 0);
+            $result = $classrooms->get();
+
+            return $result;
+        } catch (Exception $e) {
+            Log::info("stident service get classrooms error : " . $e);
+
+            return false;
+        }
+    }
+
     public function getAllData()
     {
         try {
-            $data = $this->model->whereHas('roles', function ($query) {
-                $query->where('name', 'student');
-            })
-                ->where('is_delete', 0)
+            $data = $this->student->with(['user', 'classroom'])
+                ->whereHas('user.roles', function ($query) {
+                    $query->where('name', 'student');
+                })
+                ->whereHas('user', function ($query) {
+                    $query->where('is_delete', 0);
+                })
                 ->get();
 
             return $data;
@@ -74,13 +97,16 @@ class StudentService
     public function getAllDataTrash()
     {
         try {
-            $data = $this->model->whereHas('roles', function ($query) {
-                $query->where('name', 'student');
-            });
-            $data->where('is_delete', 1);
-            $result = $data->get();
+            $data = $this->student->with(['user', 'classroom'])
+                ->whereHas('user.roles', function ($query) {
+                    $query->where('name', 'student');
+                })
+                ->whereHas('user', function ($query) {
+                    $query->where('is_delete', 1);
+                })
+                ->get();
 
-            return $result;
+            return $data;
         } catch (Exception $e) {
             Log::info("student service get student error : " . $e);
 
@@ -103,14 +129,23 @@ class StudentService
 
             $data->assignRole($role);
 
+            $student = $this->student->create([
+                'user_id' => $data->id,
+                'class_room_id' => $req->classroom,
+                'nis' => $req->nis,
+                'nisn' => $req->nisn,
+                'gender' => $req->gender,
+                'phone' => $req->phone,
+                'address' => $req->address,
+                'birth_place' => $req->birth_place,
+                'birth_date' => $req->birth_date
+            ]);
+
             // buat sebuah log activity
             $desc = 'Membuat student ' . $data->name;
             $this->logactivity->storeData($desc);
 
-            return [
-                'data' => $data,
-                'role' => $role->name
-            ];
+            return $student;
         } catch (Exception $e) {
             Log::info("student service store student error : " . $e);
 
@@ -146,11 +181,23 @@ class StudentService
             // Perbarui peran pengguna
             $data->syncRoles([$role->id]);
 
+            $student = $this->student->where('id', $req->dataIdStudent)->first();
+            $student->update([
+                'class_room_id' => $req->classroom,
+                'nis' => $req->nis,
+                'nisn' => $req->nisn,
+                'gender' => $req->gender,
+                'phone' => $req->phone,
+                'address' => $req->address,
+                'birth_place' => $req->birth_place,
+                'birth_date' => $req->birth_date
+            ]);
+
             // buat sebuah log activity
             $desc = 'Mengubah student ' . $data->name;
             $this->logactivity->storeData($desc);
 
-            return $data;
+            return $student;
         } catch (Exception $e) {
             Log::info("student service store student error : " . $e);
 

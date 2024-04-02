@@ -112,15 +112,18 @@
                         }
                         $('#detailRole').text(response.data.role ?? '-');
                         $('#detailIpAddress').text(response.data.data.ip_address ?? '-');
-                        $('#detailEmailVerifiedAt').text(dateFormat(response.data.data.email_verified_at) ??
+                        $('#detailEmailVerifiedAt').text(response.data.data.email_verified_at ?
+                            dateFormat(response.data.data.email_verified_at) :
                             '-');
                         $('#detailFcmToken').text(response.data.data.fcm_token ?? '-');
-                        $('#detailActiveAt').text(dateFormat(response.data.data.active_at) ?? '-');
-                        $('#detailFirstAccess').text(dateFormat(response.data.data.first_access) ?? '-');
-                        $('#detailLastLogin').text(dateFormat(response.data.data.last_login) ?? '-');
-                        $('#detailLastAccess').text(dateFormat(response.data.data.last_access) ?? '-');
-                        $('#detailCreatedBy').text(dateFormat(response.data.data.created_by) ?? '-');
-                        $('#detailUpdatedBy').text(dateFormat(response.data.data.updated_by) ?? '-');
+                        $('#detailActiveAt').text(response.data.data.active_at ? dateFormat(response
+                            .data.data.active_at) : '-');
+                        $('#detailFirstAccess').text(response.data.data.first_access ? dateFormat(
+                            response.data.data.first_access) : '-');
+                        $('#detailLastLogin').text(response.data.data.last_login ? dateFormat(
+                            response.data.data.last_login) : '-');
+                        $('#detailLastAccess').text(response.data.data.last_access ? dateFormat(
+                            response.data.data.last_access) : '-');
                     } else {
                         console.log('Terjadi kesalahan response');
                     }
@@ -160,8 +163,7 @@
                 url: "{{ route('user.getalldata.trash') }}",
                 type: 'POST'
             },
-            columns: [
-                {
+            columns: [{
                     data: null,
                     orderable: false,
                     searchable: false,
@@ -205,13 +207,17 @@
                     orderable: false,
                     searchable: false,
                     render: function(data) {
-                        return new Date(data).toLocaleString('id-ID', {
-                            day: '2-digit',
-                            month: 'long',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        });
+                        if (data) {
+                            return new Date(data).toLocaleString('id-ID', {
+                                day: '2-digit',
+                                month: 'long',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+                        } else {
+                            return '-';
+                        }
                     }
                 },
                 {
@@ -219,13 +225,17 @@
                     orderable: false,
                     searchable: false,
                     render: function(data) {
-                        return new Date(data).toLocaleString('id-ID', {
-                            day: '2-digit',
-                            month: 'long',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        });
+                        if (data) {
+                            return new Date(data).toLocaleString('id-ID', {
+                                day: '2-digit',
+                                month: 'long',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+                        } else {
+                            return '-';
+                        }
                     }
                 },
                 {

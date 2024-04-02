@@ -68,14 +68,14 @@
                                         <label>IP Address :</label>
                                         <p id="detailIpAddress">-</p>
                                     </div>
+                                </div>
 
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Email Verified At :</label>
                                         <p id="detailEmailVerifiedAt">-</p>
                                     </div>
-                                </div>
 
-                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>FCM Token :</label>
                                         <p id="detailFcmToken">-</p>
@@ -99,16 +99,6 @@
                                     <div class="form-group">
                                         <label>Last Access :</label>
                                         <p id="detailLastAccess">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Created By :</label>
-                                        <p id="detailCreatedBy">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Updated By :</label>
-                                        <p id="detailUpdatedBy">-</p>
                                     </div>
                                 </div>
                             </div>
@@ -183,10 +173,10 @@
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="m-0">User Trash Table</h4>
                             <div class="">
-                                <button type="button" class="btn btn-success" id="recoveryBtn" disabled>Recovery <i class="ion ion-loop"
-                                    style="font-size: 12px"></i></button>
-                                <button type="button" class="btn btn-danger" id="deleteBtn" disabled>Delete <i class="ion ion-close-circled"
-                                    style="font-size: 12px"></i></button>
+                                <button type="button" class="btn btn-success" id="recoveryBtn" disabled>Recovery <i
+                                        class="ion ion-loop" style="font-size: 12px"></i></button>
+                                <button type="button" class="btn btn-danger" id="deleteBtn" disabled>Delete <i
+                                        class="ion ion-close-circled" style="font-size: 12px"></i></button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -200,7 +190,8 @@
                                                     <input type="checkbox" data-checkboxes="delete"
                                                         data-checkbox-role="dad" class="custom-control-input"
                                                         id="checkbox-delete">
-                                                    <label for="checkbox-delete" class="custom-control-label">&nbsp;</label>
+                                                    <label for="checkbox-delete"
+                                                        class="custom-control-label">&nbsp;</label>
                                                 </div>
                                             </th>
                                             <th data-orderable="false" class="text-center">
@@ -208,7 +199,8 @@
                                                     <input type="checkbox" data-checkboxes="recovery"
                                                         data-checkbox-role="dad" class="custom-control-input"
                                                         id="checkbox-recovery">
-                                                    <label for="checkbox-recovery" class="custom-control-label">&nbsp;</label>
+                                                    <label for="checkbox-recovery"
+                                                        class="custom-control-label">&nbsp;</label>
                                                 </div>
                                             </th>
                                             <th data-orderable="false">ID</th>

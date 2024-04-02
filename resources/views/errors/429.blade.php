@@ -16,7 +16,7 @@
             <div class="container mt-5">
                 <div class="page-error">
                     <div class="page-inner">
-                        <h1>404</h1>
+                        <h1>429</h1>
                         <div class="page-description">
                             Terlalu Banyak Permintaan. Maaf, server sedang sibuk menanggapi permintaan Anda. Silakan
                             coba lagi nanti.

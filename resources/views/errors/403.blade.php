@@ -16,7 +16,7 @@
             <div class="container mt-5">
                 <div class="page-error">
                     <div class="page-inner">
-                        <h1>404</h1>
+                        <h1>403</h1>
                         <div class="page-description">
                             Akses Dilarang. Maaf, Anda tidak memiliki izin untuk mengakses sumber daya ini.
                         </div>

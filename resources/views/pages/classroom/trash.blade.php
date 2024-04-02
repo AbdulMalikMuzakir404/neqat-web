@@ -33,8 +33,13 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <label for="name">Name :</label>
-                                <p id="detailName">-</p>
+                                <label for="classname">Class Name :</label>
+                                <p id="detailClassName">-</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="major">Major :</label>
+                                <p id="detailMajor">-</p>
                             </div>
 
                             <div class="form-group">
@@ -145,9 +150,10 @@
                                                 </div>
                                             </th>
                                             <th data-orderable="false">ID</th>
-                                            <th data-orderable="true">Name</th>
-                                            <th data-orderable="true">Created At</th>
-                                            <th data-orderable="true">Updatedd At</th>
+                                            <th data-orderable="false">Class</th>
+                                            <th data-orderable="false">Major</th>
+                                            <th data-orderable="false">Created At</th>
+                                            <th data-orderable="false">Updated At</th>
                                             <th data-orderable="false" class="align-middle text-center">Action</th>
                                         </tr>
                                     </thead>

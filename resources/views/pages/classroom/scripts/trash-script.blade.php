@@ -73,46 +73,29 @@
 
         function detailData(dataId) {
             $.ajax({
-                url: "/user/get/" + dataId + "/data",
+                url: "/classroom/get/" + dataId + "/data",
                 type: "GET",
                 cache: false,
                 success: function(response) {
+
+                    function dateFormat(data) {
+                        return new Date(data).toLocaleString('id-ID', {
+                            day: '2-digit',
+                            month: 'long',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
+
                     if (response.data) {
-                        $('#detailName').text(response.data.data.name ?? '-');
-                        $('#detailUsername').text(response.data.data.username ?? '-');
-                        $('#detailEmail').text(response.data.data.email ?? '-');
-                        if (response.data.data.active == 1) {
-                            $('#detailActive').html(
-                            '<div class="badge badge-success">active</div>');
-                        } else if (response.data.data.active == 0) {
-                            $('#detailActive').html(
-                                '<div class="badge badge-secondary">nonactive</div>');
-                        } else {
-                            $('#detailActive').html('<div class="badge badge-danger">-</div>');
-                        }
-                        if (response.data.data.email_verified == 1) {
-                            $('#detailEmailVerified').html(
-                                '<div class="badge badge-success">verified</div>');
-                        } else if (response.data.data.email_verified == 0) {
-                            $('#detailEmailVerified').html(
-                                '<div class="badge badge-secondary">not verified</div>');
-                        } else {
-                            $('#detailEmailVerified').html(
-                                '<div class="badge badge-danger">-</div>');
-                        }
-                        $('#detailRole').text(response.data.role ?? '-');
-                        $('#detailIpAddress').text(response.data.data.ip_address ?? '-');
-                        $('#detailEmailVerifiedAt').text(response.data.data.email_verified_at ??
-                            '-');
-                        $('#detailFcmToken').text(response.data.data.fcm_token ?? '-');
-                        $('#detailActiveAt').text(response.data.data.active_at ?? '-');
-                        $('#detailFirstAccess').text(response.data.data.first_access ?? '-');
-                        $('#detailLastLogin').text(response.data.data.last_login ?? '-');
-                        $('#detailLastAccess').text(response.data.data.last_access ?? '-');
-                        $('#detailCreatedBy').text(response.data.data.created_by ?? '-');
-                        $('#detailUpdatedBy').text(response.data.data.updated_by ?? '-');
+                        $('#detailClassName').text(response.data.classname ?? '-');
+                        $('#detailMajor').text(response.data.major ?? '-');
+                        $('#detailCreatedAt').text(dateFormat(response.data.created_at) ?? '-');
+                        $('#detailUpdatedAt').text(dateFormat(response.data.updated_at) ?? '-');
                     } else {
                         console.log('Terjadi kesalahan response');
+                        toastr.error("Terjadi kesalahan response", 'Error');
                     }
                 },
                 error: function(xhr, status, error) {
@@ -173,7 +156,10 @@
                     data: 'id'
                 },
                 {
-                    data: 'name'
+                    data: 'classname'
+                },
+                {
+                    data: 'major'
                 },
                 {
                     data: 'created_at',

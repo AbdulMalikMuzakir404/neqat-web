@@ -88,40 +88,53 @@
                     }
 
                     if (response.data) {
-                        $('#detailName').text(response.data.name ?? '-');
-                        $('#detailUsername').text(response.data.username ?? '-');
-                        $('#detailEmail').text(response.data.email ?? '-');
-                        if (response.data.active == 1) {
+                        $('#detailName').text(response.data.user.name ?? '-');
+                        $('#detailUsername').text(response.data.user.username ?? '-');
+                        $('#detailEmail').text(response.data.user.email ?? '-');
+                        if (response.data.user.active == 1) {
                             $('#detailActive').html(
                                 '<div class="badge badge-success">active</div>');
-                        } else if (response.data.active == 0) {
+                        } else if (response.data.user.active == 0) {
                             $('#detailActive').html(
                                 '<div class="badge badge-secondary">nonactive</div>');
                         } else {
                             $('#detailActive').html('<div class="badge badge-danger">-</div>');
                         }
-                        if (response.data.email_verified == 1) {
+                        if (response.data.user.email_verified == 1) {
                             $('#detailEmailVerified').html(
                                 '<div class="badge badge-success">verified</div>');
-                        } else if (response.data.email_verified == 0) {
+                        } else if (response.data.user.email_verified == 0) {
                             $('#detailEmailVerified').html(
                                 '<div class="badge badge-secondary">not verified</div>');
                         } else {
                             $('#detailEmailVerified').html(
                                 '<div class="badge badge-danger">-</div>');
                         }
-                        $('#detailIpAddress').text(response.data.ip_address ?? '-');
-                        $('#detailEmailVerifiedAt').text(dateFormat(response.data.email_verified_at) ??
+                        $('#detailNIS').text(response.data.nis ?? '-');
+                        $('#detailNISN').text(response.data.nisn ?? '-');
+                        $('#detailClassRoom').text(response.data.classroom ? `${response.data.classroom.classname} - ${response.data.classroom.major}` : '-');
+                        $('#detailGender').text(response.data.gender ?? '-');
+                        $('#detailIpAddress').text(response.data.user.ip_address ?? '-');
+                        $('#detailPhone').text(response.data.phone ?? '-');
+                        $('#detailBirthPlace').text(response.data.birth_place ?? '-');
+                        $('#detailBirthDate').text(response.data.birth_date ?? '-');
+                        $('#detailAddress').text(response.data.address ?? '-');
+                        $('#detailEmailVerifiedAt').text(response.data
+                            .email_verified_at ? dateFormat(response.data
+                                .email_verified_at) :
                             '-');
-                        $('#detailFcmToken').text(response.data.fcm_token ?? '-');
-                        $('#detailActiveAt').text(dateFormat(response.data.active_at) ?? '-');
-                        $('#detailFirstAccess').text(dateFormat(response.data.first_access) ?? '-');
-                        $('#detailLastLogin').text(dateFormat(response.data.last_login) ?? '-');
-                        $('#detailLastAccess').text(dateFormat(response.data.last_access) ?? '-');
-                        $('#detailCreatedBy').text(dateFormat(response.data.created_by) ?? '-');
-                        $('#detailUpdatedBy').text(dateFormat(response.data.updated_by) ?? '-');
+                        $('#detailFcmToken').text(response.data.user.fcm_token ?? '-');
+                        $('#detailActiveAt').text(response.data.user.active_at ? dateFormat(response
+                            .data.user.active_at) : '-');
+                        $('#detailFirstAccess').text(response.data.user.first_access ? dateFormat(
+                            response.data.user.first_access) : '-');
+                        $('#detailLastLogin').text(response.data.user.last_login ? dateFormat(
+                            response.data.user.last_login) : '-');
+                        $('#detailLastAccess').text(response.data.user.last_access ? dateFormat(
+                            response.data.user.last_access) : '-');
                     } else {
                         console.log('Terjadi kesalahan response');
+                        toastr.error("Terjadi kesalahan response", 'Error');
                     }
                 },
                 error: function(xhr, status, error) {
@@ -159,8 +172,7 @@
                 url: "{{ route('student.getalldata.trash') }}",
                 type: 'POST'
             },
-            columns: [
-                {
+            columns: [{
                     data: null,
                     orderable: false,
                     searchable: false,
@@ -179,16 +191,16 @@
                     searchable: false
                 },
                 {
-                    data: 'id'
+                    data: 'user.id'
                 },
                 {
-                    data: 'name'
+                    data: 'user.name'
                 },
                 {
-                    data: 'username'
+                    data: 'user.username'
                 },
                 {
-                    data: 'email'
+                    data: 'user.email'
                 },
                 {
                     data: 'email_verified'
@@ -197,31 +209,18 @@
                     data: 'active'
                 },
                 {
-                    data: 'first_access',
-                    orderable: false,
-                    searchable: false,
-                    render: function(data) {
-                        return new Date(data).toLocaleString('id-ID', {
-                            day: '2-digit',
-                            month: 'long',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        });
-                    }
+                    data: 'nis'
                 },
                 {
-                    data: 'last_access',
-                    orderable: false,
-                    searchable: false,
-                    render: function(data) {
-                        return new Date(data).toLocaleString('id-ID', {
-                            day: '2-digit',
-                            month: 'long',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        });
+                    data: 'nisn'
+                },
+                {
+                    data: 'gender'
+                },
+                {
+                    data: null,
+                    render: function(data, type, row) {
+                        return row.classroom.classname + ' - ' + row.classroom.major;
                     }
                 },
                 {
@@ -237,6 +236,10 @@
                 var table = $('#table-2').DataTable();
                 var info = table.page.info();
                 $('td:eq(0)', row).html(info.start + dataIndex + 1);
+            },
+            "createdRow": function(row, data, dataIndex) {
+                $(row).find('td:eq(12)').css('white-space', 'nowrap');
+                $(row).find('td:eq(13)').css('white-space', 'nowrap');
             }
         });
     }

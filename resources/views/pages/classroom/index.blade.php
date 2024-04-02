@@ -43,12 +43,26 @@
                                         {{ $message }}
                                     </div>
                                 @enderror
+                            </div>
 
-                                <label for="name">*Nama Jurusan</label>
-                                <input type="text" name="name" id="name" value="{{ old('name') }}"
-                                    class="form-control @error('name') is-invalid @enderror" placeholder="Nama Jurusan"
+                            <div class="form-group">
+                                <label for="classname">*Nama Kelas</label>
+                                <input type="text" name="classname" id="classname" value="{{ old('classname') }}"
+                                    class="form-control @error('classname') is-invalid @enderror" placeholder="Nama Kelas"
+                                    maxlength="10" required autofocus>
+                                @error('classname')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="major">*Nama Jurusan</label>
+                                <input type="text" name="major" id="major" value="{{ old('major') }}"
+                                    class="form-control @error('major') is-invalid @enderror" placeholder="Nama Jurusan"
                                     maxlength="50" required autofocus>
-                                @error('name')
+                                @error('major')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -100,8 +114,13 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <label for="name">Name :</label>
-                                <p id="detailName">-</p>
+                                <label for="classname">Class Name :</label>
+                                <p id="detailClassName">-</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="major">Major :</label>
+                                <p id="detailMajor">-</p>
                             </div>
 
                             <div class="form-group">
@@ -162,7 +181,8 @@
                                                 </div>
                                             </th>
                                             <th data-orderable="false">ID</th>
-                                            <th data-orderable="false">Name</th>
+                                            <th data-orderable="false">Class</th>
+                                            <th data-orderable="false">Major</th>
                                             <th data-orderable="false">Created At</th>
                                             <th data-orderable="false">Updated At</th>
                                             <th data-orderable="false" class="align-middle text-center">Action</th>

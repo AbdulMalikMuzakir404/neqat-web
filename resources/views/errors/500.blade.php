@@ -16,7 +16,7 @@
             <div class="container mt-5">
                 <div class="page-error">
                     <div class="page-inner">
-                        <h1>404</h1>
+                        <h1>500</h1>
                         <div class="page-description">
                             Kesalahan Internal Server. Maaf, terjadi kesalahan internal pada server.
                         </div>

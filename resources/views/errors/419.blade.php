@@ -16,7 +16,7 @@
             <div class="container mt-5">
                 <div class="page-error">
                     <div class="page-inner">
-                        <h1>404</h1>
+                        <h1>419</h1>
                         <div class="page-description">
                             Token Keamanan Tidak Valid. Permintaan Anda tidak dapat diproses karena token keamanan tidak
                             sesuai.

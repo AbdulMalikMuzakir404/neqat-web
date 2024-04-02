@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('class_rooms', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name', 100);
+            $table->string('classname', 10);
+            $table->string('major', 100);
             $table->boolean('is_delete')->default(false);
             $table->timestamps();
         });

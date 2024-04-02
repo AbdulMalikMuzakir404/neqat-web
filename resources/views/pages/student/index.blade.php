@@ -32,61 +32,181 @@
                     </div>
                     <div class="modal-body">
                         <form class="form-data">
-                            <input type="hidden" name="dataId" id="dataId" value=""
-                                class="form-control @error('dataId') is-invalid @enderror" placeholder="Data ID"
-                                maxlength="50" required>
-                            @error('dataId')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="hidden" name="dataIdStudent" id="dataIdStudent" value=""
+                                        class="form-control @error('dataIdStudent') is-invalid @enderror" placeholder="Data ID"
+                                        maxlength="50" required>
+                                    @error('dataIdStudent')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+
+                                    <input type="hidden" name="dataId" id="dataId" value=""
+                                        class="form-control @error('dataId') is-invalid @enderror" placeholder="Data ID"
+                                        maxlength="50" required>
+                                    @error('dataId')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+
+                                    <div class="form-group">
+                                        <label for="name">*Name</label>
+                                        <input type="text" name="name" id="name" value="{{ old('name') }}"
+                                            class="form-control @error('name') is-invalid @enderror" placeholder="Name"
+                                            maxlength="50" required>
+                                        @error('name')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="username">*Username</label>
+                                        <input type="text" name="username" id="username" value="{{ old('username') }}"
+                                            class="form-control @error('username') is-invalid @enderror"
+                                            placeholder="Username" maxlength="50" required>
+                                        @error('username')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="email">*Email</label>
+                                        <input type="email" name="email" id="email" value="{{ old('email') }}"
+                                            class="form-control @error('email') is-invalid @enderror"
+                                            placeholder="Email Address" maxlength="70" required>
+                                        @error('email')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="password">*Password</label>
+                                        <input type="password" name="password" id="password" value="{{ old('password') }}"
+                                            class="form-control @error('password') is-invalid @enderror"
+                                            placeholder="Password" maxlength="100" required>
+                                        @error('password')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="classroom">*Class Room</label>
+                                        <select name="classroom" id="classroom"
+                                            class="form-control @error('classroom') is-invalid @enderror select2" required>
+                                        </select>
+                                        @error('classroom')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="name">*Gender</label>
+                                        <div class="">
+                                            <div
+                                                class="custom-control @error('gender') is-invalid @enderror custom-radio custom-control-inline">
+                                                <input type="radio" id="pria" name="gender" value="pria"
+                                                    class="custom-control-input">
+                                                <label class="custom-control-label" for="pria">Pria</label>
+                                            </div>
+                                            <div
+                                                class="custom-control @error('gender') is-invalid @enderror custom-radio custom-control-inline">
+                                                <input type="radio" id="wanita" name="gender" value="wanita"
+                                                    class="custom-control-input">
+                                                <label class="custom-control-label" for="wanita">Wanita</label>
+                                            </div>
+                                        </div>
+                                        @error('gender')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
                                 </div>
-                            @enderror
-
-                            <div class="form-group">
-                                <label for="name">*Name</label>
-                                <input type="text" name="name" id="name" value="{{ old('name') }}"
-                                    class="form-control @error('name') is-invalid @enderror" placeholder="Name"
-                                    maxlength="50" required>
-                                @error('name')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="nis">*NIS</label>
+                                        <input type="number" name="nis" id="nis" value="{{ old('nis') }}"
+                                            class="form-control @error('nis') is-invalid @enderror" placeholder="NIS"
+                                            maxlength="12" required>
+                                        @error('nis')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
-                                @enderror
-                            </div>
 
-                            <div class="form-group">
-                                <label for="username">*Username</label>
-                                <input type="text" name="username" id="username" value="{{ old('username') }}"
-                                    class="form-control @error('username') is-invalid @enderror" placeholder="Username"
-                                    maxlength="50" required>
-                                @error('username')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+                                    <div class="form-group">
+                                        <label for="nisn">*NISN</label>
+                                        <input type="number" name="nisn" id="nisn" value="{{ old('nisn') }}"
+                                            class="form-control @error('nisn') is-invalid @enderror" placeholder="NISN"
+                                            maxlength="14" required>
+                                        @error('nisn')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
-                                @enderror
-                            </div>
 
-                            <div class="form-group">
-                                <label for="email">*Email</label>
-                                <input type="email" name="email" id="email" value="{{ old('email') }}"
-                                    class="form-control @error('email') is-invalid @enderror" placeholder="Email Address"
-                                    maxlength="70" required>
-                                @error('email')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+                                    <div class="form-group">
+                                        <label for="phone">*Phone</label>
+                                        <input type="number" name="phone" id="phone" value="{{ old('phone') }}"
+                                            class="form-control @error('phone') is-invalid @enderror" placeholder="08xxxx"
+                                            maxlength="15" required>
+                                        @error('phone')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
-                                @enderror
-                            </div>
 
-                            <div class="form-group">
-                                <label for="password">*Password</label>
-                                <input type="password" name="password" id="password" value="{{ old('password') }}"
-                                    class="form-control @error('password') is-invalid @enderror" placeholder="Password"
-                                    maxlength="100" required>
-                                @error('password')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+                                    <div class="form-group">
+                                        <label for="birth_place">*Birth Place</label>
+                                        <input type="text" name="birth_place" id="birth_place"
+                                            value="{{ old('birth_place') }}"
+                                            class="form-control @error('birth_place') is-invalid @enderror"
+                                            placeholder="Birth Place" maxlength="50" required>
+                                        @error('birth_place')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
-                                @enderror
+
+                                    <div class="form-group">
+                                        <label for="birth_date">*Birth Date</label>
+                                        <input type="date" name="birth_date" id="birth_date"
+                                            value="{{ old('birth_date') }}"
+                                            class="form-control @error('birth_date') is-invalid @enderror"
+                                            placeholder="Birth Date" required>
+                                        @error('birth_date')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="address">*Address</label>
+                                        <textarea name="address" id="address" name="address" class="form-control @error('address') is-invalid @enderror"
+                                            cols="30" rows="10" required></textarea>
+                                        @error('address')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -139,17 +259,57 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label>NIS :</label>
+                                        <div id="detailNIS"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>NISN :</label>
+                                        <div id="detailNISN"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Class Room :</label>
+                                        <div id="detailClassRoom"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Gender :</label>
+                                        <div id="detailGender"></div>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label>IP Address :</label>
                                         <p id="detailIpAddress">-</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Phone :</label>
+                                        <div id="detailPhone"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Birth Place :</label>
+                                        <div id="detailBirthPlace"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Birth Date :</label>
+                                        <div id="detailBirthDate"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Address :</label>
+                                        <div id="detailAddress"></div>
                                     </div>
 
                                     <div class="form-group">
                                         <label>Email Verified At :</label>
                                         <p id="detailEmailVerifiedAt">-</p>
                                     </div>
-                                </div>
 
-                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>FCM Token :</label>
                                         <p id="detailFcmToken">-</p>
@@ -173,16 +333,6 @@
                                     <div class="form-group">
                                         <label>Last Access :</label>
                                         <p id="detailLastAccess">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Created By :</label>
-                                        <p id="detailCreatedBy">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Updated By :</label>
-                                        <p id="detailUpdatedBy">-</p>
                                     </div>
                                 </div>
                             </div>
@@ -227,7 +377,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Format Excel(Name, Username, Email, Password) atau bisa unduh contoh excelnya <strong
+                        <p>Format Excel(Name, Username, Email, Password, Class Room ID, NIS, NISN, Phone, Birth Date, Birth Place, Gender, Address) atau bisa unduh contoh excelnya <strong
                                 id="download-contoh-excel">disini</strong></p>
                         <form class="form-import">
                             <div class="form-group">
@@ -276,7 +426,7 @@
 
         <section class="section">
             <div class="section-header">
-                <h1>User</h1>
+                <h1>Student</h1>
             </div>
 
             <nav aria-label="breadcrumb">
@@ -337,8 +487,10 @@
                                             <th data-orderable="false">Email</th>
                                             <th data-orderable="false">Verified</th>
                                             <th data-orderable="false">Active</th>
-                                            <th data-orderable="false">First Access</th>
-                                            <th data-orderable="false">Last Access</th>
+                                            <th data-orderable="false">NIS</th>
+                                            <th data-orderable="false">NISN</th>
+                                            <th data-orderable="false">Gender</th>
+                                            <th data-orderable="false">Class Room</th>
                                             <th data-orderable="false" class="align-middle text-center">Action</th>
                                         </tr>
                                     </thead>

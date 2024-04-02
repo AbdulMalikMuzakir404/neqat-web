@@ -28,7 +28,8 @@
         </ul>
 
         <ul class="sidebar-menu">
-            <li class="{{ Request::segment(1) == 'announcement' || Request::segment(1) == 'temporary' ? 'active' : '' }}">
+            <li
+                class="{{ Request::segment(1) == 'announcement' || Request::segment(1) == 'temporary' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('announcement.index') }}">
                     <i class="fas fa-bullhorn"></i><span>Announcement</span>
                 </a>
@@ -59,13 +60,15 @@
             </li>
         </ul>
 
-        <ul class="sidebar-menu">
-            <li class="{{ Request::segment(1) == 'logactivity' ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('logactivity.index') }}">
-                    <i class="fas fa-chart-line"></i><span>Log Activity</span>
-                </a>
-            </li>
-        </ul>
+        @if (auth()->check() && auth()->user()->hasRole('developer'))
+            <ul class="sidebar-menu">
+                <li class="{{ Request::segment(1) == 'logactivity' ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('logactivity.index') }}">
+                        <i class="fas fa-chart-line"></i><span>Log Activity</span>
+                    </a>
+                </li>
+            </ul>
+        @endif
 
         <ul class="sidebar-menu">
             <li class="{{ Request::segment(1) == 'setting' ? 'active' : '' }}">

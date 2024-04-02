@@ -22,25 +22,29 @@ class StoreClassRoomRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:5|max:100',
+            'classname' => 'required|string|max:10',
+            'major' => 'required|string|min:5|max:100',
         ];
     }
 
     public function attributes()
     {
         return [
-            'name' => 'nama jurusan',
+            'classname' => 'nama kelas',
+            'major' => 'nama jurusan',
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => ':attribute tidak boleh kosong',
+            'classname.required' => ':attribute tidak boleh kosong',
+            'major.required' => ':attribute tidak boleh kosong',
 
-            'name.max' => ':attribute melebihi batas maksimal karakter',
+            'classname.max' => ':attribute melebihi batas maksimal karakter',
+            'major.max' => ':attribute melebihi batas maksimal karakter',
 
-            'name.min' => ':attribute harus lebih dari 5 karakter',
+            'major.min' => ':attribute harus lebih dari 5 karakter',
         ];
     }
 }

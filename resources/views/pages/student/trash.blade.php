@@ -60,17 +60,57 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label>NIS :</label>
+                                        <div id="detailNIS"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>NISN :</label>
+                                        <div id="detailNISN"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Class Room :</label>
+                                        <div id="detailClassRoom"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Gender :</label>
+                                        <div id="detailGender"></div>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label>IP Address :</label>
                                         <p id="detailIpAddress">-</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Phone :</label>
+                                        <div id="detailPhone"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Birth Place :</label>
+                                        <div id="detailBirthPlace"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Birth Date :</label>
+                                        <div id="detailBirthDate"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Address :</label>
+                                        <div id="detailAddress"></div>
                                     </div>
 
                                     <div class="form-group">
                                         <label>Email Verified At :</label>
                                         <p id="detailEmailVerifiedAt">-</p>
                                     </div>
-                                </div>
 
-                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>FCM Token :</label>
                                         <p id="detailFcmToken">-</p>
@@ -94,16 +134,6 @@
                                     <div class="form-group">
                                         <label>Last Access :</label>
                                         <p id="detailLastAccess">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Created By :</label>
-                                        <p id="detailCreatedBy">-</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Updated By :</label>
-                                        <p id="detailUpdatedBy">-</p>
                                     </div>
                                 </div>
                             </div>
@@ -212,8 +242,10 @@
                                             <th data-orderable="false">Email</th>
                                             <th data-orderable="false">Verified</th>
                                             <th data-orderable="false">Active</th>
-                                            <th data-orderable="false">First Access</th>
-                                            <th data-orderable="false">Last Access</th>
+                                            <th data-orderable="false">NIS</th>
+                                            <th data-orderable="false">NISN</th>
+                                            <th data-orderable="false">Gender</th>
+                                            <th data-orderable="false">Class Room</th>
                                             <th data-orderable="false" class="align-middle text-center">Action</th>
                                         </tr>
                                     </thead>

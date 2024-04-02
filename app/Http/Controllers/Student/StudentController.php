@@ -9,6 +9,7 @@ use App\Http\Requests\Student\StoreStudentRequest;
 use App\Http\Requests\Student\UpdateStudentRequest;
 use App\Imports\Student\Import;
 use App\Models\Role;
+use App\Models\Student;
 use App\Models\User;
 use App\Services\LogActivity\LogActivityService;
 use App\Services\Student\StudentService;
@@ -103,6 +104,38 @@ class StudentController extends Controller
         }
     }
 
+    public function getAllClassRoom()
+    {
+        try {
+            $data = $this->service->getAllClassRoom();
+
+            if ($data) {
+                return response()->json([
+                    'success' => true,
+                    'kode' => 200,
+                    'data' => $data,
+                    'message' => 'data classroom berhasil di ambil'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'kode' => 400,
+                    'data' => $data,
+                    'message' => 'data classroom gagal di ambil'
+                ], 400);
+            }
+        } catch (Exception $e) {
+            Log::info("data classroom controller getAllClassRoom error : " . $e);
+
+            return response()->json([
+                'success' => false,
+                'kode' => 422,
+                'data' => null,
+                'message' => 'data classroom controller getAllClassRoom error : ' . $e,
+            ], 422);
+        }
+    }
+
     public function getAllData(Request $req)
     {
         if ($req->ajax()) {
@@ -112,25 +145,25 @@ class StudentController extends Controller
                 return DataTables::of($data)
                     ->addColumn('delete', function ($data) {
                         return '<div class="custom-checkbox custom-control text-center">
-                                <input type="checkbox" data-checkboxes="delete" class="custom-control-input" id="checkbox-delete-' . $data->id . '">
-                                <label for="checkbox-delete-' . $data->id . '" class="custom-control-label">&nbsp;</label>
+                                <input type="checkbox" data-checkboxes="delete" class="custom-control-input" id="checkbox-delete-' . $data->user->id . '">
+                                <label for="checkbox-delete-' . $data->user->id . '" class="custom-control-label">&nbsp;</label>
                             </div>';
                     })
                     ->addColumn('export', function ($data) {
                         return '<div class="custom-checkbox custom-control text-center">
-                                <input type="checkbox" data-checkboxes="export" class="custom-control-input" id="checkbox-export-' . $data->id . '">
-                                <label for="checkbox-export-' . $data->id . '" class="custom-control-label">&nbsp;</label>
+                                <input type="checkbox" data-checkboxes="export" class="custom-control-input" id="checkbox-export-' . $data->user->id . '">
+                                <label for="checkbox-export-' . $data->user->id . '" class="custom-control-label">&nbsp;</label>
                             </div>';
                     })
                     ->addColumn('email_verified', function ($data) {
-                        return $data->email_verified == 1 ? '<div class="badge badge-success">verified</div>' : ($data->email_verified == 0 ? '<div class="badge badge-secondary">not verified</div>' : '<div class="badge badge-danger">null</div>');
+                        return $data->user->email_verified == 1 ? '<div class="badge badge-success">verified</div>' : ($data->user->email_verified == 0 ? '<div class="badge badge-secondary">not verified</div>' : '<div class="badge badge-danger">null</div>');
                     })
                     ->addColumn('active', function ($data) {
-                        return $data->active == 1 ? '<div class="badge badge-success"><a href="#" id="active" data-id="' . $data->id . '" style="text-decoration: none; color: inherit; cursor: default">active</a></div>' : ($data->active == 0 ? '<div class="badge badge-secondary"><a href="#" id="active" data-id="' . $data->id . '" style="text-decoration: none; color: inherit; cursor: default">nonactive</a></div>' : '<div class="badge badge-danger">null</div>');
+                        return $data->user->active == 1 ? '<div class="badge badge-success"><a href="#" id="active" data-id="' . $data->user->id . '" style="text-decoration: none; color: inherit; cursor: default">active</a></div>' : ($data->user->active == 0 ? '<div class="badge badge-secondary"><a href="#" id="active" data-id="' . $data->user->id . '" style="text-decoration: none; color: inherit; cursor: default">nonactive</a></div>' : '<div class="badge badge-danger">null</div>');
                     })
                     ->addColumn('action', function ($data) {
-                        return '<button type="button" id="detailBtn" data-id="' . $data->id . '" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
-                                    <button type="button" id="editBtn" data-id="' . $data->id . '" class="btn btn-primary btn-sm"><i class="ion ion-compose"></i></button>';
+                        return '<button type="button" id="detailBtn" data-id="' . $data->user->id . '" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
+                                    <button type="button" id="editBtn" data-id="' . $data->user->id . '" class="btn btn-primary btn-sm"><i class="ion ion-compose"></i></button>';
                     })
                     ->rawColumns(['delete', 'export', 'email_verified', 'active', 'action'])
                     ->make(true);
@@ -156,31 +189,26 @@ class StudentController extends Controller
                 return DataTables::of($data)
                     ->addColumn('delete', function ($data) {
                         return '<div class="custom-checkbox custom-control text-center">
-                                            <input type="checkbox" data-checkboxes="delete" class="custom-control-input" id="checkbox-delete-' . $data->id . '">
-                                            <label for="checkbox-delete-' . $data->id . '" class="custom-control-label">&nbsp;</label>
-                                        </div>';
+                                <input type="checkbox" data-checkboxes="delete" class="custom-control-input" id="checkbox-delete-' . $data->user->id . '">
+                                <label for="checkbox-delete-' . $data->user->id . '" class="custom-control-label">&nbsp;</label>
+                            </div>';
                     })
                     ->addColumn('recovery', function ($data) {
                         return '<div class="custom-checkbox custom-control text-center">
-                                            <input type="checkbox" data-checkboxes="recovery" class="custom-control-input" id="checkbox-recovery-' . $data->id . '">
-                                            <label for="checkbox-recovery-' . $data->id . '" class="custom-control-label">&nbsp;</label>
-                                        </div>';
+                                <input type="checkbox" data-checkboxes="recovery" class="custom-control-input" id="checkbox-recovery-' . $data->id . '">
+                                <label for="checkbox-recovery-' . $data->id . '" class="custom-control-label">&nbsp;</label>
+                            </div>';
                     })
                     ->addColumn('email_verified', function ($data) {
-                        return $data->email_verified == 1 ? '<div class="badge badge-success">verified</div>' : ($data->email_verified == 0 ? '<div class="badge badge-secondary">not verified</div>' : '<div class="badge badge-danger">null</div>');
+                        return $data->user->email_verified == 1 ? '<div class="badge badge-success">verified</div>' : ($data->user->email_verified == 0 ? '<div class="badge badge-secondary">not verified</div>' : '<div class="badge badge-danger">null</div>');
                     })
                     ->addColumn('active', function ($data) {
-                        return $data->active == 1 ? '<div class="badge badge-success"><a href="#" id="active" data-id="' . $data->id . '" style="text-decoration: none; color: inherit; cursor: default">active</a></div>' : ($data->active == 0 ? '<div class="badge badge-secondary"><a href="#" id="active" data-id="' . $data->id . '" style="text-decoration: none; color: inherit; cursor: default">nonactive</a></div>' : '<div class="badge badge-danger">null</div>');
-                    })
-                    ->addColumn('role', function ($data) {
-                        return $data->getRoleNames()->first() ?? '-';
+                        return $data->user->active == 1 ? '<div class="badge badge-success"><a href="#" id="active" data-id="' . $data->user->id . '" style="text-decoration: none; color: inherit; cursor: default">active</a></div>' : ($data->user->active == 0 ? '<div class="badge badge-secondary"><a href="#" id="active" data-id="' . $data->user->id . '" style="text-decoration: none; color: inherit; cursor: default">nonactive</a></div>' : '<div class="badge badge-danger">null</div>');
                     })
                     ->addColumn('action', function ($data) {
-                        return '<div class="text-center">
-                                    <button type="button" id="detailBtn" data-id="'. $data->id .'" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>
-                                </div>';
+                        return '<button type="button" id="detailBtn" data-id="' . $data->user->id . '" class="btn btn-secondary btn-sm"><i class="ion ion-eye"></i></button>';
                     })
-                    ->rawColumns(['delete', 'recovery', 'email_verified', 'active', 'role', 'action'])
+                    ->rawColumns(['delete', 'recovery', 'email_verified', 'active', 'action'])
                     ->make(true);
             } else {
                 return response()->json([
@@ -403,7 +431,7 @@ class StudentController extends Controller
 
         try {
             // Import data dari file Excel
-            $import = new Import(new User(), new Role());
+            $import = new Import(new Student(), new User(), new Role());
             $excel = Excel::import($import, $file);
 
             if ($excel) {
@@ -441,7 +469,7 @@ class StudentController extends Controller
         try {
             $now = Carbon::now();
             $filename = 'student_' . $now->format('Y-m-d_H-i-s') . '.xlsx';
-            $export = Excel::raw(new Export(new User(), $req->ids), 'Xlsx');
+            $export = Excel::raw(new Export(new Student(), new User(), $req->ids), 'Xlsx');
 
             // Encode file Excel menjadi base64
             $base64File = base64_encode($export);

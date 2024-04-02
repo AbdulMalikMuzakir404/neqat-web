@@ -154,8 +154,49 @@
             $('#username').val("");
             $('#email').val("");
             $('#password').val("");
-            $('#role').val("");
+            $('#classroom').val("");
+            $('#pria').prop('checked', false);
+            $('#wanita').prop('checked', false);
+            $('#nis').val("");
+            $('#nisn').val("");
+            $('#phone').val("");
+            $('#birth_place').val("");
+            $('#birth_date').val("");
+            $('#address').val("");
+
+            classRoomData();
         });
+
+        function classRoomData() {
+            $.ajax({
+                url: "{{ route('student.getallclassroom') }}",
+                type: "GET",
+                cache: false,
+                success: function(response) {
+                    $('#classroom').empty();
+
+                    // Iterasi melalui respons dan tambahkan opsi baru ke dalam elemen <select>
+                    $.each(response.data, function(index, classroom) {
+                        $('#classroom').append($('<option>', {
+                            value: classroom.id,
+                            text: `${classroom.classname} - ${classroom.major}`
+                        }));
+                    });
+                },
+                error: function(xhr, status, error) {
+                    if (xhr.responseJSON) {
+                        let errors = xhr.responseJSON.errors;
+                        if (errors) {
+                            $.each(errors, function(key, value) {
+                                toastr.error(value[0], 'Error');
+                            });
+                        }
+                    } else {
+                        toastr.error("An error occurred: " + error, 'Error');
+                    }
+                }
+            });
+        }
     });
 </script>
 
@@ -188,38 +229,50 @@
                     }
 
                     if (response.data) {
-                        $('#detailName').text(response.data.name ?? '-');
-                        $('#detailUsername').text(response.data.username ?? '-');
-                        $('#detailEmail').text(response.data.email ?? '-');
-                        if (response.data.active == 1) {
+                        $('#detailName').text(response.data.user.name ?? '-');
+                        $('#detailUsername').text(response.data.user.username ?? '-');
+                        $('#detailEmail').text(response.data.user.email ?? '-');
+                        if (response.data.user.active == 1) {
                             $('#detailActive').html(
                                 '<div class="badge badge-success">active</div>');
-                        } else if (response.data.active == 0) {
+                        } else if (response.data.user.active == 0) {
                             $('#detailActive').html(
                                 '<div class="badge badge-secondary">nonactive</div>');
                         } else {
                             $('#detailActive').html('<div class="badge badge-danger">-</div>');
                         }
-                        if (response.data.email_verified == 1) {
+                        if (response.data.user.email_verified == 1) {
                             $('#detailEmailVerified').html(
                                 '<div class="badge badge-success">verified</div>');
-                        } else if (response.data.email_verified == 0) {
+                        } else if (response.data.user.email_verified == 0) {
                             $('#detailEmailVerified').html(
                                 '<div class="badge badge-secondary">not verified</div>');
                         } else {
                             $('#detailEmailVerified').html(
                                 '<div class="badge badge-danger">-</div>');
                         }
-                        $('#detailIpAddress').text(response.data.ip_address ?? '-');
-                        $('#detailEmailVerifiedAt').text(dateFormat(response.data.email_verified_at) ??
+                        $('#detailNIS').text(response.data.nis ?? '-');
+                        $('#detailNISN').text(response.data.nisn ?? '-');
+                        $('#detailClassRoom').text(response.data.classroom ? `${response.data.classroom.classname} - ${response.data.classroom.major}` : '-');
+                        $('#detailGender').text(response.data.gender ?? '-');
+                        $('#detailIpAddress').text(response.data.user.ip_address ?? '-');
+                        $('#detailPhone').text(response.data.phone ?? '-');
+                        $('#detailBirthPlace').text(response.data.birth_place ?? '-');
+                        $('#detailBirthDate').text(response.data.birth_date ?? '-');
+                        $('#detailAddress').text(response.data.address ?? '-');
+                        $('#detailEmailVerifiedAt').text(response.data
+                            .email_verified_at ? dateFormat(response.data
+                                .email_verified_at) :
                             '-');
-                        $('#detailFcmToken').text(response.data.fcm_token ?? '-');
-                        $('#detailActiveAt').text(dateFormat(response.data.active_at) ?? '-');
-                        $('#detailFirstAccess').text(dateFormat(response.data.first_access) ?? '-');
-                        $('#detailLastLogin').text(dateFormat(response.data.last_login) ?? '-');
-                        $('#detailLastAccess').text(dateFormat(response.data.last_access) ?? '-');
-                        $('#detailCreatedBy').text(dateFormat(response.data.created_by) ?? '-');
-                        $('#detailUpdatedBy').text(dateFormat(response.data.updated_by) ?? '-');
+                        $('#detailFcmToken').text(response.data.user.fcm_token ?? '-');
+                        $('#detailActiveAt').text(response.data.user.active_at ? dateFormat(response
+                            .data.user.active_at) : '-');
+                        $('#detailFirstAccess').text(response.data.user.first_access ? dateFormat(
+                            response.data.user.first_access) : '-');
+                        $('#detailLastLogin').text(response.data.user.last_login ? dateFormat(
+                            response.data.user.last_login) : '-');
+                        $('#detailLastAccess').text(response.data.user.last_access ? dateFormat(
+                            response.data.user.last_access) : '-');
                     } else {
                         console.log('Terjadi kesalahan response');
                         toastr.error("Terjadi kesalahan response", 'Error');
@@ -265,11 +318,42 @@
 
                     if (response.data) {
                         // Masukan data ke dalam field form edit
-                        $('#dataId').val(response.data.id);
-                        $('#name').val(response.data.name);
-                        $('#username').val(response.data.username);
-                        $('#email').val(response.data.email);
+                        $('#dataIdStudent').val(response.data.id);
+                        $('#dataId').val(response.data.user.id);
+                        $('#name').val(response.data.user.name);
+                        $('#username').val(response.data.user.username);
+                        $('#email').val(response.data.user.email);
                         $('#password').val('');
+
+                        // Panggil classRoomData dan gunakan .then() setelahnya
+                        classRoomData().then(function(classrooms) {
+                            // Kosongkan opsi peran sebelum menambahkan yang baru
+                            $('#classroom').empty();
+                            // Tambahkan opsi peran baru ke dalam dropdown
+                            classrooms.forEach(function(classroom) {
+                                $('#classroom').append($('<option>', {
+                                    value: classroom.id,
+                                    text: `${classroom.classname} - ${classroom.major}`
+                                }));
+                            });
+                            // Setel opsi peran yang dipilih berdasarkan data dari respons AJAX
+                            $('#classroom').val(response.data.classroom.id);
+                        }).catch(function(error) {
+                            console.error('Terjadi kesalahan:', error);
+                        });
+
+                        if (response.data.gender === 'pria') {
+                            $('#pria').prop('checked', true);
+                        } else if (response.data.gender === 'wanita') {
+                            $('#wanita').prop('checked', true);
+                        }
+
+                        $('#nis').val(response.data.nis);
+                        $('#nisn').val(response.data.nisn);
+                        $('#phone').val(response.data.phone);
+                        $('#birth_place').val(response.data.birth_place);
+                        $('#birth_date').val(response.data.birth_date);
+                        $('#address').val(response.data.address);
                     } else {
                         console.log('Terjadi kesalahan response');
                     }
@@ -287,6 +371,23 @@
                     }
                 }
             });
+
+            // Mengembalikan promise untuk mendapatkan data peran
+            function classRoomData() {
+                return new Promise(function(resolve, reject) {
+                    $.ajax({
+                        url: "{{ route('student.getallclassroom') }}",
+                        type: "GET",
+                        cache: false,
+                        success: function(response) {
+                            resolve(response.data);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error);
+                        }
+                    });
+                });
+            }
         }
     });
 </script>
@@ -309,8 +410,7 @@
                 url: "{{ route('student.getalldata') }}",
                 type: 'POST'
             },
-            columns: [
-                {
+            columns: [{
                     data: null,
                     orderable: false,
                     searchable: false,
@@ -329,16 +429,16 @@
                     searchable: false
                 },
                 {
-                    data: 'id'
+                    data: 'user.id'
                 },
                 {
-                    data: 'name'
+                    data: 'user.name'
                 },
                 {
-                    data: 'username'
+                    data: 'user.username'
                 },
                 {
-                    data: 'email'
+                    data: 'user.email'
                 },
                 {
                     data: 'email_verified'
@@ -347,31 +447,18 @@
                     data: 'active'
                 },
                 {
-                    data: 'first_access',
-                    orderable: false,
-                    searchable: false,
-                    render: function(data) {
-                        return new Date(data).toLocaleString('id-ID', {
-                            day: '2-digit',
-                            month: 'long',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        });
-                    }
+                    data: 'nis'
                 },
                 {
-                    data: 'last_access',
-                    orderable: false,
-                    searchable: false,
-                    render: function(data) {
-                        return new Date(data).toLocaleString('id-ID', {
-                            day: '2-digit',
-                            month: 'long',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        });
+                    data: 'nisn'
+                },
+                {
+                    data: 'gender'
+                },
+                {
+                    data: null,
+                    render: function(data, type, row) {
+                        return row.classroom.classname + ' - ' + row.classroom.major;
                     }
                 },
                 {
@@ -387,6 +474,10 @@
                 var table = $('#table-2').DataTable();
                 var info = table.page.info();
                 $('td:eq(0)', row).html(info.start + dataIndex + 1);
+            },
+            "createdRow": function(row, data, dataIndex) {
+                $(row).find('td:eq(12)').css('white-space', 'nowrap');
+                $(row).find('td:eq(13)').css('white-space', 'nowrap');
             }
         });
     }
@@ -424,7 +515,14 @@
                     $('#username').val("");
                     $('#email').val("");
                     $('#password').val("");
-                    $('#role').val("");
+                    $('#classroom').val("");
+                    $('#gender').val("");
+                    $('#nis').val("");
+                    $('#nisn').val("");
+                    $('#phone').val("");
+                    $('#birth_place').val("");
+                    $('#birth_date').val("");
+                    $('#address').val("");
 
                     $('#saveData').removeClass('storeData');
 

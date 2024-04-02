@@ -13,7 +13,7 @@ Route::post('/delete', [StudentController::class, 'destroy'])->name('delete');
 
 // crud data utama tambahan
 Route::post('/update/active', [StudentController::class, 'updateActive'])->name('update.active');
-Route::get('/get-role', [StudentController::class, 'getAllRole'])->name('getallrole');
+Route::get('/get-classroom', [StudentController::class, 'getAllClassRoom'])->name('getallclassroom');
 
 // crud data trash
 Route::get('/trash', [StudentController::class, 'trash'])->name('trash');

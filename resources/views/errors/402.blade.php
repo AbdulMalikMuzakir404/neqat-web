@@ -16,7 +16,7 @@
             <div class="container mt-5">
                 <div class="page-error">
                     <div class="page-inner">
-                        <h1>404</h1>
+                        <h1>402</h1>
                         <div class="page-description">
                             Gateway Akses. Akses ke sumber daya ini hanya dapat dilakukan melalui pintu gerbang
                             tertentu.

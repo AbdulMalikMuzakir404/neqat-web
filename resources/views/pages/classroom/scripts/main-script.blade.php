@@ -49,7 +49,8 @@
             $('#saveData').addClass('storeData');
 
             $('#dataId').val("");
-            $('#name').val("");
+            $('#classname').val("");
+            $('#major').val("");
         });
     });
 </script>
@@ -114,8 +115,7 @@
                 url: "{{ route('classroom.getalldata') }}",
                 type: 'POST'
             },
-            columns: [
-                {
+            columns: [{
                     data: null,
                     orderable: false,
                     searchable: false,
@@ -132,7 +132,10 @@
                     data: 'id'
                 },
                 {
-                    data: 'name'
+                    data: 'classname'
+                },
+                {
+                    data: 'major'
                 },
                 {
                     data: 'created_at',
@@ -208,7 +211,8 @@
                     $('#dataModal').modal('hide');
 
                     $('#dataId').val("");
-                    $('#name').val("");
+                    $('#classname').val("");
+                    $('#major').val("");
 
                     $('#saveData').removeClass('storeData');
 
@@ -272,7 +276,8 @@
                     }
 
                     if (response.data) {
-                        $('#detailName').text(response.data.name ?? '-');
+                        $('#detailClassName').text(response.data.classname ?? '-');
+                        $('#detailMajor').text(response.data.major ?? '-');
                         $('#detailCreatedAt').text(dateFormat(response.data.created_at) ?? '-');
                         $('#detailUpdatedAt').text(dateFormat(response.data.updated_at) ?? '-');
                     } else {
@@ -307,7 +312,8 @@
             $('#saveData').addClass('updateData');
 
             $('#dataId').val("");
-            $('#name').val("");
+            $('#classname').val("");
+            $('#major').val("");
 
             editData(dataId);
         });
@@ -320,12 +326,12 @@
                 success: function(response) {
                     $('#dataLabel').text('Edit Data');
                     $('#saveData').text('Save and Change');
-                    $('#hideImage').html('<div style="display: block;"></div>');
 
                     if (response.data) {
                         // Masukan data ke dalam field form edit
                         $('#dataId').val(response.data.id);
-                        $('#name').val(response.data.name);
+                        $('#classname').val(response.data.classname);
+                        $('#major').val(response.data.major);
                     } else {
                         console.log('Terjadi kesalahan response');
                         toastr.error("Terjadi kesalahan response", 'Error');
@@ -376,7 +382,8 @@
                     toastr.success(response.message, 'Success');
 
                     $('#dataId').val("");
-                    $('#name').val("");
+                    $('#classname').val("");
+                    $('#major').val("");
 
                     $('#dataModal').modal('hide');
 
