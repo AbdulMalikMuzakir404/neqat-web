@@ -80,6 +80,7 @@ class UserService
                 $query->where('name', 'student');
                 $query->orWhere('name', 'developer');
             })
+                ->whereHas('roles')
                 ->where('is_delete', 0)
                 ->where('id', '!=', auth()->user()->id)
                 ->get();
@@ -95,8 +96,11 @@ class UserService
     public function getAllDataTrash()
     {
         try {
-            $data = $this->model->whereDoesntHave('roles', function ($query) {
-                $query->where('name', 'student');
+            $data = $this->model->where(function ($query) {
+                $query->whereDoesntHave('roles')
+                    ->orWhereHas('roles', function ($query) {
+                        $query->where('name', '!=', 'student');
+                    });
             });
             $data->where('is_delete', 1);
             $data->where('id', '!=', auth()->user()->id);
