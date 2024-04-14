@@ -4,6 +4,7 @@ namespace App\Services\Temporary;
 
 use App\Models\TemporaryFile;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 
@@ -47,6 +48,8 @@ class TemporaryService
 
     public function deleteData($req)
     {
+        DB::beginTransaction();
+
         try {
             foreach ($req->ids as $id) {
                 $data = $this->model->findOrFail($id);
@@ -62,10 +65,11 @@ class TemporaryService
                 $data->delete();
             }
 
+            DB::commit();
             return true;
         } catch (Exception $e) {
             Log::info("temporary service delete data error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }

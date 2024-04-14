@@ -28,14 +28,6 @@
         </ul>
 
         <ul class="sidebar-menu">
-            <li class="{{ Request::segment(1) == 'useralltrash' ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('useralltrash.index') }}">
-                    <i class="fas fa-trash"></i><span>User All Trash</span>
-                </a>
-            </li>
-        </ul>
-
-        <ul class="sidebar-menu">
             <li
                 class="{{ Request::segment(1) == 'announcement' || Request::segment(1) == 'temporary' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('announcement.index') }}">

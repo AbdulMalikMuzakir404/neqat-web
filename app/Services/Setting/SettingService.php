@@ -4,6 +4,7 @@ namespace App\Services\Setting;
 
 use App\Models\Setting;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class SettingService
@@ -29,6 +30,8 @@ class SettingService
 
     public function updateMap($data)
     {
+        DB::beginTransaction();
+
         try {
             $map = $this->model->query();
             $map->update([
@@ -38,16 +41,19 @@ class SettingService
                 'radius' => $data->radius
             ]);
 
+            DB::commit();
             return true;
         } catch (Exception $e) {
             Log::info("setting update map error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function updateGeneral($data)
     {
+        DB::beginTransaction();
+
         try {
             $map = $this->model->query();
             $map->update([
@@ -58,10 +64,11 @@ class SettingService
                 'absen' => $data->absen
             ]);
 
+            DB::commit();
             return true;
         } catch (Exception $e) {
             Log::info("setting update general error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }

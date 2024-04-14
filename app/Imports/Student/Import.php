@@ -3,6 +3,7 @@
 namespace App\Imports\Student;
 
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -26,6 +27,8 @@ class Import implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
+        DB::beginTransaction();
+
         try {
             // Cek apakah ada pengguna dengan email atau username yang sama
             $existingUser = $this->model->with(['user', 'classroom'])->whereHas('user', function ($query) use ($row) {
@@ -38,6 +41,7 @@ class Import implements ToModel, WithHeadingRow
 
             if ($existingUser->count() >= 1) {
                 Log::info("Student export info: data import duplicate");
+                DB::rollBack();
                 return null;
             }
 
@@ -68,13 +72,16 @@ class Import implements ToModel, WithHeadingRow
             $import->save();
 
             if ($import) {
+                DB::commit();
                 return $import;
             } else {
                 Log::error("Student import error: data import");
                 return null;
             }
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error("Student import error: " . $e->getMessage());
+            return null;
         }
     }
 }

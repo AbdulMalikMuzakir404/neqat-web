@@ -139,7 +139,7 @@ class StudentController extends Controller
     public function getAllData(Request $req)
     {
         if ($req->ajax()) {
-            $data = $this->service->getAllData();
+            $data = $this->service->getAllData($req->filterClass);
 
             if ($data) {
                 return DataTables::of($data)

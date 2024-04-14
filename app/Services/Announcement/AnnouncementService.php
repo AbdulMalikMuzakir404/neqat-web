@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\File;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
@@ -116,6 +117,8 @@ class AnnouncementService
 
     public function storeData($req)
     {
+        DB::beginTransaction();
+
         try {
             $data = $this->model->create([
                 'user_id' => auth()->user()->id,
@@ -164,10 +167,11 @@ class AnnouncementService
                     // Hapus record file sementara dari database
                     $tmpFile->delete();
 
+                    DB::commit();
                     return true;
                 } else {
                     Log::info("data tmp tidak di temukan");
-
+                    DB::rollBack();
                     return false;
                 }
             }
@@ -182,6 +186,8 @@ class AnnouncementService
 
     public function updateData($req)
     {
+        DB::beginTransaction();
+
         try {
             $data = $this->model->where('id', $req->dataId)->first();
 
@@ -236,10 +242,11 @@ class AnnouncementService
                     // Hapus record file sementara dari database
                     $tmpFile->delete();
 
+                    DB::commit();
                     return true;
                 } else {
                     Log::info("data tmp tidak di temukan");
-
+                    DB::rollBack();
                     return false;
                 }
             }
@@ -254,6 +261,8 @@ class AnnouncementService
 
     public function deleteData($req)
     {
+        DB::beginTransaction();
+
         try {
             foreach ($req->ids as $id) {
                 $data = $this->model->findOrFail($id);
@@ -266,16 +275,19 @@ class AnnouncementService
             $desc = 'Menghapus announcement ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $data;
         } catch (Exception $e) {
             Log::info("announcement service delete announcement error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function deleteDataPermanen($req)
     {
+        DB:: beginTransaction();
+
         try {
             foreach ($req->ids as $id) {
                 $data = $this->model->findOrFail($id);
@@ -286,16 +298,19 @@ class AnnouncementService
             $desc = 'Menghapus permanen announcement ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $data;
         } catch (Exception $e) {
             Log::info("announcement service delete announcement recovery error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function recoveryData($req)
     {
+        DB::beginTransaction();
+
         try {
             foreach ($req->ids as $id) {
                 $data = $this->model->findOrFail($id);
@@ -308,10 +323,11 @@ class AnnouncementService
             $desc = 'Recovery announcement ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $data;
         } catch (Exception $e) {
             Log::info("announcement service recovery announcement error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }

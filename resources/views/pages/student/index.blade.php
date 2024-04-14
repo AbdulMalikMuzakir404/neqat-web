@@ -35,8 +35,8 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <input type="hidden" name="dataIdStudent" id="dataIdStudent" value=""
-                                        class="form-control @error('dataIdStudent') is-invalid @enderror" placeholder="Data ID"
-                                        maxlength="50" required>
+                                        class="form-control @error('dataIdStudent') is-invalid @enderror"
+                                        placeholder="Data ID" maxlength="50" required>
                                     @error('dataIdStudent')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -161,8 +161,8 @@
                                     <div class="form-group">
                                         <label for="phone">*Phone</label>
                                         <input type="number" name="phone" id="phone" value="{{ old('phone') }}"
-                                            class="form-control @error('phone') is-invalid @enderror" placeholder="08xxxx"
-                                            maxlength="15" required>
+                                            class="form-control @error('phone') is-invalid @enderror"
+                                            placeholder="08xxxx" maxlength="15" required>
                                         @error('phone')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -377,7 +377,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Format Excel(Name, Username, Email, Password, Class Room ID, NIS, NISN, Phone, Birth Date, Birth Place, Gender, Address) atau bisa unduh contoh excelnya <strong
+                        <p>Format Excel(Name, Username, Email, Password, Class Room ID, NIS, NISN, Phone, Birth Date, Birth
+                            Place, Gender, Address) atau bisa unduh contoh excelnya <strong
                                 id="download-contoh-excel">disini</strong></p>
                         <form class="form-import">
                             <div class="form-group">
@@ -436,7 +437,6 @@
                 </ol>
             </nav>
 
-            {{-- TABLE --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -500,6 +500,7 @@
                     </div>
                 </div>
             </div>
+
         </section>
     </div>
 @endsection

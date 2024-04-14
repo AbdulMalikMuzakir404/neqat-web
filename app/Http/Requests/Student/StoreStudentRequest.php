@@ -33,7 +33,7 @@ class StoreStudentRequest extends FormRequest
             'phone' => 'required|max:15',
             'birth_place' => 'required|string|max:50',
             'birth_date' => 'required',
-            'address' => 'required|string|max:50'
+            'address' => 'required|string|max:100'
         ];
     }
 

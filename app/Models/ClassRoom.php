@@ -17,4 +17,9 @@ class ClassRoom extends Model
     protected $casts = [
         'id' => 'string',
     ];
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'id', 'class_room_id');
+    }
 }

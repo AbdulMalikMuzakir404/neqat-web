@@ -4,6 +4,7 @@ namespace App\Services\LogActivity;
 
 use App\Models\LogActivity;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class LogActivityService
@@ -48,32 +49,38 @@ class LogActivityService
 
     public function storeData($desc)
     {
+        DB::beginTransaction();
+
         try {
             $data = $this->model->create([
                 'user_id' => auth()->user()->id,
                 'description' => $desc
             ]);
 
+            DB::commit();
             return $data;
         } catch (Exception $e) {
             Log::info("log service store data error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function deleteData($req)
     {
+        DB::transaction();
+
         try {
             foreach ($req->ids as $id) {
                 $data = $this->model->findOrFail($id);
                 $data->delete();
             }
 
+            DB::commit();
             return true;
         } catch (Exception $e) {
             Log::info("log service delete data error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }

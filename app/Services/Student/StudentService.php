@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\User;
 use App\Services\LogActivity\LogActivityService;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -75,7 +76,7 @@ class StudentService
         }
     }
 
-    public function getAllData()
+    public function getAllData($req)
     {
         try {
             $data = $this->student->with(['user', 'classroom'])
@@ -116,6 +117,8 @@ class StudentService
 
     public function storeData($req)
     {
+        DB::beginTransaction();
+
         try {
             $data = $this->model->create([
                 'name' => $req->name,
@@ -145,16 +148,19 @@ class StudentService
             $desc = 'Membuat student ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $student;
         } catch (Exception $e) {
             Log::info("student service store student error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function updateData($req)
     {
+        DB::beginTransaction();
+
         try {
             $data = $this->model->where('id', $req->dataId)->first();
 
@@ -197,16 +203,19 @@ class StudentService
             $desc = 'Mengubah student ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $student;
         } catch (Exception $e) {
             Log::info("student service store student error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function updateStudentActive($req)
     {
+        DB::beginTransaction();
+
         try {
             $data = $this->model->where('id', $req->id)->first();
             if ($data->active == true) {
@@ -225,16 +234,19 @@ class StudentService
             $desc = 'Mengubah student ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $data;
         } catch (Exception $e) {
             Log::info("student service update student active error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function deleteData($req)
     {
+        DB::beginTransaction();
+
         try {
             foreach ($req->ids as $id) {
                 $data = $this->model->findOrFail($id);
@@ -247,16 +259,19 @@ class StudentService
             $desc = 'Menghapus student ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $data;
         } catch (Exception $e) {
             Log::info("student service delete student error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function deleteDataPermanen($req)
     {
+        DB::beginTransaction();
+
         try {
             foreach ($req->ids as $id) {
                 $data = $this->model->findOrFail($id);
@@ -267,16 +282,19 @@ class StudentService
             $desc = 'Menghapus permanen student ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $data;
         } catch (Exception $e) {
             Log::info("student service delete student recovery error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function recoveryData($req)
     {
+        DB::beginTransaction();
+
         try {
             foreach ($req->ids as $id) {
                 $data = $this->model->findOrFail($id);
@@ -289,10 +307,11 @@ class StudentService
             $desc = 'Recovery student ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $data;
         } catch (Exception $e) {
             Log::info("student service recovery student error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }

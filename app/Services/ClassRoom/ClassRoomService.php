@@ -5,6 +5,7 @@ namespace App\Services\ClassRoom;
 use App\Models\ClassRoom;
 use App\Services\LogActivity\LogActivityService;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ClassRoomService
@@ -79,6 +80,8 @@ class ClassRoomService
 
     public function storeData($req)
     {
+        DB::beginTransaction();
+
         try {
             $data = $this->model->create([
                 'classname' => $req->classname,
@@ -90,16 +93,18 @@ class ClassRoomService
             $desc = 'Membuat classroom ' . $data->classname . ' ' . $data->major;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $result;
         } catch (Exception $e) {
             Log::info("classroom service store data error : " . $e);
-
+            db::rollBack();
             return false;
         }
     }
 
     public function updateData($req)
     {
+        DB::beginTransaction();
         try {
             $data = $this->model->where('id', $req->dataId)->first();
 
@@ -112,58 +117,79 @@ class ClassRoomService
             $desc = 'Mengubah classroom ' . $data->classname . ' ' . $data->major;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $result;
         } catch (Exception $e) {
             Log::info("classroom service store data error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function deleteData($req)
     {
+        DB::beginTransaction();
+
         try {
             foreach ($req->ids as $id) {
-                $data = $this->model->findOrFail($id);
-                $data->update([
-                    'is_delete' => true
-                ]);
+                $data = $this->model->with(['student.user'])->findOrFail($id);
+
+                if ($data->student || $data->student->user) {
+                    DB::rollBack();
+                    return false;
+                } else {
+                    $data->update([
+                        'is_delete' => true
+                    ]);
+                }
             }
 
             // buat sebuah log activity
             $desc = 'Menghapus classroom ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $data;
         } catch (Exception $e) {
             Log::info("classroom service delete classeoom error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function deleteDataPermanen($req)
     {
+        DB::beginTransaction();
+
         try {
             foreach ($req->ids as $id) {
-                $data = $this->model->findOrFail($id);
-                $data->delete();
+                $data = $this->model->with(['student.user'])->findOrFail($id);
+
+                if ($data->student || $data->student->user) {
+                    DB::rollBack();
+                    return false;
+                } else {
+                    $data->delete();
+                }
             }
 
             // buat sebuah log activity
             $desc = 'Menghapus permanen classroom ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $data;
         } catch (Exception $e) {
             Log::info("classroom service delete classroom recovery error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function recoveryData($req)
     {
+        DB::beginTransaction();
+
         try {
             foreach ($req->ids as $id) {
                 $data = $this->model->findOrFail($id);
@@ -176,10 +202,11 @@ class ClassRoomService
             $desc = 'Recovery classroom ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $data;
         } catch (Exception $e) {
             Log::info("classroom service recovery classroom error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }

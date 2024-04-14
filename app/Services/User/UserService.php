@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Services\LogActivity\LogActivityService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -116,6 +117,8 @@ class UserService
 
     public function storeData($req)
     {
+        DB::beginTransaction();
+
         try {
             $data = $this->model->create([
                 'name' => $req->name,
@@ -133,19 +136,22 @@ class UserService
             $desc = 'Membuat user ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return [
                 'data' => $data,
                 'role' => $role->name
             ];
         } catch (Exception $e) {
             Log::info("user service store user error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function updateData($req)
     {
+        DB::beginTransaction();
+
         try {
             $data = $this->model->where('id', $req->dataId)->first();
 
@@ -176,19 +182,22 @@ class UserService
             $desc = 'Mengubah user ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return [
                 'data' => $data,
                 'role' => $role->name
             ];
         } catch (Exception $e) {
             Log::info("user service store user error : " . $e);
-
+            DB::rollback();
             return false;
         }
     }
 
     public function updateUserActive($req)
     {
+        DB::beginTransaction();
+
         try {
             $data = $this->model->where('id', $req->id)->first();
             if ($data->active == true) {
@@ -209,19 +218,22 @@ class UserService
             $desc = 'Mengubah user ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return [
                 'data' => $data,
                 'role' => $role
             ];
         } catch (Exception $e) {
             Log::info("user service update user active error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function deleteData($req)
     {
+        DB::beginTransaction();
+
         try {
             foreach ($req->ids as $id) {
                 $data = $this->model->findOrFail($id);
@@ -234,16 +246,19 @@ class UserService
             $desc = 'Menghapus user ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $data;
         } catch (Exception $e) {
             Log::info("user service delete user error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function deleteDataPermanen($req)
     {
+        DB::beginTransaction();
+
         try {
             foreach ($req->ids as $id) {
                 $data = $this->model->findOrFail($id);
@@ -254,16 +269,19 @@ class UserService
             $desc = 'Menghapus permanen user ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $data;
         } catch (Exception $e) {
             Log::info("user service delete user recovery error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
 
     public function recoveryData($req)
     {
+        DB::beginTransaction();
+
         try {
             foreach ($req->ids as $id) {
                 $data = $this->model->findOrFail($id);
@@ -276,10 +294,11 @@ class UserService
             $desc = 'Recovery user ' . $data->name;
             $this->logactivity->storeData($desc);
 
+            DB::commit();
             return $data;
         } catch (Exception $e) {
             Log::info("user service recovery user error : " . $e);
-
+            DB::rollBack();
             return false;
         }
     }
